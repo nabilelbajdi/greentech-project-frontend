@@ -1,0 +1,52 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+//Run 'npx prisma studio' to see the tables
+
+//npx prisma db push, to update
+
+
+generator client {
+  provider = "prisma-client-js"
+}
+datasource db {
+  provider = "mysql"
+  url = env("DATABASE_URL")
+  relationMode = "prisma"
+}
+
+//TABLES
+model User {
+  id  Int @id @default(autoincrement())
+  username  String
+  email String
+  password  String 
+  slug String @unique
+  posts Post[]
+  pictures Picture[]
+
+  created DateTime @default(now())
+  updated DateTime @default(now()) @updatedAt
+}
+
+model Post {
+  id Int  @id @default(autoincrement())
+  author User @relation(fields: [author_id], references: [id])
+  author_id Int 
+  title String
+  text String
+
+  created DateTime @default(now())
+  updated DateTime @default(now()) @updatedAt
+
+  @@index([author_id])
+}
+
+model Picture {
+  id Int @id @default(autoincrement())
+  owner_id Int 
+  owner User @relation(fields: [owner_id], references: [id])
+  picture_url String
+
+  @@index([owner_id])
+}
