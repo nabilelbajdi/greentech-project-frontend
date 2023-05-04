@@ -10,7 +10,7 @@ const postQueryHandler = async (req, res) => {
       return res.status(200).json(id);
     }
     case 'DELETE': {
-      const id = JSON.parse(req.query.postId);
+      const id = req.query.postId;
       const deletedPost = await prisma.post.delete({ where: { id: id } });
 
       return res.status(200).json(deletedPost);
