@@ -22,7 +22,7 @@ model Account {
   provider String
   providerAccountId String
   refresh_token String? @db.Text
-  acces_token String? @db.Text
+  access_token String? @db.Text
   expires_at Int?
   token_type String?
   scope String?
@@ -68,6 +68,7 @@ model Post {
   author User? @relation(fields: [author_id], references: [id])
   author_id String? 
   text String
+  image String?
 
   created DateTime @default(now())
   updated DateTime @default(now()) @updatedAt

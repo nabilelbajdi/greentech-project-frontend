@@ -1,4 +1,5 @@
 import prisma from '../../../../../server/db/prisma';
+import fs from 'fs';
 
 const postQueryHandler = async (req, res) => {
   const body = req.body;
@@ -10,8 +11,25 @@ const postQueryHandler = async (req, res) => {
       return res.status(200).json(id);
     }
     case 'DELETE': {
-      const id = JSON.parse(req.query.postId);
-      const deletedPost = await prisma.post.delete({ where: { id: id } });
+      const id = req.query.postId;
+
+      const { image } = await prisma.post.findUnique({
+        where: {
+          id: id,
+        },
+      });
+
+      const { deletedPost } = await prisma.post.delete({ where: { id: id } });
+
+      if (image) {
+        console.log(image);
+        fs.rm('./public/' + image, { recursive: true }, (err) => {
+          if (err) {
+            console.log(err.message);
+            return;
+          }
+        });
+      }
 
       return res.status(200).json(deletedPost);
     }

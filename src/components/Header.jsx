@@ -7,7 +7,7 @@ const Header = () => {
     <header className='flex justify-between items-center h-12 p-4 bg-slate-600 w-full md:sticky md:top-0'>
       <h1>Treehouse</h1>
       <div className='flex gap-4'>
-        {session.user.email}
+        {session && session.user.email}
         <button onClick={() => signOut()}>Sign out</button>
       </div>
     </header>
