@@ -19,7 +19,7 @@ const postQueryHandler = async (req, res) => {
         },
       });
 
-      const { deletedPost } = await prisma.post.delete({ where: { id: id } });
+      const deletedPost = await prisma.post.delete({ where: { id: id } });
 
       if (image) {
         console.log(image);
