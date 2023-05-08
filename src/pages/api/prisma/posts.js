@@ -57,6 +57,7 @@ apiRoute.post(async (req, res) => {
     }.webp`;
 
     // Using sharp to slightly compress the image + make it a webp. And outputting the file to the file system.
+    // Will probably have to play with setting here to make sure images still look good.
     await sharp(req.file.buffer)
       .webp({ quality: 80 })
       .toFile(`./public/${path}`);

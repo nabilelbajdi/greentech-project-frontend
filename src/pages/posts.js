@@ -21,6 +21,7 @@ const Posts = (props) => {
 
   //move functons to a different file later
   const handleNewPost = async () => {
+    // This must be sent as FormData to handle the images.
     const form = new FormData();
     form.append('image', postImage);
     form.append('text', postText.current.value);
@@ -43,7 +44,6 @@ const Posts = (props) => {
       fetchPosts();
     }
 
-    //return await response.json();
     return data;
   };
 
