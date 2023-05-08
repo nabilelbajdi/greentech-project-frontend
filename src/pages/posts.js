@@ -87,6 +87,15 @@ const Posts = (props) => {
                 className='relative bg-slate-300 p-4 rounded-lg'
               >
                 <p>{post.text}</p>
+                {post.image && (
+                  <img
+                    className='mt-2'
+                    src={post.image}
+                    alt=''
+                    width={400}
+                    height={100}
+                  />
+                )}
                 <button
                   className='absolute top-4 right-4'
                   onClick={() => deletePost(post.id)}

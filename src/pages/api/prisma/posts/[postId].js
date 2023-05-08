@@ -13,20 +13,26 @@ const postQueryHandler = async (req, res) => {
     case 'DELETE': {
       const id = req.query.postId;
 
-      const { image } = await prisma.post.findUnique({
-        where: {
-          id: id,
-        },
-      });
-
       const deletedPost = await prisma.post.delete({ where: { id: id } });
 
-      if (image) {
-        console.log(image);
-        fs.rm('./public/' + image, { recursive: true }, (err) => {
+      if (deletedPost.image) {
+        const parentFolder = deletedPost.image.substr(
+          0,
+          deletedPost.image.lastIndexOf('/')
+        );
+
+        fs.rm('./public/' + deletedPost.image, { recursive: true }, (err) => {
           if (err) {
             console.log(err.message);
             return;
+          }
+          if (fs.readdirSync('./public/' + parentFolder).length === 0) {
+            fs.rm('./public/' + parentFolder, { recursive: true }, (err) => {
+              if (err) {
+                console.log(err.message);
+                return;
+              }
+            });
           }
         });
       }

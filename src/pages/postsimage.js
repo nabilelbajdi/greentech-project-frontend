@@ -115,13 +115,13 @@ const Postsimage = (props) => {
               >
                 <p>{post.text}</p>
                 {post.image && (
-                  <Image
+                  <img
                     className='mt-2'
                     src={post.image}
                     alt=''
                     width={400}
                     height={100}
-                  ></Image>
+                  />
                 )}
                 <button
                   className='absolute top-4 right-4'

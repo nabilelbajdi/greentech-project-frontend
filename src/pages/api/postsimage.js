@@ -18,6 +18,7 @@ const nanoid = customAlphabet(alphabet);
 const fileFilter = (req, file, cb) => {
   const filetype = file.mimetype.split('/')[0];
 
+  console.log(file.mimetype);
   if (filetype === 'image') {
     cb(null, true);
   } else {
@@ -39,15 +40,7 @@ apiRoute.post(async (req, res) => {
       req.file.originalname.split('.')[0]
     }.webp`;
 
-    console.log(`./public${path}`);
-
     sharp(req.file.buffer).webp({ quality: 80 }).toFile(`./public/${path}`);
-    /* res.json({
-    status: 'success',
-    url: path,
-    body: req.body.text,
-  }); */
-    console.log('before');
     const createdPost = await prisma.post.create({
       data: { text: req.body.text, image: path },
     });
