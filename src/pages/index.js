@@ -3,6 +3,7 @@ import Feed from '@/components/Feed';
 import getProps from '@/utils/getProps';
 import Header from '@/components/Header';
 import Head from "next/head";
+import Sidebar from '@/components/Sidebar';
 export const getServerSideProps = getProps;
 
 const inter = Inter({ subsets: ['latin'] });
@@ -15,6 +16,7 @@ const Home = () => {
     </Head>
     <main> 
       <Header/>
+      <Sidebar/>
       <Feed />
     </main>
     </div>
