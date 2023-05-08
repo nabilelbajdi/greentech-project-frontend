@@ -1,8 +1,10 @@
 //un-comment code below when user-functionality is implemented and authentication is required. Basic GET, POST and DELETE methods.
-// import getProps from '@/utils/getProps';
-// export const getServerSideProps = getProps;
+//import getProps from '@/utils/getProps';
+//export const getServerSideProps = getProps;
+import Image from 'next/image';
 import { useRef, useState } from 'react';
 import prisma from '../../server/db/prisma';
+import { useSession } from 'next-auth/react';
 
 export const getStaticProps = async () => {
   const posts = await prisma.post.findMany();
@@ -12,27 +14,37 @@ export const getStaticProps = async () => {
 
 const Posts = (props) => {
   const [posts, setPosts] = useState(props.posts);
-
+  const [postImage, setPostImage] = useState();
   const postText = useRef();
+
+  const { data: session } = useSession();
 
   //move functons to a different file later
   const handleNewPost = async () => {
-    const text = postText.current.value;
+    const form = new FormData();
+    form.append('image', postImage);
+    form.append('text', postText.current.value);
+    form.append('userEmail', session.user.email);
 
-    const response = await fetch('/api/prisma/posts', {
+    const response = await fetch('api/prisma/posts', {
       method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ text: text }),
+      body: form,
     });
+
+    const data = await response.json();
+
     if (response.status !== 200) {
       console.log('something went wrong');
       //add error banner
     } else {
+      console.log(data);
       postText.current.value = '';
+      setPostImage(null);
       fetchPosts();
     }
 
-    return await response.json();
+    //return await response.json();
+    return data;
   };
 
   const fetchPosts = async () => {
@@ -68,16 +80,44 @@ const Posts = (props) => {
       <h2>Post test:</h2>
       <div className='w-2/4 flex flex-col'>
         <div className='text-slate-800 bg-slate-600 p-4 rounded-lg my-6'>
-          <textarea
-            className='w-full h-40 rounded-lg p-2 resize-none'
-            ref={postText}
-          />
-          <button
-            className='m-auto block bg-slate-300 p-4 rounded-lg mt-2 hover:bg-slate-400'
-            onClick={() => handleNewPost(postText)}
+          <form
+            onSubmit={(e) => {
+              e.preventDefault();
+              handleNewPost();
+              e.target.reset();
+            }}
           >
-            New Post
-          </button>
+            <textarea
+              className='w-full h-40 rounded-lg p-2 resize-none'
+              ref={postText}
+            />
+            <input
+              className='mt-2'
+              type='file'
+              onChange={(e) => {
+                setPostImage(e.target.files[0]);
+                console.log(postImage);
+              }}
+              id='image'
+              name='image'
+              accept='image/png, image/jpeg, image/webp'
+            />
+            {postImage && (
+              <Image
+                className='mt-2'
+                src={URL.createObjectURL(postImage)}
+                alt='Image set to upload'
+                width={100}
+                height={100}
+              />
+            )}
+            <button
+              type='submit'
+              className='m-auto block bg-slate-300 p-4 rounded-lg mt-2 hover:bg-slate-400'
+            >
+              New Post
+            </button>
+          </form>
         </div>
         <ul className='flex flex-col gap-6 text-slate-800 bg-slate-600 p-4 rounded-lg'>
           {posts.map((post) => {
@@ -88,7 +128,7 @@ const Posts = (props) => {
               >
                 <p>{post.text}</p>
                 {post.image && (
-                  <img
+                  <Image
                     className='mt-2'
                     src={post.image}
                     alt=''
