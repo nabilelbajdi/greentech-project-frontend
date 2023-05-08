@@ -40,6 +40,11 @@ apiRoute.post(async (req, res) => {
   });
 
   if (req.file) {
+    // Making sure "uploads" folder exists, since git wont add the empty folder
+    if (!fs.existsSync(`public/uploads`)) {
+      fs.mkdirSync(`public/uploads`);
+    }
+
     // Making user folder if it doesn't exist
     if (!fs.existsSync(`public/uploads/${user.id}`)) {
       fs.mkdirSync(`public/uploads/${user.id}`);
