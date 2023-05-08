@@ -40,14 +40,19 @@ apiRoute.post(async (req, res) => {
   });
 
   if (req.file) {
+    // Making user folder if it doesn't exist
+    if (!fs.existsSync(`public/uploads/${user.id}`)) {
+      fs.mkdirSync(`public/uploads/${user.id}`);
+    }
+
     // Making a two digit subfolder if it doesn't already exist.
     const subfolder = nanoid(2);
-    if (!fs.existsSync(`public/uploads/${subfolder}`)) {
-      fs.mkdirSync(`public/uploads/${subfolder}`);
+    if (!fs.existsSync(`public/uploads/${user.id}/${subfolder}`)) {
+      fs.mkdirSync(`public/uploads/${user.id}/${subfolder}`);
     }
 
     // Concatenate the save destination path for the image
-    const path = `/uploads/${subfolder}/${nanoid(10)}${
+    const path = `/uploads/${user.id}/${subfolder}/${nanoid(10)}${
       req.file.originalname.split('.')[0]
     }.webp`;
 
