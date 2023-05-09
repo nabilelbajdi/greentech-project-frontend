@@ -3,13 +3,11 @@ import multer from 'multer';
 import sharp from 'sharp';
 import fs from 'fs';
 import { customAlphabet } from 'nanoid';
-//import nextConnect from 'next-connect';
+import nextConnect from 'next-connect';
 
 // Multer needs to recieve the post request as "FormData" and not Json.
 
 // Using nextConnect for the ability to apply middleware.
-//const apiRoute = nextConnect();
-
 const apiRoute = nextConnect();
 
 // Setting multer to store the incoming image in memory

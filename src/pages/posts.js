@@ -9,6 +9,8 @@ const Posts = () => {
   const [uploadImage, setUploadImage] = useState();
   const postText = useRef();
 
+  console.log('hello');
+
   //move functons to a different file later
   const handleNewPost = async () => {
     const images = await uploadImages();
