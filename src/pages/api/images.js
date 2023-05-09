@@ -4,6 +4,8 @@ import sharp from 'sharp';
 import fs from 'fs';
 import { customAlphabet } from 'nanoid';
 import nextConnect from 'next-connect';
+import { getServerSession } from 'next-auth';
+import { authOptions } from './auth/[...nextauth]';
 
 // Multer needs to recieve the post request as "FormData" and not Json.
 
@@ -40,10 +42,18 @@ apiRoute.post(async (req, res) => {
   /* const user = await prisma.user.findUnique({
     where: { email: req.body.userEmail },
   }); */
+  const session = await getServerSession(req, res, authOptions);
+
+  if (!session) {
+    res.status(401).json({ error: 'Unauthorized' });
+    return;
+  }
 
   console.log(req.files);
 
-  const user = { id: 2323 };
+  const user = await prisma.user.findUnique({
+    where: { email: session.user.email },
+  });
 
   let images = [];
 
@@ -76,7 +86,7 @@ apiRoute.post(async (req, res) => {
         .toFile(`./public/${path}`);
 
       const createdImage = await prisma.Image.create({
-        data: { url: path },
+        data: { url: path, author_id: user.id },
       });
 
       images.push(createdImage.id);

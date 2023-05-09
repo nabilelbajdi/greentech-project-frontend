@@ -32,7 +32,6 @@ const postQueryHandler = async (req, res) => {
           const deletedPost = await prisma.post.delete({
             where: { id: deleteId },
           });
-
           return res.status(200).json(deletedPost);
 
         case 'PUT':
