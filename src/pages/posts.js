@@ -1,11 +1,39 @@
 import Post from '@/components/Post';
 import Image from 'next/image';
-import getProps from '@/utils/getProps';
-export const getServerSideProps = getProps;
-import { useEffect, useRef, useState } from 'react';
+import { getServerSession } from 'next-auth';
+import { authOptions } from '../pages/api/auth/[...nextauth]';
+import prisma from '../../server/db/prisma';
+import { useRef, useState } from 'react';
 
-const Posts = () => {
-  const [posts, setPosts] = useState([]);
+const getProps = async (context) => {
+  const session = await getServerSession(context.req, context.res, authOptions);
+  const authorId = session.user.id;
+  const posts = await prisma.post.findMany({
+    where: {
+      author_id: authorId,
+    },
+  });
+
+  if (!session) {
+    return {
+      redirect: {
+        destination: '/api/auth/signin',
+        permanent: false,
+      },
+    };
+  }
+
+  return {
+    props: {
+      session,
+      posts: JSON.parse(JSON.stringify(posts)),
+    },
+  };
+};
+export const getServerSideProps = getProps;
+
+const Posts = (props) => {
+  const [posts, setPosts] = useState(props.posts);
   const [uploadImages, setUploadImages] = useState();
   const postText = useRef();
 
@@ -29,10 +57,9 @@ const Posts = () => {
       //add error banner
     } else {
       postText.current.value = '';
-      fetchPosts();
+      const newPost = await response.json();
+      setPosts([...posts, newPost]);
     }
-
-    return await response.json();
   };
 
   const handleUploadImages = async () => {
@@ -66,10 +93,6 @@ const Posts = () => {
     }
   };
 
-  useEffect(() => {
-    fetchPosts();
-  }, []);
-
   const deletePost = async (postId) => {
     const response = await fetch(`/api/prisma/posts/${postId}`, {
       method: 'DELETE',
@@ -80,7 +103,13 @@ const Posts = () => {
       console.log('something went wrong');
       //add error banner
     } else {
-      fetchPosts();
+      const deletedPost = await response.json();
+
+      setPosts(
+        posts.filter((post) => {
+          return post.id !== deletedPost.id;
+        })
+      );
     }
   };
 

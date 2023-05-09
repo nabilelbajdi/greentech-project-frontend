@@ -2,6 +2,7 @@ import { useRef, useState } from 'react';
 
 const Post = ({ post, deletePost }) => {
   const [edit, setEdit] = useState(false);
+  const [postText, setPostText] = useState(post.text);
   const editText = useRef();
 
   const editPost = async (postId) => {
@@ -32,6 +33,9 @@ const Post = ({ post, deletePost }) => {
     if (response.status !== 200) {
       console.log('something went wrong');
       //add error banner
+    } else {
+      const data = await response.json();
+      setPostText(data.text);
     }
   };
 
@@ -52,7 +56,7 @@ const Post = ({ post, deletePost }) => {
         </>
       ) : (
         <>
-          <p>{post.text}</p>
+          <p>{postText}</p>
           <button
             className='absolute top-4 right-12'
             onClick={() => editPost(post.id)}

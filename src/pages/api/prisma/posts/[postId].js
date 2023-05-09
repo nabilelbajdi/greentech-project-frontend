@@ -42,7 +42,7 @@ const postQueryHandler = async (req, res) => {
             data: { text: text },
           });
 
-          return res.status(200).json('updatedPost');
+          return res.status(200).json(updatedPost);
 
         default:
           res.status(405).send();
