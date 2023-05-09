@@ -1,17 +1,9 @@
-//un-comment code below when user-functionality is implemented and authentication is required. Basic GET, POST and DELETE methods.
-// import getProps from '@/utils/getProps';
-// export const getServerSideProps = getProps;
-import { useRef, useState } from 'react';
-import prisma from '../../server/db/prisma';
+import getProps from '@/utils/getProps';
+export const getServerSideProps = getProps;
+import { useEffect, useRef, useState } from 'react';
 
-export const getStaticProps = async () => {
-  const posts = await prisma.post.findMany();
-
-  return { props: { posts: JSON.parse(JSON.stringify(posts)) } };
-};
-
-const Posts = (props) => {
-  const [posts, setPosts] = useState(props.posts);
+const Posts = () => {
+  const [posts, setPosts] = useState([]);
 
   const postText = useRef();
 
@@ -48,6 +40,10 @@ const Posts = (props) => {
       setPosts(data);
     }
   };
+
+  useEffect(() => {
+    fetchPosts();
+  });
 
   const deletePost = async (postId) => {
     const response = await fetch(`/api/prisma/posts/${postId}`, {
