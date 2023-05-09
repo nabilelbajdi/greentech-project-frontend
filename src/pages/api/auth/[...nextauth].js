@@ -12,6 +12,14 @@ export const authOptions = {
       issuer: process.env.AUTH0_ISSUER,
     }),
   ],
+  callbacks: {
+    session({ session, user }) {
+      if (session.user) {
+        session.user.id = user.id;
+      }
+      return session;
+    },
+  },
 
   secret: process.env.NEXTAUTH_SECRET,
 };

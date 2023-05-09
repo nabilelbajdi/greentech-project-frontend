@@ -1,17 +1,10 @@
-//un-comment code below when user-functionality is implemented and authentication is required. Basic GET, POST and DELETE methods.
-// import getProps from '@/utils/getProps';
-// export const getServerSideProps = getProps;
-import { useRef, useState } from 'react';
-import prisma from '../../server/db/prisma';
+import Post from '@/components/Post';
+import getProps from '@/utils/getProps';
+export const getServerSideProps = getProps;
+import { useEffect, useRef, useState } from 'react';
 
-export const getStaticProps = async () => {
-  const posts = await prisma.post.findMany();
-
-  return { props: { posts: JSON.parse(JSON.stringify(posts)) } };
-};
-
-const Posts = (props) => {
-  const [posts, setPosts] = useState(props.posts);
+const Posts = () => {
+  const [posts, setPosts] = useState([]);
 
   const postText = useRef();
 
@@ -49,6 +42,10 @@ const Posts = (props) => {
     }
   };
 
+  useEffect(() => {
+    fetchPosts();
+  });
+
   const deletePost = async (postId) => {
     const response = await fetch(`/api/prisma/posts/${postId}`, {
       method: 'DELETE',
@@ -79,24 +76,11 @@ const Posts = (props) => {
             New Post
           </button>
         </div>
-        <ul className='flex flex-col gap-6 text-slate-800 bg-slate-600 p-4 rounded-lg'>
+        <div className='flex flex-col gap-6 text-slate-800 bg-slate-600 p-4 rounded-lg'>
           {posts.map((post) => {
-            return (
-              <li
-                key={post.id}
-                className='relative bg-slate-300 p-4 rounded-lg'
-              >
-                <p>{post.text}</p>
-                <button
-                  className='absolute top-4 right-4'
-                  onClick={() => deletePost(post.id)}
-                >
-                  X
-                </button>
-              </li>
-            );
+            return <Post key={post.id} post={post} deletePost={deletePost} />;
           })}
-        </ul>
+        </div>
       </div>
     </section>
   );

@@ -54,6 +54,7 @@ model User {
   accounts                   Account[]
   sessions                   Session[]
   posts                      Post[]
+  comments                   Comment[]
   friends                    User[]    @relation("friends")
   friendsRelation            User[]    @relation("friends")
   friendRequests             User[]    @relation("friendRequests")
@@ -72,14 +73,30 @@ model VerificationToken {
 
 model Post {
   id        String  @id @default(cuid())
-  author    User?   @relation(fields: [author_id], references: [id])
+  author    User?   @relation(fields: [author_id], references: [id], onDelete: Cascade)
   author_id String?
+  text      String
+  comments Comment[]
+
+  created DateTime @default(now())
+  updated DateTime @default(now()) @updatedAt
+
+  @@index([author_id])
+}
+
+model Comment {
+  id        String  @id @default(cuid())
+  author    User?   @relation(fields: [author_id], references: [id], onDelete: Cascade)
+  author_id String?
+  post      Post?   @relation(fields: [post_id], references: [id], onDelete: Cascade)
+  post_id String?
   text      String
 
   created DateTime @default(now())
   updated DateTime @default(now()) @updatedAt
 
   @@index([author_id])
+  @@index([post_id])
 }
 
 // //TABLES
