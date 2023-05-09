@@ -1,15 +1,20 @@
 import Post from '@/components/Post';
+import Image from 'next/image';
 import getProps from '@/utils/getProps';
 export const getServerSideProps = getProps;
 import { useEffect, useRef, useState } from 'react';
 
 const Posts = () => {
   const [posts, setPosts] = useState([]);
-
+  const [uploadImage, setUploadImage] = useState();
   const postText = useRef();
 
   //move functons to a different file later
   const handleNewPost = async () => {
+    const images = await uploadImages();
+
+    console.log(images);
+
     const text = postText.current.value;
 
     const response = await fetch('/api/prisma/posts', {
@@ -26,6 +31,21 @@ const Posts = () => {
     }
 
     return await response.json();
+  };
+
+  const uploadImages = async () => {
+    const form = new FormData();
+
+    form.append('image', uploadImage);
+
+    const response = await fetch('api/images', {
+      method: 'POST',
+      body: form,
+    });
+
+    const data = await response.json();
+
+    return await data;
   };
 
   const fetchPosts = async () => {
@@ -69,6 +89,26 @@ const Posts = () => {
             className='w-full h-40 rounded-lg p-2 resize-none'
             ref={postText}
           />
+          <input
+            className='mt-2'
+            type='file'
+            onChange={(e) => {
+              setUploadImage(e.target.files[0]);
+              console.log(uploadImage);
+            }}
+            id='image'
+            name='image'
+            accept='image/png, image/jpeg, image/webp'
+          />
+          {uploadImage && (
+            <Image
+              className='mt-2'
+              src={URL.createObjectURL(uploadImage)}
+              alt='Image set to upload'
+              width={100}
+              height={100}
+            />
+          )}
           <button
             className='m-auto block bg-slate-300 p-4 rounded-lg mt-2 hover:bg-slate-400'
             onClick={() => handleNewPost(postText)}
