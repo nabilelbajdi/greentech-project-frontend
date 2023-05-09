@@ -6,23 +6,23 @@ import { useEffect, useRef, useState } from 'react';
 
 const Posts = () => {
   const [posts, setPosts] = useState([]);
-  const [uploadImage, setUploadImage] = useState();
+  const [uploadImages, setUploadImages] = useState();
   const postText = useRef();
-
-  console.log('hello');
 
   //move functons to a different file later
   const handleNewPost = async () => {
-    const images = await uploadImages();
-
-    console.log(images);
+    let images;
+    if (uploadImages) {
+      images = await handleUploadImages();
+      console.log(images);
+    }
 
     const text = postText.current.value;
 
     const response = await fetch('/api/prisma/posts', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ text: text }),
+      body: JSON.stringify({ text: text, images }),
     });
     if (response.status !== 200) {
       console.log('something went wrong');
@@ -35,19 +35,21 @@ const Posts = () => {
     return await response.json();
   };
 
-  const uploadImages = async () => {
+  const handleUploadImages = async () => {
     const form = new FormData();
 
-    form.append('image', uploadImage);
+    uploadImages.forEach((image) => {
+      form.append('images', image);
+    });
 
     const response = await fetch('api/images', {
       method: 'POST',
       body: form,
     });
 
-    const data = await response.json();
+    return await response.json();
 
-    return await data;
+    //return await data;
   };
 
   const fetchPosts = async () => {
@@ -66,7 +68,7 @@ const Posts = () => {
 
   useEffect(() => {
     fetchPosts();
-  });
+  }, []);
 
   const deletePost = async (postId) => {
     const response = await fetch(`/api/prisma/posts/${postId}`, {
@@ -94,22 +96,31 @@ const Posts = () => {
           <input
             className='mt-2'
             type='file'
+            multiple
             onChange={(e) => {
-              setUploadImage(e.target.files[0]);
-              console.log(uploadImage);
+              setUploadImages([...e.target.files]);
             }}
             id='image'
             name='image'
             accept='image/png, image/jpeg, image/webp'
           />
-          {uploadImage && (
-            <Image
-              className='mt-2'
-              src={URL.createObjectURL(uploadImage)}
-              alt='Image set to upload'
-              width={100}
-              height={100}
-            />
+
+          {uploadImages && (
+            <div className='flex'>
+              {uploadImages.map((image, idx) => {
+                return (
+                  <Image
+                    className='mt-2'
+                    key={idx}
+                    /* src={URL.createObjectURL(uploadImage)} */
+                    src={URL.createObjectURL(image)}
+                    alt='Image set to upload'
+                    width={100}
+                    height={100}
+                  />
+                );
+              })}
+            </div>
           )}
           <button
             className='m-auto block bg-slate-300 p-4 rounded-lg mt-2 hover:bg-slate-400'

@@ -31,51 +31,58 @@ const fileFilter = (req, file, cb) => {
 
 // Setting up multer with the previous options + a filesize limit, and appying it as middleware.
 const upload = multer({ storage, fileFilter, limits: { fileSize: 500000 } });
-apiRoute.use(upload.single('image'));
+//apiRoute.use(upload.single('image'));
+
+apiRoute.use(upload.array('images', 10));
 
 apiRoute.post(async (req, res) => {
   // Getting user from database
-  const user = await prisma.user.findUnique({
+  /* const user = await prisma.user.findUnique({
     where: { email: req.body.userEmail },
-  });
+  }); */
 
-  if (req.file) {
-    // Making sure "uploads" folder exists, since git wont add the empty folder
-    if (!fs.existsSync(`public/uploads`)) {
-      fs.mkdirSync(`public/uploads`);
+  console.log(req.files);
+
+  const user = { id: 2323 };
+
+  let images = [];
+
+  if (req.files) {
+    for (let i = 0; i < req.files.length; i++) {
+      if (!fs.existsSync(`public/uploads`)) {
+        fs.mkdirSync(`public/uploads`);
+      }
+
+      // Making user folder if it doesn't exist
+      if (!fs.existsSync(`public/uploads/${user.id}`)) {
+        fs.mkdirSync(`public/uploads/${user.id}`);
+      }
+
+      // Making a two digit subfolder if it doesn't already exist.
+      const subfolder = nanoid(2);
+      if (!fs.existsSync(`public/uploads/${user.id}/${subfolder}`)) {
+        fs.mkdirSync(`public/uploads/${user.id}/${subfolder}`);
+      }
+
+      // Concatenate the save destination path for the image
+      const path = `/uploads/${user.id}/${subfolder}/${nanoid(10)}${
+        req.files[i].originalname.split('.')[0]
+      }.webp`;
+
+      // Using sharp to slightly compress the image + make it a webp. And outputting the file to the file system.
+      // Will probably have to play with setting here to make sure images still look good.
+      sharp(req.files[i].buffer)
+        .webp({ quality: 80 })
+        .toFile(`./public/${path}`);
+
+      const createdImage = await prisma.Image.create({
+        data: { url: path },
+      });
+
+      images.push(createdImage.id);
     }
 
-    // Making user folder if it doesn't exist
-    if (!fs.existsSync(`public/uploads/${user.id}`)) {
-      fs.mkdirSync(`public/uploads/${user.id}`);
-    }
-
-    // Making a two digit subfolder if it doesn't already exist.
-    const subfolder = nanoid(2);
-    if (!fs.existsSync(`public/uploads/${user.id}/${subfolder}`)) {
-      fs.mkdirSync(`public/uploads/${user.id}/${subfolder}`);
-    }
-
-    // Concatenate the save destination path for the image
-    const path = `/uploads/${user.id}/${subfolder}/${nanoid(10)}${
-      req.file.originalname.split('.')[0]
-    }.webp`;
-
-    // Using sharp to slightly compress the image + make it a webp. And outputting the file to the file system.
-    // Will probably have to play with setting here to make sure images still look good.
-    await sharp(req.file.buffer)
-      .webp({ quality: 80 })
-      .toFile(`./public/${path}`);
-
-    // Creating post in DB and returning it.
-
-    await res.status(200).json(path);
-  } else {
-    // Creating post in DB and returning it.
-    /* const createdPost = await prisma.post.create({
-      data: { text: req.body.text, author_id: user.id },
-    });
-    await res.status(200).json(createdPost); */
+    await res.status(200).json(images);
   }
 });
 
