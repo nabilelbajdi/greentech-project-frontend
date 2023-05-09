@@ -37,21 +37,29 @@ const Post = ({ post, deletePost }) => {
 
   return (
     <div className='relative bg-slate-300 p-4 rounded-lg'>
-      <p>{post.text}</p>
       {edit ? (
-        <button
-          className='absolute top-4 right-12'
-          onClick={() => updatePost(post.id)}
-        >
-          Save
-        </button>
+        <>
+          <button
+            className='absolute top-4 right-12'
+            onClick={() => updatePost(post.id)}
+          >
+            Save
+          </button>
+          <textarea
+            className='w-full h-20 rounded-lg p-2 resize-none mt-10'
+            ref={editText}
+          />
+        </>
       ) : (
-        <button
-          className='absolute top-4 right-12'
-          onClick={() => editPost(post.id)}
-        >
-          Edit
-        </button>
+        <>
+          <p>{post.text}</p>
+          <button
+            className='absolute top-4 right-12'
+            onClick={() => editPost(post.id)}
+          >
+            Edit
+          </button>
+        </>
       )}
       <button
         className='absolute top-4 right-4'
@@ -59,12 +67,6 @@ const Post = ({ post, deletePost }) => {
       >
         X
       </button>
-      {edit && (
-        <textarea
-          className='w-full h-20 rounded-lg p-2 resize-none mt-4'
-          ref={editText}
-        />
-      )}
     </div>
   );
 };
