@@ -1,10 +1,38 @@
 import Post from '@/components/Post';
-import getProps from '@/utils/getProps';
-export const getServerSideProps = getProps;
-import { useEffect, useRef, useState } from 'react';
+import { getServerSession } from 'next-auth';
+import { authOptions } from '../pages/api/auth/[...nextauth]';
+import prisma from '../../server/db/prisma';
+import { useRef, useState } from 'react';
 
-const Posts = () => {
-  const [posts, setPosts] = useState([]);
+const getProps = async (context) => {
+  const session = await getServerSession(context.req, context.res, authOptions);
+  const authorId = session.user.id;
+  const posts = await prisma.post.findMany({
+    where: {
+      author_id: authorId,
+    },
+  });
+
+  if (!session) {
+    return {
+      redirect: {
+        destination: '/api/auth/signin',
+        permanent: false,
+      },
+    };
+  }
+
+  return {
+    props: {
+      session,
+      posts: JSON.parse(JSON.stringify(posts)),
+    },
+  };
+};
+export const getServerSideProps = getProps;
+
+const Posts = (props) => {
+  const [posts, setPosts] = useState(props.posts);
 
   const postText = useRef();
 
@@ -22,29 +50,10 @@ const Posts = () => {
       //add error banner
     } else {
       postText.current.value = '';
-      fetchPosts();
-    }
-
-    return await response.json();
-  };
-
-  const fetchPosts = async () => {
-    const response = await fetch('/api/prisma/posts', {
-      method: 'GET',
-      headers: { 'Content-Type': 'application/json' },
-    });
-    if (response.status !== 200) {
-      console.log('something went wrong');
-      //add error banner
-    } else {
-      const data = await response.json();
-      setPosts(data);
+      const newPost = await response.json();
+      setPosts([...posts, newPost]);
     }
   };
-
-  useEffect(() => {
-    fetchPosts();
-  });
 
   const deletePost = async (postId) => {
     const response = await fetch(`/api/prisma/posts/${postId}`, {
@@ -56,7 +65,13 @@ const Posts = () => {
       console.log('something went wrong');
       //add error banner
     } else {
-      fetchPosts();
+      const deletedPost = await response.json();
+
+      setPosts(
+        posts.filter((post) => {
+          return post.id !== deletedPost.id;
+        })
+      );
     }
   };
 
