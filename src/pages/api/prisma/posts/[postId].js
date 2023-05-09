@@ -1,5 +1,6 @@
 import { getServerSession } from 'next-auth';
 import { authOptions } from '../../auth/[...nextauth]';
+import fs from 'fs';
 import prisma from '../../../../../server/db/prisma';
 
 const postQueryHandler = async (req, res) => {
@@ -31,6 +32,17 @@ const postQueryHandler = async (req, res) => {
           const deleteId = req.query.postId;
           const deletedPost = await prisma.post.delete({
             where: { id: deleteId },
+            include: { images: true },
+          });
+
+          // Remove Posts images from filesystem
+          deletedPost.images.forEach((image) => {
+            fs.rmSync('public/' + image.url, { recursive: true }, (err) => {
+              if (err) {
+                console.error(err.message);
+                return;
+              }
+            });
           });
           return res.status(200).json(deletedPost);
 

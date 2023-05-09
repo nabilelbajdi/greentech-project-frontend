@@ -39,6 +39,7 @@ const Posts = (props) => {
 
   //move functons to a different file later
   const handleNewPost = async () => {
+    console.log(posts);
     let images;
     if (uploadImages) {
       images = await handleUploadImages();
