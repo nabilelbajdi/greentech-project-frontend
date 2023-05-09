@@ -6,6 +6,8 @@ const postQueryHandler = async (req, res) => {
   try {
     const session = await getServerSession(req, res, authOptions);
     const { method } = req;
+    const postId = req.query.postId;
+
     if (session) {
       const prismaUser = await prisma.user.findUnique({
         where: { email: session.user.email },
@@ -18,12 +20,12 @@ const postQueryHandler = async (req, res) => {
 
       switch (method) {
         case 'GET':
-          const getId = req.query;
-          const posts = await prisma.post.findMany({
-            where: { author_id: getId },
+          const post = await prisma.post.findFirst({
+            where: { id: postId },
+            select: { text: true },
           });
 
-          return res.status(200).json(posts);
+          return res.status(200).json(post);
 
         case 'DELETE':
           const deleteId = req.query.postId;
@@ -33,7 +35,16 @@ const postQueryHandler = async (req, res) => {
 
           return res.status(200).json(deletedPost);
 
-        //Add PUT request here later to change a single post
+        case 'PUT':
+          const text = req.body.text;
+
+          const updatedPost = await prisma.post.update({
+            where: { id: postId },
+            data: { text: text },
+          });
+
+          return res.status(200).json('updatedPost');
+
         default:
           res.status(405).send();
       }

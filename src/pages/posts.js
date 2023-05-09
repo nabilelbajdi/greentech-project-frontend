@@ -1,3 +1,4 @@
+import Post from '@/components/Post';
 import getProps from '@/utils/getProps';
 export const getServerSideProps = getProps;
 import { useEffect, useRef, useState } from 'react';
@@ -75,24 +76,11 @@ const Posts = () => {
             New Post
           </button>
         </div>
-        <ul className='flex flex-col gap-6 text-slate-800 bg-slate-600 p-4 rounded-lg'>
+        <div className='flex flex-col gap-6 text-slate-800 bg-slate-600 p-4 rounded-lg'>
           {posts.map((post) => {
-            return (
-              <li
-                key={post.id}
-                className='relative bg-slate-300 p-4 rounded-lg'
-              >
-                <p>{post.text}</p>
-                <button
-                  className='absolute top-4 right-4'
-                  onClick={() => deletePost(post.id)}
-                >
-                  X
-                </button>
-              </li>
-            );
+            return <Post key={post.id} post={post} deletePost={deletePost} />;
           })}
-        </ul>
+        </div>
       </div>
     </section>
   );
