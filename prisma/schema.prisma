@@ -77,8 +77,13 @@ model Post {
   author    User?   @relation(fields: [author_id], references: [id], onDelete: Cascade)
   author_id String?
   text      String
+<<<<<<< HEAD
   comments  Comment[]  @relation("comments")
   images    Image[]
+=======
+  comments Comment[]
+  images Image[]
+>>>>>>> origin
 
   created DateTime @default(now())
   updated DateTime @default(now()) @updatedAt
