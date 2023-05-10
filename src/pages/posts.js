@@ -13,6 +13,15 @@ const getProps = async (context) => {
     },
   });
 
+  const comments = await prisma.post.findMany({
+    where: {
+      author_id: authorId,
+    },
+    include: {
+      comments: true,
+    },
+  });
+
   if (!session) {
     return {
       redirect: {
@@ -26,6 +35,8 @@ const getProps = async (context) => {
     props: {
       session,
       posts: JSON.parse(JSON.stringify(posts)),
+      comments: JSON.parse(JSON.stringify(comments)),
+      authorId: JSON.parse(JSON.stringify(authorId)),
     },
   };
 };
@@ -33,6 +44,9 @@ export const getServerSideProps = getProps;
 
 const Posts = (props) => {
   const [posts, setPosts] = useState(props.posts);
+  const commentArr = [];
+
+  console.log(props.comments);
 
   const postText = useRef();
 
@@ -93,7 +107,21 @@ const Posts = (props) => {
         </div>
         <div className='flex flex-col gap-6 text-slate-800 bg-slate-600 p-4 rounded-lg'>
           {posts.map((post) => {
-            return <Post key={post.id} post={post} deletePost={deletePost} />;
+            const postComments = props.comments.filter((comment) => {
+              return post.id === comment.id;
+            });
+
+            console.log('i map: ', postComments);
+
+            return (
+              <Post
+                key={post.id}
+                post={post}
+                deletePost={deletePost}
+                commentsArr={postComments[0].comments}
+                authorId={props.authorId}
+              />
+            );
           })}
         </div>
       </div>
