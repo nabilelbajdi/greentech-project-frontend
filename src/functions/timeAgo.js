@@ -75,5 +75,3 @@ const timeAgo = (dateParam) => {
   return getFormattedDate(date); // 10. January 2017. at 10:20
 };
 export default timeAgo;
-
-console.log('time ago: ', timeAgo('2023-05-10T01:33:18.554Z'));

@@ -21,11 +21,9 @@ const commentHandler = async (req, res) => {
 
       switch (method) {
         case 'GET':
-          const posts = await prisma.post.findMany({
-            where: { author_id: authorId },
-          });
+          const comments = await prisma.post.findMany();
 
-          return res.status(200).json(posts);
+          return res.status(200).json(comments);
         case 'POST':
           const text = body.text;
           const postId = body.postId;

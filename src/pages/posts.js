@@ -11,6 +11,9 @@ const getProps = async (context) => {
     where: {
       author_id: authorId,
     },
+    include: {
+      comments: true,
+    },
   });
 
   const comments = await prisma.post.findMany({
@@ -44,9 +47,7 @@ export const getServerSideProps = getProps;
 
 const Posts = (props) => {
   const [posts, setPosts] = useState(props.posts);
-  const commentArr = [];
-
-  console.log(props.comments);
+  const [comments, setComments] = useState(props.comments);
 
   const postText = useRef();
 
@@ -65,6 +66,7 @@ const Posts = (props) => {
     } else {
       postText.current.value = '';
       const newPost = await response.json();
+
       setPosts([...posts, newPost]);
     }
   };
@@ -100,18 +102,16 @@ const Posts = (props) => {
           />
           <button
             className='m-auto block bg-slate-300 p-4 rounded-lg mt-2 hover:bg-slate-400'
-            onClick={() => handleNewPost(postText)}
+            onClick={handleNewPost}
           >
             New Post
           </button>
         </div>
         <div className='flex flex-col gap-6 text-slate-800 bg-slate-600 p-4 rounded-lg'>
           {posts.map((post) => {
-            const postComments = props.comments.filter((comment) => {
+            const postComments = posts.filter((comment) => {
               return post.id === comment.id;
             });
-
-            console.log('i map: ', postComments);
 
             return (
               <Post

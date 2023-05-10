@@ -1,5 +1,6 @@
 import { useRef, useState } from 'react';
 import Comment from './Comment';
+import timeAgo from '@/functions/timeAgo';
 
 const Post = ({ post, deletePost, commentsArr, authorId }) => {
   const [edit, setEdit] = useState(false);
@@ -8,6 +9,7 @@ const Post = ({ post, deletePost, commentsArr, authorId }) => {
   const [comments, setComments] = useState(commentsArr);
   const editText = useRef();
   const commentText = useRef();
+  const timeStamp = timeAgo(post.created);
 
   const editPost = async (postId) => {
     setEdit(!edit);
@@ -61,7 +63,6 @@ const Post = ({ post, deletePost, commentsArr, authorId }) => {
     } else {
       commentText.current.value = '';
       const newComment = await response.json();
-      console.log(newComment);
       setComments([...comments, newComment]);
       setReply(false);
     }
@@ -71,6 +72,7 @@ const Post = ({ post, deletePost, commentsArr, authorId }) => {
     <div className='relative bg-slate-300 p-4 rounded-lg'>
       {edit ? (
         <>
+          {/* if you are the author, and you are in edit mode, you may save the edits done to the post */}
           {authorId === post.author_id && (
             <>
               <button
@@ -89,7 +91,8 @@ const Post = ({ post, deletePost, commentsArr, authorId }) => {
       ) : (
         <>
           <p>{postText}</p>
-          {authorId !== post.author_id ? (
+          {/* if you are the author, and you are NOT in edit mode, you may edit the post */}
+          {authorId === post.author_id ? (
             <>
               <button
                 className='absolute top-4 right-12'
@@ -106,7 +109,8 @@ const Post = ({ post, deletePost, commentsArr, authorId }) => {
             </>
           ) : reply ? (
             <>
-              {authorId === post.author_id && (
+              {/* if you're NOT the author you may only reply to the post */}
+              {authorId !== post.author_id && (
                 <div className='relative'>
                   <textarea
                     className='w-full h-20 rounded-lg p-2 resize-none mt-2'
@@ -123,6 +127,7 @@ const Post = ({ post, deletePost, commentsArr, authorId }) => {
             </>
           ) : (
             <>
+              {/* set edit state */}
               <button
                 className='absolute top-4 right-4'
                 onClick={() => setReply(true)}
@@ -134,6 +139,7 @@ const Post = ({ post, deletePost, commentsArr, authorId }) => {
         </>
       )}
 
+      {/* creating Comment components */}
       {comments.length !== 0 && (
         <div className='flex flex-col gap-4 my-2'>
           {comments.map((comment) => (
@@ -147,6 +153,7 @@ const Post = ({ post, deletePost, commentsArr, authorId }) => {
           ))}
         </div>
       )}
+      <p className='text-xs w-full text-right'>{timeStamp}</p>
     </div>
   );
 };

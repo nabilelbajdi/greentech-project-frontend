@@ -21,8 +21,8 @@ const commentQueryHandler = async (req, res) => {
 
       switch (method) {
         case 'GET':
-          const comments = await prisma.comment.findMany({
-            where: { post_id: postId },
+          const comments = await prisma.comment.findFirst({
+            where: { id: commentId },
             select: { text: true },
           });
 
@@ -38,12 +38,12 @@ const commentQueryHandler = async (req, res) => {
         case 'PUT':
           const text = req.body.text;
 
-          const updatedPost = await prisma.post.update({
-            where: { id: postId },
+          const updatedComment = await prisma.comment.update({
+            where: { id: commentId },
             data: { text: text },
           });
 
-          return res.status(200).json(updatedPost);
+          return res.status(200).json(updatedComment);
 
         default:
           res.status(405).send();
