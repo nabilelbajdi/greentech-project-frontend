@@ -16,8 +16,6 @@ export const authOptions = {
   callbacks: {
     session({ session, user }) {
 
-      console.log('hej session');
-
       if (session.user) {
         session.user.id = user.id;
 
