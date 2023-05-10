@@ -48,12 +48,8 @@ export const getServerSideProps = getProps;
 
 const Posts = (props) => {
   const [posts, setPosts] = useState(props.posts);
-<<<<<<< HEAD
   const [comments, setComments] = useState(props.comments);
-
-=======
   const [uploadImages, setUploadImages] = useState();
->>>>>>> origin
   const postText = useRef();
 
   //move functons to a different file later
