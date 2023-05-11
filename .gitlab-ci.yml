@@ -3,11 +3,15 @@ stages:
   - lint
   - deploy
 
-build-test:
+build-job:
   stage: build
+  image: docker:stable
+  services:
+    - docker:dind
   script:
-    - echo "Compiling code"
-    - echo "Building application"
+    - docker login -u $DOCKER_USERNAME -p $DOCKER_PASSWORD
+    - docker build -t nabelb/my-image:latest .
+    - docker push nabelb/my-image:latest
 
 
 lint-job:
