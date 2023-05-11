@@ -12,7 +12,9 @@ import{
 } from "@heroicons/react/solid"
 
 const Sidebar = () => {
-    const{data:session} =useSession();
+    const { data: session, status } = useSession()
+
+    if (status === "authenticated") {
     return ( 
     <div className=" p-2 mt-5 max-w-[600px] xl:min-w-[300px]">
         <SidebarRow src={session.user.image} title={session.user.name}/>
@@ -23,6 +25,8 @@ const Sidebar = () => {
         <SidebarRow Icon={ChevronDownIcon} title="See More"/>
     </div> 
     );
+}
+return <a href="/api/auth/signin">Loading...</a> //Lägg en else for status unauthorised
 }
  
 export default Sidebar;

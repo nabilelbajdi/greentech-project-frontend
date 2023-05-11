@@ -139,17 +139,7 @@ const Posts = (props) => {
             className='w-full h-40 rounded-lg p-2 resize-none'
             ref={postText}
           />
-          <input
-            className='mt-2'
-            type='file'
-            multiple
-            onChange={(e) => {
-              setUploadImages([...e.target.files]);
-            }}
-            id='image'
-            name='image'
-            accept='image/png, image/jpeg, image/webp'
-          />
+          
 
           {uploadImages && (
             <div className='flex'>

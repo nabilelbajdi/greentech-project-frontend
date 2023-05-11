@@ -14,9 +14,9 @@ import { GlobeIcon, SearchIcon, CalendarIcon } from '@heroicons/react/outline';
 import HeaderIcon from './HeaderIcon';
 
 const Header = () => {
-  const { data: session } = useSession();
+  const { data: session, status } = useSession()
 
-
+  if (status === "authenticated") {
   return (
     <div className=' sticky flex top-0 z-50 bg-white items-center p-2 lg:px-5 shadow-md '>
       {/*Left Header */}
@@ -69,5 +69,7 @@ const Header = () => {
     </div>
   );
 };
+return <a href="/api/auth/signin">Sign in</a>//Lägg en else for status unauthorised
+}
 
 export default Header;
