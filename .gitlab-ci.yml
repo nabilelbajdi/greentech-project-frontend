@@ -14,7 +14,6 @@ lint-job:
   stage: lint
   image: node:latest
   script:
-    - npm install --save-dev eslint-plugin-prettier
     - npm install --save-dev eslint
     - npx eslint .
     
