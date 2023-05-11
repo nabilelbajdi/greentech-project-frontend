@@ -1,30 +1,14 @@
 module.exports = {
   env: {
-    browser: true,
     es6: true,
+    node: true,
   },
-  extends: [
-    "plugin:react/recommended",
-    "plugin:react-hooks/recommended",
-    "plugin:prettier/recommended",
-  ],
+  extends: ["eslint:recommended", "prettier"],
   parserOptions: {
-    ecmaFeatures: {
-      jsx: true,
-    },
     ecmaVersion: 2021,
-    sourceType: "module",
   },
-  plugins: ["react", "react-hooks"],
+  plugins: ["prettier"],
   rules: {
-    "react/prop-types": "off",
-    "react/react-in-jsx-scope": "off",
-    "react-hooks/rules-of-hooks": "error",
-    "react-hooks/exhaustive-deps": "warn",
-  },
-  settings: {
-    react: {
-      version: "detect",
-    },
+    "prettier/prettier": "error",
   },
 };
