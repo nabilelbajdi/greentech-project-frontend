@@ -14,8 +14,6 @@ lint-job:
   stage: lint
   image: node:latest
   script:
-    - npm install eslint-plugin-react-hooks@latest --save-dev
-    - npm install eslint-plugin-react@latest --save-dev
     - npm install --save-dev eslint
     - npx eslint .
     
