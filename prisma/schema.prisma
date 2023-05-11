@@ -62,6 +62,7 @@ model User {
   friendRequestsRelation     User[]    @relation("friendRequests")
   friendRequestsSent         User[]    @relation("friendRequestsSent")
   friendRequestsSentRelation User[]    @relation("friendRequestsSent")
+  liked_posts                Like[]
 }
 
 model VerificationToken {
@@ -79,6 +80,7 @@ model Post {
   text      String
   comments  Comment[]  @relation("comments")
   images    Image[]
+  likes     Like[]     @relation("likes")
 
   created DateTime @default(now())
   updated DateTime @default(now()) @updatedAt
@@ -113,5 +115,16 @@ model Image {
   updated DateTime @default(now()) @updatedAt
 
   @@index([author_id])
+  @@index([post_id])
+}
+
+model Like {
+  id        String @id @default(cuid())
+  user      User?   @relation(fields: [user_id], references: [id], onDelete: Cascade)
+  user_id   String?
+  post      Post?   @relation("likes", fields: [post_id], references: [id], onDelete: Cascade)
+  post_id   String?
+
+  @@index([user_id])
   @@index([post_id])
 }

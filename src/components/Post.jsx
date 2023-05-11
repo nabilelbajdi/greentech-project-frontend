@@ -1,19 +1,17 @@
-import { useEffect, useRef, useState } from 'react';
+import { useRef, useState } from 'react';
 import Comment from './Comment';
-import timeAgo from '@/functions/timeAgo';
+import Image from 'next/image';
+import { ChatIcon, HeartIcon } from '@heroicons/react/outline';
+import TimeStamp from './TimeStamp';
 
-const Post = ({ post, deletePost, commentsArr, authorId }) => {
+const Post = ({ post, deletePost, authorId }) => {
   const [edit, setEdit] = useState(false);
   const [reply, setReply] = useState(false);
   const [postText, setPostText] = useState(post.text);
-  const [comments, setComments] = useState(commentsArr);
+  const [comments, setComments] = useState(post.comments);
   const editText = useRef();
   const commentText = useRef();
-  const [timeStamp, setTimeStamp] = useState('');
-
-  useEffect(() => {
-    setTimeStamp(timeAgo(post.created));
-  }, []);
+  const [nrOfComments, setNrOfComments] = useState(post.comments.length);
 
   const editPost = async (postId) => {
     setEdit(!edit);
@@ -69,11 +67,27 @@ const Post = ({ post, deletePost, commentsArr, authorId }) => {
       const newComment = await response.json();
       setComments([...comments, newComment]);
       setReply(false);
+      setNrOfComments((prev) => prev + 1);
     }
   };
 
   return (
-    <div className='relative bg-slate-300 p-4 rounded-lg'>
+    <div className='relative bg-green-100 p-4 rounded-lg'>
+      <div className='flex items-center gap-4 w-full mb-2'>
+        {post.author.image && (
+          <Image
+            className='rounded-full'
+            src={post.author.image}
+            alt='author image'
+            height={40}
+            width={40}
+          />
+        )}
+        <div className='flex flex-col'>
+          <p>{post.author.name}</p>
+          <TimeStamp time={post.created} />
+        </div>
+      </div>
       {edit ? (
         <>
           {/* if you are the author, and you are in edit mode, you may save the edits done to the post */}
@@ -94,7 +108,11 @@ const Post = ({ post, deletePost, commentsArr, authorId }) => {
         </>
       ) : (
         <>
-          <p>{postText}</p>
+          <p className='my-4'>{postText}</p>
+          <div className='flex justify-between text-xs px-8'>
+            <p>0 gillar</p>
+            <p>{nrOfComments} kommentarer</p>
+          </div>
           {/* if you are the author, and you are NOT in edit mode, you may edit the post */}
           {authorId === post.author_id ? (
             <>
@@ -121,6 +139,12 @@ const Post = ({ post, deletePost, commentsArr, authorId }) => {
                     ref={commentText}
                   />
                   <button
+                    className='absolute top-4 right-4'
+                    onClick={() => setReply(!reply)}
+                  >
+                    X
+                  </button>
+                  <button
                     className='absolute bottom-4 right-4'
                     onClick={() => handleNewComment(post.id)}
                   >
@@ -130,15 +154,18 @@ const Post = ({ post, deletePost, commentsArr, authorId }) => {
               )}
             </>
           ) : (
-            <>
+            <div className='flex justify-between px-8 border-y-2 py-2 mb-4 border-green-300'>
               {/* set edit state */}
+              <button className='flex gap-2 items-center'>
+                <HeartIcon className='h-5 w-5' /> Gilla
+              </button>
               <button
-                className='absolute top-4 right-4'
+                className='flex gap-2 items-center'
                 onClick={() => setReply(true)}
               >
-                Reply
+                <ChatIcon className='h-5 w-5' /> Kommentera
               </button>
-            </>
+            </div>
           )}
         </>
       )}
@@ -150,14 +177,13 @@ const Post = ({ post, deletePost, commentsArr, authorId }) => {
             <Comment
               key={comment.id}
               comment={comment}
-              authorId={authorId}
               setComments={setComments}
               comments={comments}
+              setNrOfComments={setNrOfComments}
             />
           ))}
         </div>
       )}
-      <p className='text-xs w-full text-right'>{timeStamp}</p>
     </div>
   );
 };

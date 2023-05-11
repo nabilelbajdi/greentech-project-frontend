@@ -1,8 +1,11 @@
-import timeAgo from '@/functions/timeAgo';
+import { useSession } from 'next-auth/react';
 import { useRef, useState } from 'react';
+import Image from 'next/image';
+import { PencilIcon } from '@heroicons/react/outline';
+import TimeStamp from './TimeStamp';
 
-const Comment = ({ comment, authorId, comments, setComments }) => {
-  const timeStamp = timeAgo(comment.created);
+const Comment = ({ comment, comments, setComments, setNrOfComments }) => {
+  const { data: session } = useSession();
   const [edit, setEdit] = useState(false);
   const [commentText, setCommentText] = useState(comment.text);
   const editText = useRef();
@@ -24,6 +27,8 @@ const Comment = ({ comment, authorId, comments, setComments }) => {
           return comment.id !== deletedComment.id;
         })
       );
+
+      setNrOfComments((prev) => prev - 1);
     }
   };
 
@@ -62,39 +67,47 @@ const Comment = ({ comment, authorId, comments, setComments }) => {
   };
 
   return (
-    <div className='relative w-full bg-white p-2 rounded-lg'>
-      {comment.author_id === authorId &&
-        (edit ? (
-          <>
-            <button
-              className='absolute top-4 right-12'
-              onClick={() => updateComment(comment.id)}
-            >
-              Save
-            </button>
-            <textarea
-              className='w-full h-20 rounded-lg p-2 resize-none mt-10'
-              ref={editText}
-            />
-          </>
-        ) : (
-          <>
-            {commentText}
-            <button
-              className='absolute top-4 right-12'
-              onClick={() => editComment(comment.id)}
-            >
-              Edit
-            </button>
-            <button
-              className='absolute top-4 right-4'
-              onClick={() => deleteComment(comment.id)}
-            >
-              X
-            </button>
-          </>
-        ))}
-      <p className=' text-xs text-slate-500'>{timeStamp}</p>
+    <div className='flex items-center'>
+      <Image
+        src={session.user.image}
+        alt='author image'
+        height={25}
+        width={25}
+        className='rounded-full mr-4'
+      />
+      <div className='flex flex-col w-full'>
+        <div className='relative w-full bg-white p-2 rounded-lg'>
+          <div className={`flex justify-between ${edit && 'flex-col'}`}>
+            <p className=' text-sm font-semibold'>{session.user.name}</p>
+            <div>
+              {comment.author_id === session.user.id &&
+                (edit ? (
+                  <div className='relative'>
+                    <button
+                      className='absolute bottom-4 right-4 text-slate-500'
+                      onClick={() => updateComment(comment.id)}
+                    >
+                      Save
+                    </button>
+                    <textarea
+                      className='w-full h-20 rounded-lg p-2 resize-none mt-10'
+                      ref={editText}
+                    />
+                  </div>
+                ) : (
+                  <div className='flex gap-4'>
+                    <button onClick={() => editComment(comment.id)}>
+                      <PencilIcon className='h-4 w-4' />
+                    </button>
+                    <button onClick={() => deleteComment(comment.id)}>X</button>
+                  </div>
+                ))}
+            </div>
+          </div>
+          {!edit && commentText}
+          <TimeStamp time={comment.created} />
+        </div>
+      </div>
     </div>
   );
 };
