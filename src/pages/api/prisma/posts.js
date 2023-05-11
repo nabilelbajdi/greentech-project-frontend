@@ -22,14 +22,23 @@ const postHandler = async (req, res) => {
       switch (method) {
         case 'GET':
           const posts = await prisma.post.findMany({
-            where: { author_id: authorId },
+            where: {
+              author_id: authorId,
+            },
+            include: {
+              comments: true,
+            },
           });
 
           return res.status(200).json(posts);
         case 'POST':
           const text = body.text;
           const createdPost = await prisma.post.create({
-            data: { text: text, author_id: authorId },
+            data: {
+              text: text,
+              author_id: authorId,
+            },
+            include: { comments: true },
           });
 
           if (body.images) {

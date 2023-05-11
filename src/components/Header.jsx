@@ -33,7 +33,7 @@ const Header = () => {
           <input
             className=' hidden lg:inline-flex ml-2 items-center bg-transparent outline-none placeholder-gray-500 flex-shrink'
             type='text'
-            placeholder='Searh Something'
+            placeholder='Search Something'
           />
         </div>
       </div>

@@ -12,6 +12,18 @@ const getProps = async (context) => {
     where: {
       author_id: authorId,
     },
+    include: {
+      comments: true,
+    },
+  });
+
+  const comments = await prisma.post.findMany({
+    where: {
+      author_id: authorId,
+    },
+    include: {
+      comments: true,
+    },
   });
 
   if (!session) {
@@ -27,6 +39,8 @@ const getProps = async (context) => {
     props: {
       session,
       posts: JSON.parse(JSON.stringify(posts)),
+      comments: JSON.parse(JSON.stringify(comments)),
+      authorId: JSON.parse(JSON.stringify(authorId)),
     },
   };
 };
@@ -34,6 +48,7 @@ export const getServerSideProps = getProps;
 
 const Posts = (props) => {
   const [posts, setPosts] = useState(props.posts);
+  const [comments, setComments] = useState(props.comments);
   const [uploadImages, setUploadImages] = useState();
   const postText = useRef();
 
@@ -59,6 +74,7 @@ const Posts = (props) => {
     } else {
       postText.current.value = '';
       const newPost = await response.json();
+
       setPosts([...posts, newPost]);
     }
   };
@@ -144,14 +160,26 @@ const Posts = (props) => {
           )}
           <button
             className='m-auto block bg-slate-300 p-4 rounded-lg mt-2 hover:bg-slate-400'
-            onClick={() => handleNewPost(postText)}
+            onClick={handleNewPost}
           >
             New Post
           </button>
         </div>
         <div className='flex flex-col gap-6 text-slate-800 bg-slate-600 p-4 rounded-lg'>
           {posts.map((post) => {
-            return <Post key={post.id} post={post} deletePost={deletePost} />;
+            const postComments = posts.filter((comment) => {
+              return post.id === comment.id;
+            });
+
+            return (
+              <Post
+                key={post.id}
+                post={post}
+                deletePost={deletePost}
+                commentsArr={postComments[0].comments}
+                authorId={props.authorId}
+              />
+            );
           })}
         </div>
       </div>
