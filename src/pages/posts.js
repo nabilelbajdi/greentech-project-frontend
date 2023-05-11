@@ -75,7 +75,7 @@ const Posts = (props) => {
       postText.current.value = '';
       const newPost = await response.json();
 
-      setPosts([...posts, newPost]);
+      setPosts([newPost, ...posts]);
     }
   };
 

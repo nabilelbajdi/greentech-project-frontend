@@ -1,4 +1,4 @@
-import { useRef, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import Comment from './Comment';
 import timeAgo from '@/functions/timeAgo';
 
@@ -9,7 +9,11 @@ const Post = ({ post, deletePost, commentsArr, authorId }) => {
   const [comments, setComments] = useState(commentsArr);
   const editText = useRef();
   const commentText = useRef();
-  const timeStamp = timeAgo(post.created);
+  const [timeStamp, setTimeStamp] = useState('');
+
+  useEffect(() => {
+    setTimeStamp(timeAgo(post.created));
+  }, []);
 
   const editPost = async (postId) => {
     setEdit(!edit);
