@@ -3,21 +3,20 @@ stages:
   - lint
   - deploy
 
-build-job:
+build-test:
   stage: build
-  image: docker:stable
-  services:
-    - docker:dind
   script:
-    - docker login -u $DOCKER_USERNAME -p $DOCKER_PASSWORD
-    - docker build -t nabelb/my-image:latest .
-    - docker push nabelb/my-image:latest
+    - echo "Compiling code"
+    - echo "Building application"
 
 
-lint-test:
+lint-job:
   stage: lint
+  image: node:latest
   script:
-    - echo "Running automated tests"
+    - npm install --save-dev eslint
+    - npx eslint .
+    
 
 deploy-prod:
   stage: deploy
