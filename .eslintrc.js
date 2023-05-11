@@ -1,16 +1,30 @@
-// .eslintrc.js example
 module.exports = {
   env: {
     browser: true,
-    es2021: true,
-    node: true
+    es6: true,
   },
-  extends: 'eslint:recommended',
+  extends: [
+    "plugin:react/recommended",
+    "plugin:react-hooks/recommended",
+    "plugin:prettier/recommended",
+  ],
   parserOptions: {
-    ecmaVersion: 12,
-    sourceType: 'module'
+    ecmaFeatures: {
+      jsx: true,
+    },
+    ecmaVersion: 2021,
+    sourceType: "module",
   },
+  plugins: ["react", "react-hooks"],
   rules: {
-    semi: ["error", "always"],
+    "react/prop-types": "off",
+    "react/react-in-jsx-scope": "off",
+    "react-hooks/rules-of-hooks": "error",
+    "react-hooks/exhaustive-deps": "warn",
+  },
+  settings: {
+    react: {
+      version: "detect",
+    },
   },
 };
