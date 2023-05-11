@@ -15,6 +15,8 @@ import HeaderIcon from './HeaderIcon';
 
 const Header = () => {
   const { data: session } = useSession();
+
+
   return (
     <div className=' sticky flex top-0 z-50 bg-white items-center p-2 lg:px-5 shadow-md '>
       {/*Left Header */}
@@ -31,7 +33,7 @@ const Header = () => {
           <input
             className=' hidden lg:inline-flex ml-2 items-center bg-transparent outline-none placeholder-gray-500 flex-shrink'
             type='text'
-            placeholder='Searh Something'
+            placeholder='Search Something'
           />
         </div>
       </div>
