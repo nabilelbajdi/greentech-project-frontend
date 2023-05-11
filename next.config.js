@@ -8,11 +8,10 @@ const nextConfig = {
       'firebasestorage.googleapis.com',
       'images.unsplash.com',
       'lh3.googleusercontent.com',
-      's.gravatar.com'
-
-    ]
+      's.gravatar.com',
+    ],
   },
   reactStrictMode: true,
-}
+};
 
-module.exports = nextConfig
+module.exports = nextConfig;

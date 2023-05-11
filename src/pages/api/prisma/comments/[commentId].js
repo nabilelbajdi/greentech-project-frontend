@@ -1,13 +1,13 @@
 import { getServerSession } from 'next-auth';
 import { authOptions } from '../../auth/[...nextauth]';
-import fs from 'fs';
 import prisma from '../../../../../server/db/prisma';
 
-const postQueryHandler = async (req, res) => {
+const commentQueryHandler = async (req, res) => {
   try {
     const session = await getServerSession(req, res, authOptions);
     const { method } = req;
     const postId = req.query.postId;
+    const commentId = req.query.commentId;
 
     if (session) {
       const prismaUser = await prisma.user.findUnique({
@@ -21,40 +21,29 @@ const postQueryHandler = async (req, res) => {
 
       switch (method) {
         case 'GET':
-          const post = await prisma.post.findFirst({
-            where: { id: postId },
+          const comments = await prisma.comment.findFirst({
+            where: { id: commentId },
             select: { text: true },
           });
 
-          return res.status(200).json(post);
+          return res.status(200).json(comments);
 
         case 'DELETE':
-          const deleteId = req.query.postId;
-          const deletedPost = await prisma.post.delete({
-            where: { id: deleteId },
-            include: { images: true },
+          const deletedComment = await prisma.comment.delete({
+            where: { id: commentId },
           });
 
-          // Remove Posts images from filesystem
-          deletedPost.images.forEach((image) => {
-            fs.rmSync('public/' + image.url, { recursive: true }, (err) => {
-              if (err) {
-                console.error(err.message);
-                return;
-              }
-            });
-          });
-          return res.status(200).json(deletedPost);
+          return res.status(200).json(deletedComment);
 
         case 'PUT':
           const text = req.body.text;
 
-          const updatedPost = await prisma.post.update({
-            where: { id: postId },
+          const updatedComment = await prisma.comment.update({
+            where: { id: commentId },
             data: { text: text },
           });
 
-          return res.status(200).json(updatedPost);
+          return res.status(200).json(updatedComment);
 
         default:
           res.status(405).send();
@@ -67,4 +56,4 @@ const postQueryHandler = async (req, res) => {
   }
 };
 
-export default postQueryHandler;
+export default commentQueryHandler;

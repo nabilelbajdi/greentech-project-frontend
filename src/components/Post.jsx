@@ -1,8 +1,15 @@
 import { useRef, useState } from 'react';
+import Comment from './Comment';
+import timeAgo from '@/functions/timeAgo';
 
-const Post = ({ post, deletePost }) => {
+const Post = ({ post, deletePost, commentsArr, authorId }) => {
   const [edit, setEdit] = useState(false);
+  const [reply, setReply] = useState(false);
+  const [postText, setPostText] = useState(post.text);
+  const [comments, setComments] = useState(commentsArr);
   const editText = useRef();
+  const commentText = useRef();
+  const timeStamp = timeAgo(post.created);
 
   const editPost = async (postId) => {
     setEdit(!edit);
@@ -32,6 +39,32 @@ const Post = ({ post, deletePost }) => {
     if (response.status !== 200) {
       console.log('something went wrong');
       //add error banner
+    } else {
+      const data = await response.json();
+      setPostText(data.text);
+    }
+  };
+
+  const handleNewComment = async (postId) => {
+    const text = commentText.current.value;
+
+    if (text === '') {
+      setReply(false);
+      return;
+    }
+    const response = await fetch('/api/prisma/comments', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ text: text, postId }),
+    });
+    if (response.status !== 200) {
+      console.log('something went wrong');
+      //add error banner
+    } else {
+      commentText.current.value = '';
+      const newComment = await response.json();
+      setComments([...comments, newComment]);
+      setReply(false);
     }
   };
 
@@ -39,34 +72,88 @@ const Post = ({ post, deletePost }) => {
     <div className='relative bg-slate-300 p-4 rounded-lg'>
       {edit ? (
         <>
-          <button
-            className='absolute top-4 right-12'
-            onClick={() => updatePost(post.id)}
-          >
-            Save
-          </button>
-          <textarea
-            className='w-full h-20 rounded-lg p-2 resize-none mt-10'
-            ref={editText}
-          />
+          {/* if you are the author, and you are in edit mode, you may save the edits done to the post */}
+          {authorId === post.author_id && (
+            <>
+              <button
+                className='absolute top-4 right-12'
+                onClick={() => updatePost(post.id)}
+              >
+                Save
+              </button>
+              <textarea
+                className='w-full h-20 rounded-lg p-2 resize-none mt-10'
+                ref={editText}
+              />
+            </>
+          )}
         </>
       ) : (
         <>
-          <p>{post.text}</p>
-          <button
-            className='absolute top-4 right-12'
-            onClick={() => editPost(post.id)}
-          >
-            Edit
-          </button>
+          <p>{postText}</p>
+          {/* if you are the author, and you are NOT in edit mode, you may edit the post */}
+          {authorId === post.author_id ? (
+            <>
+              <button
+                className='absolute top-4 right-12'
+                onClick={() => editPost(post.id)}
+              >
+                Edit
+              </button>
+              <button
+                className='absolute top-4 right-4'
+                onClick={() => deletePost(post.id)}
+              >
+                X
+              </button>
+            </>
+          ) : reply ? (
+            <>
+              {/* if you're NOT the author you may only reply to the post */}
+              {authorId !== post.author_id && (
+                <div className='relative'>
+                  <textarea
+                    className='w-full h-20 rounded-lg p-2 resize-none mt-2'
+                    ref={commentText}
+                  />
+                  <button
+                    className='absolute bottom-4 right-4'
+                    onClick={() => handleNewComment(post.id)}
+                  >
+                    Send
+                  </button>
+                </div>
+              )}
+            </>
+          ) : (
+            <>
+              {/* set edit state */}
+              <button
+                className='absolute top-4 right-4'
+                onClick={() => setReply(true)}
+              >
+                Reply
+              </button>
+            </>
+          )}
         </>
       )}
-      <button
-        className='absolute top-4 right-4'
-        onClick={() => deletePost(post.id)}
-      >
-        X
-      </button>
+
+      {/* creating Comment components */}
+      {comments.length !== 0 && (
+        <div className='flex flex-col gap-4 my-2'>
+          {comments.map((comment) => (
+            <Comment
+              key={comment.id}
+              comment={comment}
+              authorId={authorId}
+              setComments={setComments}
+              comments={comments}
+            />
+          ))}
+        </div>
+      )}
+      <p className='text-xs w-full text-right'>{timeStamp}</p>
     </div>
   );
 };
