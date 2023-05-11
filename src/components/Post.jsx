@@ -4,7 +4,7 @@ import Image from 'next/image';
 import { ChatIcon, HeartIcon } from '@heroicons/react/outline';
 import TimeStamp from './TimeStamp';
 
-const Post = ({ post, deletePost, authorId }) => {
+const Post = ({ post, posts, setPosts, authorId }) => {
   const [edit, setEdit] = useState(false);
   const [reply, setReply] = useState(false);
   const [postText, setPostText] = useState(post.text);
@@ -44,6 +44,26 @@ const Post = ({ post, deletePost, authorId }) => {
     } else {
       const data = await response.json();
       setPostText(data.text);
+    }
+  };
+
+  const deletePost = async (postId) => {
+    const response = await fetch(`/api/prisma/posts/${postId}`, {
+      method: 'DELETE',
+      headers: { 'Content-Type': 'application/json' },
+    });
+
+    if (response.status !== 200) {
+      console.log('something went wrong');
+      //add error banner
+    } else {
+      const deletedPost = await response.json();
+
+      setPosts(
+        posts.filter((post) => {
+          return post.id !== deletedPost.id;
+        })
+      );
     }
   };
 

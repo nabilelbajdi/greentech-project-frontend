@@ -1,11 +1,11 @@
 import { Inter } from 'next/font/google';
 import Feed from '@/components/Feed';
-
 import { getServerSession } from 'next-auth';
 import { authOptions } from '../pages/api/auth/[...nextauth]';
 import prisma from '../../server/db/prisma';
 import { useState } from 'react';
 import Posts from '@/components/Posts';
+import Sidebar from '@/components/Sidebar';
 
 const getProps = async (context) => {
   const session = await getServerSession(context.req, context.res, authOptions);
@@ -46,15 +46,13 @@ const getProps = async (context) => {
 };
 export const getServerSideProps = getProps;
 
-const inter = Inter({ subsets: ['latin'] });
-
 const Home = (props) => {
   const [posts, setPosts] = useState(props.posts);
-  console.log(posts);
 
   return (
     <div className='w-full'>
-      <main>
+      <main className='flex'>
+        <Sidebar />
         <Posts posts={posts} setPosts={setPosts} authorId={props.authorId} />
         {/* <Feed /> */}
       </main>

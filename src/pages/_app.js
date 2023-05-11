@@ -10,14 +10,8 @@ export default function App({
 }) {
   return (
     <SessionProvider session={session}>
-      <Head>
-        <title>TreeHouse</title>
-      </Head>
       <Header />
-      <Sidebar />
-      <div className='flex justify-center'>
-        <Component {...pageProps} />
-      </div>
+      <Component {...pageProps} />
     </SessionProvider>
   );
 }
