@@ -26,7 +26,7 @@ const Sidebar = () => {
     </div> 
     );
 }
-return <a href="/api/auth/signin">Sign in</a> //Lägg en else for status unauthorised
+return <a href="/api/auth/signin">Loading...</a> //Lägg en else for status unauthorised
 }
  
 export default Sidebar;
