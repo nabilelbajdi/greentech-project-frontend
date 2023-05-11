@@ -1,0 +1,28 @@
+stages:
+  - build
+  - lint
+  - deploy
+
+build-job:
+  stage: build
+  image: docker:stable
+  services:
+    - docker:dind
+  script:
+    - docker login -u $DOCKER_USERNAME -p $DOCKER_PASSWORD
+    - docker build -t nabelb/my-image:latest .
+    - docker push nabelb/my-image:latest
+
+
+lint-job:
+  stage: lint
+  image: node:latest
+  script:
+    - npm install --save-dev eslint
+    - npx eslint .
+
+deploy-prod:
+  stage: deploy
+  script:
+    - echo "This job deploys something from the $CI_COMMIT_BRANCH branch."
+  environment: production
