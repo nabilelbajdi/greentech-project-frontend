@@ -22,6 +22,9 @@ const postHandler = async (req, res) => {
       switch (method) {
         case 'GET':
           const posts = await prisma.post.findMany({
+            orderBy: {
+              created: 'desc',
+            },
             where: {
               author_id: authorId,
             },
@@ -29,6 +32,7 @@ const postHandler = async (req, res) => {
               comments: true,
             },
           });
+          console.log(posts);
 
           return res.status(200).json(posts);
         case 'POST':
@@ -38,7 +42,10 @@ const postHandler = async (req, res) => {
               text: text,
               author_id: authorId,
             },
-            include: { comments: true },
+            include: {
+              comments: true,
+              author: { select: { name: true, image: true } },
+            },
           });
 
           if (body.images) {
