@@ -6,6 +6,7 @@ import prisma from '../../server/db/prisma';
 import { useState } from 'react';
 import Posts from '@/components/Posts';
 import Sidebar from '@/components/Sidebar';
+import Map from '@/components/Map';
 
 const getProps = async (context) => {
   const session = await getServerSession(context.req, context.res, authOptions);
@@ -54,6 +55,7 @@ const Home = (props) => {
       <main className='flex'>
         <Sidebar />
         <Posts posts={posts} setPosts={setPosts} authorId={props.authorId} />
+
         {/* <Feed /> */}
       </main>
     </div>
