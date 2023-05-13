@@ -1,10 +1,10 @@
-import { useRef, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import Comment from './Comment';
 import Image from 'next/image';
 import { ChatIcon, HeartIcon } from '@heroicons/react/outline';
 import TimeStamp from './TimeStamp';
 
-const Post = ({ post, posts, setPosts, authorId }) => {
+const Post = ({ post, posts, setPosts, authorId, likedByUser }) => {
   const [edit, setEdit] = useState(false);
   const [reply, setReply] = useState(false);
   const [postText, setPostText] = useState(post.text);
@@ -12,6 +12,8 @@ const Post = ({ post, posts, setPosts, authorId }) => {
   const editText = useRef();
   const commentText = useRef();
   const [nrOfComments, setNrOfComments] = useState(post.comments.length);
+  const [likes, setLikes] = useState(post.likes.length);
+  const [likeStatus, setLikeStatus] = useState(likedByUser);
 
   const editPost = async (postId) => {
     setEdit(!edit);
@@ -91,6 +93,24 @@ const Post = ({ post, posts, setPosts, authorId }) => {
     }
   };
 
+  const handleLike = async (postId) => {
+    const response = await fetch(`/api/prisma/likes`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ postId: postId }),
+    });
+
+    if (response.status !== 200) {
+      console.log('something went wrong');
+      //add error banner
+    } else {
+      const data = await response.json();
+      console.log(data);
+      setLikes(data.likes.length);
+      setLikeStatus(data.likeStatus);
+    }
+  };
+
   return (
     <div className='relative bg-green-100 p-4 rounded-lg'>
       <div className='flex items-center gap-4 w-full mb-2'>
@@ -130,7 +150,7 @@ const Post = ({ post, posts, setPosts, authorId }) => {
         <>
           <p className='my-4'>{postText}</p>
           <div className='flex justify-between text-xs px-8'>
-            <p>0 gillar</p>
+            <p>{likes} gillar</p>
             <p>{nrOfComments} kommentarer</p>
           </div>
           {/* if you are the author, and you are NOT in edit mode, you may edit the post */}
@@ -176,8 +196,16 @@ const Post = ({ post, posts, setPosts, authorId }) => {
           ) : (
             <div className='flex justify-between px-8 border-y-2 py-2 mb-4 border-green-300'>
               {/* set edit state */}
-              <button className='flex gap-2 items-center'>
-                <HeartIcon className='h-5 w-5' /> Gilla
+              <button
+                className='flex gap-2 items-center'
+                onClick={() => handleLike(post.id)}
+              >
+                {likeStatus ? (
+                  <HeartIcon fill='true' className={`h-5 w-5`} />
+                ) : (
+                  <HeartIcon className={`h-5 w-5`} />
+                )}
+                Gilla
               </button>
               <button
                 className='flex gap-2 items-center'
