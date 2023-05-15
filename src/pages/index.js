@@ -27,6 +27,7 @@ const getProps = async (context) => {
     include: {
       comments: true,
       author: { select: { name: true, image: true } },
+      images: true,
     },
   });
 
