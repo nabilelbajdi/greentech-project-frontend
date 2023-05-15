@@ -149,6 +149,22 @@ const Post = ({ post, posts, setPosts, authorId, likedByUser }) => {
       ) : (
         <>
           <p className='my-4'>{postText}</p>
+          {post.images && (
+            <div className={`flex my-4`}>
+              {post.images.map((image) => {
+                return (
+                  <Image
+                    src={image.url}
+                    key={image.id}
+                    alt='?'
+                    height={0}
+                    width={1000}
+                    style={{ width: `${100 / post.images.length}%` }}
+                  />
+                );
+              })}
+            </div>
+          )}
           <div className='flex justify-between text-xs px-8'>
             <p>{likes} gillar</p>
             <p>{nrOfComments} kommentarer</p>

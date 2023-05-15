@@ -28,6 +28,7 @@ const getProps = async (context) => {
       comments: true,
       author: { select: { name: true, image: true } },
       likes: true,
+      images: true,
     },
   });
 

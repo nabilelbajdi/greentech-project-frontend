@@ -1,0 +1,20 @@
+stages:
+  - build
+  - lint
+  - deploy
+
+build-test:
+  stage: build
+  script:
+    - echo "Compiling code"
+    - echo "Building application"
+
+lint-test:
+  stage: lint
+  script:
+    - echo "Running automated tests"
+
+deploy-test:
+  stage: deploy
+  script:
+    - echo "Deploying application"

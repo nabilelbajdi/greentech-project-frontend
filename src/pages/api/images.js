@@ -23,7 +23,7 @@ const nanoid = customAlphabet(alphabet);
 // Setting multer to filter out anything that isn't of image/____ minetype (image/jpg, image/png).
 const fileFilter = (req, file, cb) => {
   const filetype = file.mimetype.split('/')[0];
-  console.log(file.mimetype);
+  //console.log(file.mimetype);
   if (filetype === 'image') {
     cb(null, true);
   } else {
@@ -32,7 +32,7 @@ const fileFilter = (req, file, cb) => {
 };
 
 // Setting up multer with the previous options + a filesize limit, and appying it as middleware.
-const upload = multer({ storage, fileFilter, limits: { fileSize: 500000 } });
+const upload = multer({ storage, fileFilter, limits: { fileSize: 1000000 } });
 //apiRoute.use(upload.single('image'));
 
 apiRoute.use(upload.array('images', 10));
@@ -49,7 +49,7 @@ apiRoute.post(async (req, res) => {
     return;
   }
 
-  console.log(req.files);
+  //console.log(req.files);
 
   const user = await prisma.user.findUnique({
     where: { email: session.user.email },
@@ -81,7 +81,7 @@ apiRoute.post(async (req, res) => {
 
       // Using sharp to slightly compress the image + make it a webp. And outputting the file to the file system.
       // Will probably have to play with setting here to make sure images still look good.
-      sharp(req.files[i].buffer)
+      await sharp(req.files[i].buffer)
         .webp({ quality: 80 })
         .toFile(`./public/${path}`);
 
