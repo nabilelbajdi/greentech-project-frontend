@@ -10,6 +10,6 @@ module.exports = {
     sourceType: 'module'
   },
   rules: {
-    semi: ["error", "always"],
-  },
+    'placeholder-rule': 'warn'
+  }
 };
