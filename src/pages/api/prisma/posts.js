@@ -45,14 +45,12 @@ const postHandler = async (req, res) => {
             include: {
               comments: true,
               author: { select: { name: true, image: true } },
+              images: true,
             },
           });
 
           if (body.images) {
             for (let i = 0; i < body.images.length; i++) {
-              console.log(body.images[i]);
-              console.log('post:', createdPost.id);
-
               const dbImage = await prisma.image.update({
                 where: {
                   id: body.images[i],
@@ -61,9 +59,9 @@ const postHandler = async (req, res) => {
                   post_id: createdPost.id,
                 },
               });
+              createdPost.images.push(dbImage);
             }
           }
-
           return res.status(200).json(createdPost);
         default:
           res.status(405).send();
