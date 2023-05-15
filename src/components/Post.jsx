@@ -135,6 +135,7 @@ const Post = ({ post, posts, setPosts, authorId }) => {
                 return (
                   <Image
                     src={image.url}
+                    key={image.id}
                     alt='?'
                     height={0}
                     width={1000}
