@@ -19,6 +19,17 @@ const getProps = async (context) => {
     };
   }
 
+  if (!session.user.fullyRegistered) {
+
+    return {
+      redirect: {
+        destination: '/register',
+        permanent: false,
+      },
+    };
+
+  }
+
   const authorId = session.user.id;
   const posts = await prisma.post.findMany({
     orderBy: {

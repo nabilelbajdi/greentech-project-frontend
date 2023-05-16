@@ -13,6 +13,17 @@ const getProps = async (context) => {
     };
   }
 
+  if (!session.user.fullyRegistered) {
+
+    return {
+      redirect: {
+        destination: '/register',
+        permanent: false,
+      },
+    };
+
+  }
+
   return {
     props: {
       session,

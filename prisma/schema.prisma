@@ -48,6 +48,13 @@ model Session {
 model User {
   id                         String    @id @default(cuid())
   name                       String?
+  firstName                  String?
+  lastName                   String?
+  country                    String?
+  city                       String?
+  dateOfBirth                DateTime?
+  userPath                   String?   @unique
+  fullyRegistered            Boolean   @default(false)
   email                      String?   @unique
   emailVerified              DateTime?
   image                      String?
@@ -74,13 +81,13 @@ model VerificationToken {
 }
 
 model Post {
-  id        String  @id @default(cuid())
-  author    User?   @relation(fields: [author_id], references: [id], onDelete: Cascade)
+  id        String    @id @default(cuid())
+  author    User?     @relation(fields: [author_id], references: [id], onDelete: Cascade)
   author_id String?
   text      String
-  comments  Comment[]  @relation("comments")
+  comments  Comment[] @relation("comments")
   images    Image[]
-  likes     Like[]     @relation("likes")
+  likes     Like[]    @relation("likes")
 
   created DateTime @default(now())
   updated DateTime @default(now()) @updatedAt
@@ -104,7 +111,7 @@ model Comment {
 }
 
 model Image {
-  id        String @id @default(cuid())
+  id        String  @id @default(cuid())
   author    User?   @relation(fields: [author_id], references: [id], onDelete: Cascade)
   author_id String?
   post      Post?   @relation(fields: [post_id], references: [id], onDelete: Cascade)
@@ -119,11 +126,11 @@ model Image {
 }
 
 model Like {
-  id        String @id @default(cuid())
-  user      User?   @relation(fields: [user_id], references: [id], onDelete: Cascade)
-  user_id   String?
-  post      Post?   @relation("likes", fields: [post_id], references: [id], onDelete: Cascade)
-  post_id   String?
+  id      String  @id @default(cuid())
+  user    User?   @relation(fields: [user_id], references: [id], onDelete: Cascade)
+  user_id String?
+  post    Post?   @relation("likes", fields: [post_id], references: [id], onDelete: Cascade)
+  post_id String?
 
   @@index([user_id])
   @@index([post_id])
