@@ -2,6 +2,7 @@ import { getServerSession } from 'next-auth';
 import { authOptions } from '../../auth/[...nextauth]';
 import fs from 'fs';
 import prisma from '../../../../../server/db/prisma';
+import { create } from 'domain';
 
 const postQueryHandler = async (req, res) => {
   try {
@@ -48,6 +49,27 @@ const postQueryHandler = async (req, res) => {
 
         case 'PUT':
           const text = req.body.text;
+          const liked_by = req.body.like;
+
+          if (liked_by) {
+            try {
+              const likedPost = await prisma.post.upsert({
+                where: { id: postId },
+                likes: {
+                  create: [{ liked_by: liked_by }],
+                },
+                include: { likes: true },
+              });
+
+              if (likedPost.status !== 200) {
+                console.log('error');
+              } else {
+                return res.status(200).json(likedPost);
+              }
+            } catch (error) {
+              console.log(error);
+            }
+          }
 
           const updatedPost = await prisma.post.update({
             where: { id: postId },

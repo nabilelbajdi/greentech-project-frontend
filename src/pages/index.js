@@ -38,7 +38,13 @@ const getProps = async (context) => {
     include: {
       comments: true,
       author: { select: { name: true, image: true } },
+      likes: true,
+      images: true,
     },
+  });
+
+  const likedByUser = await prisma.like.findMany({
+    where: { liked_by_id: authorId },
   });
 
   const comments = await prisma.post.findMany({

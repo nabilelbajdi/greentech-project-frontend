@@ -29,14 +29,7 @@ export default function Map({ places }) {
         options={options}
         mapContainerClassName='w-screen h-screen bg-slate-500'
       >
-        {selected && (
-          <MarkerF
-            position={selected}
-            onClick={(e) => {
-              console.log(e.latLng.lat);
-            }}
-          />
-        )}
+        {selected && <MarkerF position={selected} />}
       </GoogleMap>
     </div>
   );
