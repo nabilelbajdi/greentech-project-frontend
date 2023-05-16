@@ -32,7 +32,6 @@ const postHandler = async (req, res) => {
               comments: true,
             },
           });
-          console.log(posts);
 
           return res.status(200).json(posts);
         case 'POST':
@@ -45,6 +44,7 @@ const postHandler = async (req, res) => {
             include: {
               comments: true,
               author: { select: { name: true, image: true } },
+              likes: true,
               images: true,
             },
           });

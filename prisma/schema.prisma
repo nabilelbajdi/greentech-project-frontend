@@ -80,7 +80,7 @@ model Post {
   text      String
   comments  Comment[]  @relation("comments")
   images    Image[]
-  likes     Like[]     @relation("likes")
+  likes     Like[]
 
   created DateTime @default(now())
   updated DateTime @default(now()) @updatedAt
@@ -119,12 +119,15 @@ model Image {
 }
 
 model Like {
-  id        String @id @default(cuid())
-  user      User?   @relation(fields: [user_id], references: [id], onDelete: Cascade)
-  user_id   String?
-  post      Post?   @relation("likes", fields: [post_id], references: [id], onDelete: Cascade)
+  id            String @id @default(cuid())
+  liked_by      User?   @relation(fields: [liked_by_id], references: [id], onDelete: Cascade)
+  liked_by_id   String?
+  post      Post?   @relation(fields: [post_id], references: [id], onDelete: Cascade)
   post_id   String?
 
-  @@index([user_id])
+  created DateTime @default(now())
+  updated DateTime @default(now()) @updatedAt
+
+  @@index([liked_by_id])
   @@index([post_id])
 }
