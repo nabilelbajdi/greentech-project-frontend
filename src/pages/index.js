@@ -7,6 +7,9 @@ import { useState } from 'react';
 import Posts from '@/components/Posts';
 import Sidebar from '@/components/Sidebar';
 import Map from '@/components/Map';
+import FriendsWidget from '@/components/FriendsWidget';
+import NewsSlider from '@/components/NewsSlider';
+import ProfileCard from '@/components/ProfileCard';
 
 const getProps = async (context) => {
   const session = await getServerSession(context.req, context.res, authOptions);
@@ -69,9 +72,17 @@ const Home = (props) => {
 
   return (
     <div className='w-full'>
-      <main className='flex'>
-        <Sidebar />
-        <Posts posts={posts} setPosts={setPosts} authorId={props.authorId} />
+      <main className='flex p-3 space-x-4 mt-5' >
+      <Sidebar />
+      <div className='w-full m-auto'>
+      <FriendsWidget/>
+      <NewsSlider/>
+      <Posts posts={posts} setPosts={setPosts} authorId={props.authorId} />
+      </div>
+      <ProfileCard/>
+      
+        
+        
 
         {/* <Feed /> */}
       </main>

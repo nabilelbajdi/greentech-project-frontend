@@ -8,7 +8,7 @@ module.exports = {
   theme: {
     extend: {
       colors: {
-        'chas-primary': '#E7EBE5',
+        'chas-primary': '#AFC2C2',
         'chas-secondary': '#AFC2C2',
         'chas-gradient-primary': '#20817B',
         'chas-gradient-secondary': '#3A4F6F',
