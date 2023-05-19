@@ -1,10 +1,10 @@
 import { getServerSession } from 'next-auth';
-import { authOptions } from '../pages/api/auth/[...nextauth]';
+import { authOptions } from '@/pages/api/auth/[...nextauth]';
 import prisma from '../../server/db/prisma';
-import { useState } from 'react';
-import Posts from '@/components/Posts';
 
-const getProps = async (context) => {
+// All props to the event pages goes here
+
+const getHomePageProps = async (context) => {
   const session = await getServerSession(context.req, context.res, authOptions);
   if (!session) {
     return {
@@ -15,15 +15,20 @@ const getProps = async (context) => {
     };
   }
 
+  const slug = context.query.slug;
+
   const posts = await prisma.post.findMany({
     orderBy: {
       created: 'desc',
     },
-    where: {
-      author_id: authorId,
-    },
+    where: { event_id: null },
     include: {
-      comments: true,
+      comments: {
+        include: { author: { select: { name: true, image: true } } },
+      },
+      author: { select: { name: true, image: true } },
+      likes: true,
+      images: true,
     },
   });
 
@@ -34,12 +39,4 @@ const getProps = async (context) => {
     },
   };
 };
-export const getServerSideProps = getProps;
-
-const TestPosts = (props) => {
-  const [posts, setPosts] = useState(props.posts);
-
-  return <Posts posts={posts} setPosts={setPosts} />;
-};
-
-export default TestPosts;
+export default getHomePageProps;

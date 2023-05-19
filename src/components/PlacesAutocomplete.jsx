@@ -10,7 +10,7 @@ import usePlacesAutocomplete, {
   getLatLng,
 } from 'use-places-autocomplete';
 
-const PlacesAutocomplete = ({ setSelected }) => {
+const PlacesAutocomplete = ({ setSelected, placeholder, setAddress }) => {
   const {
     ready,
     value,
@@ -25,6 +25,7 @@ const PlacesAutocomplete = ({ setSelected }) => {
 
     const results = await getGeocode({ address });
     const { lat, lng } = getLatLng(results[0]);
+    setAddress(results[0]);
     setSelected({ lat, lng });
   };
 
@@ -34,11 +35,11 @@ const PlacesAutocomplete = ({ setSelected }) => {
         value={value}
         onChange={(e) => setValue(e.target.value)}
         disabled={!ready}
-        className='text-black w-full p-2'
-        placeholder='Sök efter en address'
+        className='px-2 py-4 border-2 rounded-lg w-full'
+        placeholder={placeholder}
       />
-      <ComboboxPopover>
-        <ComboboxList className='bg-white text-black p-2'>
+      <ComboboxPopover className='z-20'>
+        <ComboboxList className='bg-white text-black p-2 z-20'>
           {status === 'OK' &&
             data.map(({ place_id, description }) => (
               <ComboboxOption

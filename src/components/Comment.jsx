@@ -4,7 +4,13 @@ import Image from 'next/image';
 import { PencilIcon } from '@heroicons/react/outline';
 import TimeStamp from './TimeStamp';
 
-const Comment = ({ comment, comments, setComments, setNrOfComments }) => {
+const Comment = ({
+  comment,
+  comments,
+  setComments,
+  setNrOfComments,
+  author,
+}) => {
   const { data: session } = useSession();
   const [edit, setEdit] = useState(false);
   const [commentText, setCommentText] = useState(comment.text);
@@ -69,7 +75,7 @@ const Comment = ({ comment, comments, setComments, setNrOfComments }) => {
   return (
     <div className='flex items-center'>
       <Image
-        src={session.user.image}
+        src={comment.author.image}
         alt='author image'
         height={25}
         width={25}
@@ -78,7 +84,7 @@ const Comment = ({ comment, comments, setComments, setNrOfComments }) => {
       <div className='flex flex-col w-full'>
         <div className='relative w-full bg-white p-2 rounded-lg'>
           <div className={`flex justify-between ${edit && 'flex-col'}`}>
-            <p className=' text-sm font-semibold'>{session.user.name}</p>
+            <p className=' text-sm font-semibold'>{comment.author.name}</p>
             <div>
               {comment.author_id === session.user.id &&
                 (edit ? (

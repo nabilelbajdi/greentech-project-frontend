@@ -9,6 +9,7 @@ const nextConfig = {
       'images.unsplash.com',
       'lh3.googleusercontent.com',
       's.gravatar.com',
+      'img.freepik.com',
     ],
   },
   reactStrictMode: true,

@@ -36,10 +36,12 @@ const postHandler = async (req, res) => {
           return res.status(200).json(posts);
         case 'POST':
           const text = body.text;
+          const eventId = body.event_id;
           const createdPost = await prisma.post.create({
             data: {
               text: text,
               author_id: authorId,
+              event_id: eventId,
             },
             include: {
               comments: true,

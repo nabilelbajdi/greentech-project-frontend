@@ -4,7 +4,7 @@ import { CameraIcon, VideoCameraIcon } from '@heroicons/react/solid';
 import { EmojiHappyIcon } from '@heroicons/react/outline';
 import { useRef, useState } from 'react';
 
-const StatusBox = ({ posts, setPosts }) => {
+const StatusBox = ({ posts, setPosts, eventId }) => {
   const inputRef = useRef(null);
   const imageRef = useRef(null);
   const [uploadImages, setUploadImages] = useState();
@@ -24,7 +24,7 @@ const StatusBox = ({ posts, setPosts }) => {
     const response = await fetch('/api/prisma/posts', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ text: text, images }),
+      body: JSON.stringify({ text: text, images, event_id: eventId }),
     });
     if (response.status !== 200) {
       console.log('something went wrong');
