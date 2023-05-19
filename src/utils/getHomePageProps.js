@@ -15,7 +15,14 @@ const getHomePageProps = async (context) => {
     };
   }
 
-  const slug = context.query.slug;
+  if (!session.user.fullyRegistered) {
+    return {
+      redirect: {
+        destination: '/register',
+        permanent: false,
+      },
+    };
+  }
 
   const posts = await prisma.post.findMany({
     orderBy: {
