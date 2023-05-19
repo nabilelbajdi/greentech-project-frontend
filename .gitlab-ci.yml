@@ -3,11 +3,20 @@ stages:
   - lint
   - deploy
 
-build-test:
+build:
+  image: docker:20.10.16
   stage: build
+  services:
+    - docker:20.10.16-dind
   script:
-    - echo "Compiling code"
-    - echo "Building application"
+    - docker login -u $CI_REGISTRY_USER -p $CI_REGISTRY_PASSWORD $CI_REGISTRY
+    - docker build -t $CI_REGISTRY_IMAGE:$CI_COMMIT_REF_SLUG -t $CI_REGISTRY_IMAGE:latest -t $CI_REGISTRY_IMAGE:$CI_COMMIT_SHA .
+    - docker push $CI_REGISTRY_IMAGE:$CI_COMMIT_SHA
+    - docker push $CI_REGISTRY_IMAGE:$CI_COMMIT_REF_SLUG
+    - docker push $CI_REGISTRY_IMAGE:latest
+  only:
+    - merge_requests
+    - main
 
 lint-test:
   stage: lint
@@ -18,3 +27,6 @@ deploy-test:
   stage: deploy
   script:
     - echo "Deploying application"
+  only:
+    - merge_requests
+    - main
