@@ -1,10 +1,11 @@
-import { useEffect, useRef, useState } from 'react';
+import { useRef, useState } from 'react';
 import Comment from './Comment';
 import Image from 'next/image';
 import { ChatIcon, HeartIcon } from '@heroicons/react/outline';
 import TimeStamp from './TimeStamp';
+import { useSession } from 'next-auth/react';
 
-const Post = ({ post, posts, setPosts, authorId, likedByUser }) => {
+const Post = ({ post, posts, setPosts }) => {
   const [edit, setEdit] = useState(false);
   const [reply, setReply] = useState(false);
   const [postText, setPostText] = useState(post.text);
@@ -13,7 +14,16 @@ const Post = ({ post, posts, setPosts, authorId, likedByUser }) => {
   const commentText = useRef();
   const [nrOfComments, setNrOfComments] = useState(post.comments.length);
   const [likes, setLikes] = useState(post.likes.length);
-  const [likeStatus, setLikeStatus] = useState(likedByUser);
+  const { data: session } = useSession();
+  const currentUser = session.user.id;
+
+  //checks to see if the logged in user already liked the post
+  let alreadyLiked = post.likes.filter(
+    (like) => like.liked_by_id === session.user.id
+  );
+  const [likeStatus, setLikeStatus] = useState(
+    alreadyLiked.length === 1 ? true : false
+  );
 
   const editPost = async (postId) => {
     setEdit(!edit);
@@ -112,7 +122,7 @@ const Post = ({ post, posts, setPosts, authorId, likedByUser }) => {
   };
 
   return (
-    <div className='relative bg-green-100 p-4 rounded-lg'>
+    <div className='relative bg-gray-100 p-4 rounded-lg'>
       <div className='flex items-center gap-4 w-full mb-2'>
         {post.author.image && (
           <Image
@@ -131,7 +141,7 @@ const Post = ({ post, posts, setPosts, authorId, likedByUser }) => {
       {edit ? (
         <>
           {/* if you are the author, and you are in edit mode, you may save the edits done to the post */}
-          {authorId === post.author_id && (
+          {currentUser === post.author_id && (
             <>
               <button
                 className='absolute top-4 right-12'
@@ -170,7 +180,7 @@ const Post = ({ post, posts, setPosts, authorId, likedByUser }) => {
             <p>{nrOfComments} kommentarer</p>
           </div>
           {/* if you are the author, and you are NOT in edit mode, you may edit the post */}
-          {authorId === post.author_id ? (
+          {currentUser === post.author_id ? (
             <>
               <button
                 className='absolute top-4 right-12'
@@ -188,7 +198,7 @@ const Post = ({ post, posts, setPosts, authorId, likedByUser }) => {
           ) : reply ? (
             <>
               {/* if you're NOT the author you may only reply to the post */}
-              {authorId !== post.author_id && (
+              {currentUser !== post.author_id && (
                 <div className='relative'>
                   <textarea
                     className='w-full h-20 rounded-lg p-2 resize-none mt-2'
@@ -210,7 +220,7 @@ const Post = ({ post, posts, setPosts, authorId, likedByUser }) => {
               )}
             </>
           ) : (
-            <div className='flex justify-between px-8 border-y-2 py-2 mb-4 border-green-300'>
+            <div className='flex justify-between px-8 border-y-2 py-2 mb-4 border-gray-300'>
               {/* set edit state */}
               <button
                 className='flex gap-2 items-center'
@@ -244,6 +254,7 @@ const Post = ({ post, posts, setPosts, authorId, likedByUser }) => {
               setComments={setComments}
               comments={comments}
               setNrOfComments={setNrOfComments}
+              author={post.author}
             />
           ))}
         </div>

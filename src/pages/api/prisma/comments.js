@@ -28,7 +28,12 @@ const commentHandler = async (req, res) => {
           const text = body.text;
           const postId = body.postId;
           const createdComment = await prisma.comment.create({
-            data: { text: text, author_id: authorId, post_id: postId },
+            data: {
+              text: text,
+              author_id: authorId,
+              post_id: postId,
+            },
+            include: { author: { select: { name: true, image: true } } },
           });
 
           return res.status(200).json(createdComment);

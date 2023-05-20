@@ -70,6 +70,8 @@ model User {
   friendRequestsSent         User[]    @relation("friendRequestsSent")
   friendRequestsSentRelation User[]    @relation("friendRequestsSent")
   liked_posts                Like[]
+  eventsCreated              Event[]
+  attendingEvents            Event[] @relation("event")
 }
 
 model VerificationToken {
@@ -88,11 +90,14 @@ model Post {
   comments  Comment[] @relation("comments")
   images    Image[]
   likes     Like[]
+  event     Event?    @relation(fields: [event_id], references: [id], onDelete: Cascade)
+  event_id  String?
 
   created DateTime @default(now())
   updated DateTime @default(now()) @updatedAt
 
   @@index([author_id])
+  @@index([event_id])
 }
 
 model Comment {
@@ -137,4 +142,26 @@ model Like {
 
   @@index([liked_by_id])
   @@index([post_id])
+}
+
+model Event {
+  id            String @id @default(cuid())
+  admin         User?  @relation(fields: [admin_id], references: [id], onDelete: Cascade)
+  admin_id      String?
+  name          String?
+  start_date    String?
+  end_date      String?
+  start_time    String?
+  end_time      String?
+  address       String?
+  lat           String?
+  lng           String?
+  description   String?
+  attendings    User[] @relation("event")
+  posts         Post[]
+
+  created DateTime @default(now())
+  updated DateTime @default(now()) @updatedAt
+
+  @@index([admin_id])
 }

@@ -1,9 +1,17 @@
 import { useMemo, useState } from 'react';
 import { GoogleMap, useLoadScript, MarkerF } from '@react-google-maps/api';
-import PlacesAutocomplete from './PlacesAutoconplete';
+import PlacesAutocomplete from './PlacesAutocomplete';
+import { places } from '@/utils/places';
 
-export default function Map({ places }) {
-  const [selected, setSelected] = useState(null);
+export default function Map({
+  width,
+  height,
+  placeholder,
+  selected,
+  setSelected,
+  setAddress,
+  search,
+}) {
   const center = useMemo(() => ({ lat: 59.293051, lng: 18.07679 }), []);
 
   const { isLoaded } = useLoadScript({
@@ -21,16 +29,28 @@ export default function Map({ places }) {
     return <div>Loading...</div>;
   }
   return (
-    <div>
-      <PlacesAutocomplete setSelected={setSelected} />
-      <GoogleMap
-        zoom={15}
-        center={selected !== null ? selected : center}
-        options={options}
-        mapContainerClassName='w-screen h-screen bg-slate-500'
-      >
-        {selected && <MarkerF position={selected} />}
-      </GoogleMap>
+    <div className='flex flex-col gap-6'>
+      {search && (
+        <PlacesAutocomplete
+          setSelected={setSelected}
+          placeholder={placeholder}
+          setAddress={setAddress}
+        />
+      )}
+      {selected && (
+        <GoogleMap
+          zoom={15}
+          center={selected !== null ? selected : center}
+          options={options}
+          mapContainerClassName={`${height} ${width} rounded-xl`}
+        >
+          {selected && <MarkerF position={selected} />}
+        </GoogleMap>
+      )}
     </div>
   );
 }
+
+Map.defaultProps = {
+  search: true,
+};
