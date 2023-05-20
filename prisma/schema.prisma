@@ -121,6 +121,8 @@ model Image {
   author_id String?
   post      Post?   @relation(fields: [post_id], references: [id], onDelete: Cascade)
   post_id   String?
+  event     Event?  @relation(fields: [event_id], references: [id], onDelete: Cascade)
+  event_id  String? @unique
   url       String
 
   created DateTime @default(now())
@@ -149,6 +151,7 @@ model Event {
   admin         User?  @relation(fields: [admin_id], references: [id], onDelete: Cascade)
   admin_id      String?
   name          String?
+  image         Image?
   start_date    String?
   end_date      String?
   start_time    String?

@@ -44,14 +44,26 @@ const Event = ({ event }) => {
   return (
     <section className='p-4 w-full'>
       <div>
-        <Image
-          src='https://img.freepik.com/free-vector/employee-marking-deadline-day-man-with-pencil-appointing-date-event-making-note-calendar-vector-illustration-schedule-agenda-time-management_74855-8347.jpg?w=2000&t=st=1684247023~exp=1684247623~hmac=908c558882f8adbb9fff5091df11cf306db9cf59aecebece9d18b2ca83de6110'
-          alt='evenemangsbild'
-          priority
-          height={300}
-          width={700}
-          className='h-96 w-full bg-slate-300'
-        />
+        {event.image ? (
+          <Image
+            src={event.image.url}
+            alt='evenemangsbild'
+            priority
+            height={300}
+            width={700}
+            className='h-96 w-full bg-slate-300'
+          />
+        ) : (
+          <Image
+            src='https://img.freepik.com/free-vector/employee-marking-deadline-day-man-with-pencil-appointing-date-event-making-note-calendar-vector-illustration-schedule-agenda-time-management_74855-8347.jpg?w=2000&t=st=1684247023~exp=1684247623~hmac=908c558882f8adbb9fff5091df11cf306db9cf59aecebece9d18b2ca83de6110'
+            alt='evenemangsbild'
+            priority
+            height={300}
+            width={700}
+            className='h-96 w-full bg-slate-300'
+          />
+        )}
+
         <div className='flex flex-col gap-2 p-2 border-b-2 mb-4'>
           <p className='font-bold text-lg'>
             {`${sDay} ${sDate} ${sMonth} ${sYear} Kl: ${startTime}`}{' '}
