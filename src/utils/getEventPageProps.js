@@ -34,6 +34,7 @@ const getEventPageProps = async (context) => {
           images: true,
         },
       },
+      image: true,
     },
   });
 

@@ -51,6 +51,16 @@ const eventHandler = async (req, res) => {
               description: eventInfo.description,
             },
           });
+          if (eventInfo.image) {
+            await prisma.image.update({
+              where: {
+                id: eventInfo.image,
+              },
+              data: {
+                event_id: createdEvent.id,
+              },
+            });
+          }
 
           return res.status(200).json(createdEvent);
 

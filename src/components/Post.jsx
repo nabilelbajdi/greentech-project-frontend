@@ -159,7 +159,7 @@ const Post = ({ post, posts, setPosts }) => {
       ) : (
         <>
           <p className='my-4'>{postText}</p>
-          {post.images && (
+          {post.images.length ? (
             <div className={`flex my-4`}>
               {post.images.map((image) => {
                 return (
@@ -174,7 +174,7 @@ const Post = ({ post, posts, setPosts }) => {
                 );
               })}
             </div>
-          )}
+          ) : null}
           <div className='flex justify-between text-xs px-8'>
             <p>{likes} gillar</p>
             <p>{nrOfComments} kommentarer</p>

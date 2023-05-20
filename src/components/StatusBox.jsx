@@ -44,7 +44,7 @@ const StatusBox = ({ posts, setPosts, eventId }) => {
       form.append('images', image);
     });
 
-    const response = await fetch('api/images', {
+    const response = await fetch('/api/images', {
       method: 'POST',
       body: form,
     });
