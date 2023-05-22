@@ -18,10 +18,14 @@ build:
     - merge_requests
     - main
 
-lint-test:
+lint:
   stage: lint
+  image: node:14
   script:
-    - echo "Running automated tests"
+    - npm ci
+    - npm install eslint eslint-plugin-react eslint-plugin-react-hooks eslint-plugin-import eslint-plugin-jsx-a11y eslint-config-next --save-dev
+    - npm run lint
+
 
 deploy-test:
   stage: deploy
