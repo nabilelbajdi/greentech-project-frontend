@@ -122,7 +122,7 @@ const Post = ({ post, posts, setPosts }) => {
   };
 
   return (
-    <div className='relative bg-gray-100 p-4 rounded-lg'>
+    <div className='relative rounded-2xl bg-gray-100 p-4 pb-0 shadow-md'>
       <div className='flex items-center gap-4 w-full mb-2'>
         {post.author.image && (
           <Image
@@ -158,7 +158,7 @@ const Post = ({ post, posts, setPosts }) => {
         </>
       ) : (
         <>
-          <p className='my-4'>{postText}</p>
+          <p className=' ml-1 my-4'>{postText}</p>
           {post.images.length ? (
             <div className={`flex my-4`}>
               {post.images.map((image) => {
@@ -175,9 +175,16 @@ const Post = ({ post, posts, setPosts }) => {
               })}
             </div>
           ) : null}
-          <div className='flex justify-between text-xs px-8'>
-            <p>{likes} gillar</p>
-            <p>{nrOfComments} kommentarer</p>
+          <div className='flex justify-between text-xs px-8 mb-1'>
+            <div className='flex items-center space-x-2'>
+              <div className=' rounded-full bg-red-600 outline-4 outline outline-red-600'>
+              <HeartIcon fill='true' className='h-4 w-4 fill-white text-white'/>
+              </div>
+            
+            <p className=' text-base'> {likes} </p>
+            </div>
+            
+            <p className=' text-base'>{nrOfComments} Kommentarer</p>
           </div>
           {/* if you are the author, and you are NOT in edit mode, you may edit the post */}
           {currentUser === post.author_id ? (
@@ -203,6 +210,7 @@ const Post = ({ post, posts, setPosts }) => {
                   <textarea
                     className='w-full h-20 rounded-lg p-2 resize-none mt-2'
                     ref={commentText}
+                    
                   />
                   <button
                     className='absolute top-4 right-4'
@@ -222,23 +230,29 @@ const Post = ({ post, posts, setPosts }) => {
           ) : (
             <div className='flex justify-between px-8 border-y-2 py-2 mb-4 border-gray-300'>
               {/* set edit state */}
+              <div className='w-1/2 flex justify-center'>
               <button
                 className='flex gap-2 items-center'
                 onClick={() => handleLike(post.id)}
               >
                 {likeStatus ? (
-                  <HeartIcon fill='true' className={`h-5 w-5`} />
+                  <HeartIcon fill='true' className={`h-5 w-5 fill-red-500 text-red-500`} />
                 ) : (
                   <HeartIcon className={`h-5 w-5`} />
                 )}
                 Gilla
               </button>
+              </div>
+              
+              <div className='w-1/2 flex justify-center'>
               <button
                 className='flex gap-2 items-center'
                 onClick={() => setReply(true)}
               >
                 <ChatIcon className='h-5 w-5' /> Kommentera
               </button>
+              </div>
+              
             </div>
           )}
         </>
@@ -246,7 +260,7 @@ const Post = ({ post, posts, setPosts }) => {
 
       {/* creating Comment components */}
       {comments.length !== 0 && (
-        <div className='flex flex-col gap-4 my-2'>
+        <div className='flex flex-col gap-4 my-2 mb-3'>
           {comments.map((comment) => (
             <Comment
               key={comment.id}

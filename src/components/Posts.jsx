@@ -8,10 +8,10 @@ const Posts = ({ posts, setPosts, eventId }) => {
   //move functons to a different file later
 
   return (
-    <section className='w-full flex flex-col items-center mt-6'>
-      <div className='flex flex-col'>
+    <section className='w-full flex flex-col py-2 p-3'>
+      <div className='flex flex-col m-auto w-full  md:w-[700px] space-y-5'>
         <StatusBox posts={posts} setPosts={setPosts} eventId={eventId} />
-        <div className='w-[700px] flex flex-col gap-6 text-slate-800 shadow-md p-4 rounded-md'>
+        <div className='flex flex-col gap-6 text-slate-800  rounded-md'>
           {posts.map((post) => {
             return (
               <Post

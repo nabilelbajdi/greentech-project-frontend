@@ -72,7 +72,7 @@ const StatusBox = ({ posts, setPosts, eventId }) => {
             <input
               type='text'
               ref={inputRef}
-              placeholder={`What's on your mind, ${session.user.name}?`}
+              placeholder={`Vad har du på hjärtat, ${session.user.name}?`}
               className=' rounded-full focus:outline-none h-12 bg-gray-100 flex-grow px-5 text-xs sm:text-base'
             />
             <button className='hidden' type='submit' onClick={handleNewPost}>
@@ -89,8 +89,9 @@ const StatusBox = ({ posts, setPosts, eventId }) => {
                   <Image
                     className='object-contain p-1 m-1'
                     key={idx}
-                    /* src={URL.createObjectURL(uploadImage)} */
                     src={URL.createObjectURL(image)}
+                   /* src={URL.createObjectURL(uploadImage)} */
+
                     alt='Image set to upload'
                     width={40}
                     height={40}
@@ -102,10 +103,6 @@ const StatusBox = ({ posts, setPosts, eventId }) => {
           )}
         </div>
         <div className=' justify-evenly flex p-3 border-t'>
-          <div className='inputIcon flex-col sm:flex-row'>
-            <VideoCameraIcon className=' h-7 text-red-500' />
-            <p className='text-xs sm:text-sm xl:text-base'>Live Video</p>
-          </div>
           <div
             className='inputIcon flex-col sm:flex-row'
             onClick={() => imageRef.current.click()}
@@ -125,8 +122,8 @@ const StatusBox = ({ posts, setPosts, eventId }) => {
               hidden
             />
           </div>
-          <div className='inputIcon flex-col sm:flex-row hidden sm:inline-flex'>
-            <EmojiHappyIcon className=' h-7 text-yellow-300' />
+          <div className='inputIcon flex-col sm:flex-row'>
+          <EmojiHappyIcon className=' h-7 text-yellow-300' />
             <p className='text-xs sm:text-sm xl:text-base'>Feeling/Activity</p>
           </div>
         </div>
