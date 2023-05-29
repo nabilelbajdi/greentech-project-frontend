@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import Posts from '@/components/Posts';
-import Sidebar from '@/components/Sidebar';
 import getHomePageProps from '@/utils/getHomePageProps';
+import FriendsWidget from '@/components/Widget';
 export const getServerSideProps = getHomePageProps;
 
 const Home = (props) => {
@@ -10,8 +10,8 @@ const Home = (props) => {
   return (
     <div className='w-full'>
       <main className='flex'>
-        <Sidebar />
         <Posts posts={posts} setPosts={setPosts} />
+        <FriendsWidget/>
       </main>
     </div>
   );

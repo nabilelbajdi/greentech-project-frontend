@@ -73,7 +73,7 @@ const Comment = ({
   };
 
   return (
-    <div className='flex items-center'>
+    <div className='flex items-center px-2 '>
       <Image
         src={comment.author.image}
         alt='author image'
@@ -82,7 +82,7 @@ const Comment = ({
         className='rounded-full mr-4'
       />
       <div className='flex flex-col w-full'>
-        <div className='relative w-full bg-white p-2 rounded-lg'>
+        <div className='relative w-fit bg-white p-2 px-4 rounded-3xl'>
           <div className={`flex justify-between ${edit && 'flex-col'}`}>
             <p className=' text-sm font-semibold'>{comment.author.name}</p>
             <div>
@@ -111,7 +111,7 @@ const Comment = ({
             </div>
           </div>
           {!edit && commentText}
-          <TimeStamp time={comment.created} />
+          {/* <TimeStamp time={comment.created} /> */}
         </div>
       </div>
     </div>
