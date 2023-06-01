@@ -14,9 +14,9 @@ build:
     - docker push $CI_REGISTRY_IMAGE:$CI_COMMIT_SHA
     - docker push $CI_REGISTRY_IMAGE:$CI_COMMIT_REF_SLUG
     - docker push $CI_REGISTRY_IMAGE:latest
-  only:
-    - merge_requests
-    - main
+#  only:
+#    - merge_requests
+#    - main
 
 lint:
   stage: lint
@@ -32,6 +32,6 @@ deploy-test:
   stage: deploy
   script:
     - echo "Deploying application"
-  only:
-    - merge_requests
-    - main
+#  only:
+#    - merge_requests
+#    - main
