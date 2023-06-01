@@ -1,6 +1,6 @@
 import Sidebar from '@/components/Sidebar';
 import Event from '@/components/Event';
-import getEventPageProps from '@/utils/getEventPageProps';
+import getEventPageProps from '@/utils/getEventSlugPageProps';
 export const getServerSideProps = getEventPageProps;
 
 const EventPage = (props) => {

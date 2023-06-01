@@ -3,56 +3,54 @@ import Image from 'next/image';
 import { useRef, useState } from 'react';
 import Calendar from './Calendar';
 import Map from './Map';
-import dayjs from 'dayjs';
 import { useRouter } from 'next/router';
+import Button from './Button';
 
-const EventCreator = ({ setNewEvent }) => {
+const DonationCreator = ({ newDonation, setNewDonation }) => {
   const { push } = useRouter();
   const { data: session } = useSession();
-  const eventName = useRef();
-  const description = useRef();
+  const donationName = useRef(null);
+  const description = useRef(null);
+  const category = useRef(null);
+  const condition = useRef(null);
   const imageRef = useRef(null);
 
   const [uploadImages, setUploadImages] = useState();
-  const [enableEndTime, setEnableEndTime] = useState(false);
-  const [startDate, setStartDate] = useState(null);
-  const [endDate, setEndDate] = useState(null);
-  const [startTime, setStartTime] = useState(null);
-  const [endTime, setEndTime] = useState(null);
+  const [date, setDate] = useState(null);
+  const [time, setTime] = useState(null);
   const [selected, setSelected] = useState(null);
   const [address, setAddress] = useState(null);
 
-  const createEvent = async () => {
+  const createDonation = async () => {
     let image;
     if (uploadImages) {
       image = await handleUploadImages();
     }
-    const eventInfo = {
-      name: eventName.current.value,
+    const donationInfo = {
+      name: donationName.current.value,
+      description: description.current.value,
+      category: category.current.value,
+      condition: condition.current.value,
       image: uploadImages && image[0],
-      startDate: startDate,
-      startTime: startTime,
-      endDate: endDate,
-      endTime: endTime,
-      address: address.formatted_address,
+      pickUpTime: time,
+      pickUpDate: date,
+      pickUpLocation: address.formatted_address,
       lat: selected.lat.toString(),
       lng: selected.lng.toString(),
-      description: description.current.value,
     };
 
-    const response = await fetch('/api/prisma/events', {
+    const response = await fetch('/api/prisma/donations', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ eventInfo }),
+      body: JSON.stringify({ donationInfo }),
     });
 
     const data = await response.json();
-    push(`/events/${data.id}`);
+    push(`/donations/${data.id}`);
   };
 
   const handleSubmit = (e) => {
-    createEvent();
-
+    createDonation();
     e.preventDefault();
   };
 
@@ -74,7 +72,7 @@ const EventCreator = ({ setNewEvent }) => {
   return (
     <div
       className='fixed top-0 flex flex-col items-center justify-center p-10 h-screen w-screen z-50 bg-gray-900 bg-opacity-60'
-      onClick={(e) => (setNewEvent(false), e.stopPropagation())}
+      onClick={(e) => (setNewDonation(false), e.stopPropagation())}
     >
       <form
         className='flex flex-col rounded-lg items-center h-full w-1/2 bg-white overflow-y-scroll'
@@ -82,22 +80,22 @@ const EventCreator = ({ setNewEvent }) => {
         onSubmit={(e) => handleSubmit(e)}
       >
         <h1 className='border-b-2 mt-4 w-full pb-4 text-center text-xl font-bold'>
-          Skapa evenemang
+          Skapa donation
         </h1>
         {/* Image upload goes here */}
         <div className='relative h-68 w-full bg-gray-200'>
           {uploadImages ? (
             <Image
               src={URL.createObjectURL(uploadImages[0])}
-              alt='evenemangsbild'
+              alt='donationsbild'
               height={300}
               width={500}
               className='w-full h-full'
             />
           ) : (
             <Image
-              src='https://img.freepik.com/free-vector/employee-marking-deadline-day-man-with-pencil-appointing-date-event-making-note-calendar-vector-illustration-schedule-agenda-time-management_74855-8347.jpg?w=2000&t=st=1684247023~exp=1684247623~hmac=908c558882f8adbb9fff5091df11cf306db9cf59aecebece9d18b2ca83de6110'
-              alt='evenemangsbild'
+              src='https://img.freepik.com/free-vector/flat-hand-drawn-clothing-donation-illustration-with-people_23-2148830041.jpg?w=1800&t=st=1685454523~exp=1685455123~hmac=5634d24e33bf8be7383bf3ff61f2a0196d355251f5dfd4bb6d3d185185bf4095'
+              alt='donationssbild'
               height={300}
               width={500}
               className='w-full h-full'
@@ -109,7 +107,7 @@ const EventCreator = ({ setNewEvent }) => {
             type='button'
             onClick={() => imageRef.current.click()}
           >
-            Lägg till omslagsfoto
+            Lägg till bild
           </button>
 
           <input
@@ -136,51 +134,52 @@ const EventCreator = ({ setNewEvent }) => {
             />
             <div>
               <p className='font-semibold'>{session.user.name}</p>
-              <p className=' text-sm'>Värd</p>
+              <p className=' text-sm'>Donerad av</p>
             </div>
           </div>
-          {/* Name */}
+          {/* Title, category, condition */}
           <input
             type='text'
-            placeholder='Evenemangets namn'
+            placeholder='Titel'
             className='px-2 py-4 border-2 rounded-lg'
-            ref={eventName}
+            ref={donationName}
           />
+          <div className='flex items-center justify-center gap-10 px-4'>
+            <div className='flex flex-col w-full'>
+              <label htmlFor='category'>Kategori</label>
+              <select id='category' required ref={category}>
+                <option value='Kläder'>Kläder</option>
+                <option value='Leksaker'>Leksaker</option>
+                <option value='Möbler'>Möbler</option>
+                <option value='Inredning'>Inredning</option>
+                <option value='Fordon'>Fordon</option>
+              </select>
+            </div>
+            <div className='flex flex-col w-full'>
+              <label htmlFor='condition'>Skick</label>
+              <select id='condition' required ref={condition}>
+                <option value='Ny'>Ny</option>
+                <option value='Använd fåtal gånger'>
+                  Använd fåtal gånger (1-3)
+                </option>
+                <option value='Använd'>Använd</option>
+                <option value='Sliten'>Sliten</option>
+              </select>
+            </div>
+          </div>
+
           {/* Date & time */}
           <div className='flex flex-col items-start gap-2 w-full'>
             <Calendar
-              datumText={'Startdatum'}
-              tidText={'Starttid'}
-              setSelectedDate={setStartDate}
-              setSelectedTime={setStartTime}
+              datumText={'Datum för upphämtning'}
+              tidText={'Tid för upphämtning'}
+              setSelectedDate={setDate}
+              setSelectedTime={setTime}
             />
-            {enableEndTime ? (
-              <>
-                <Calendar
-                  datumText={'SlutDatum'}
-                  tidText={'Sluttid'}
-                  setSelectedDate={setEndDate}
-                  setSelectedTime={setEndTime}
-                />
-                <button
-                  className='hover:text-green-500'
-                  onClick={() => setEnableEndTime(!enableEndTime)}
-                >
-                  - Ta bort slutdatum och tid
-                </button>
-              </>
-            ) : (
-              <button
-                className='hover:text-green-500'
-                onClick={() => setEnableEndTime(!enableEndTime)}
-              >
-                + Lägg till slutdatum och tid
-              </button>
-            )}
           </div>
           {/* Address & lat/lng */}
           <Map
-            placeholder={'Lägg till plats'}
+            placeholder={'Plats för upphämtning'}
             height='h-96'
             width='w-full'
             selected={selected}
@@ -190,13 +189,13 @@ const EventCreator = ({ setNewEvent }) => {
           {/* Description text */}
           <textarea
             className='px-2 py-4 border-2 rounded-lg w-full h-60 resize-none'
-            placeholder='Vad mer behöver man veta?'
+            placeholder='Detaljer om donationen?'
             ref={description}
           />
         </div>
-        <div className='sticky z-10 bottom-0 w-full bg-white-200 p-1'>
+        <div className='sticky flex justify-center z-10 bottom-0 w-full bg-white-200 p-1'>
           <button className='p-4 bg-chas-gradient-primary rounded-xl w-full hover:bg-chas-gradient-secondary text-white'>
-            Skapa evenemang
+            Skapa donation
           </button>
         </div>
       </form>
@@ -204,4 +203,4 @@ const EventCreator = ({ setNewEvent }) => {
   );
 };
 
-export default EventCreator;
+export default DonationCreator;

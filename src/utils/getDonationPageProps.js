@@ -4,7 +4,7 @@ import prisma from '../../server/db/prisma';
 
 // All props to the event pages goes here
 
-const getEventPageProps = async (context) => {
+const getDonationPageProps = async (context) => {
   const session = await getServerSession(context.req, context.res, authOptions);
   if (!session) {
     return {
@@ -24,21 +24,21 @@ const getEventPageProps = async (context) => {
     };
   }
 
-  const events = await prisma.event.findMany({
+  const donations = await prisma.donation.findMany({
     orderBy: {
       created: 'desc',
     },
     include: {
-      admin: { select: { firstName: true, lastName: true, image: true } },
-      image: true,
+      user: { select: { firstName: true, lastName: true, image: true } },
+      images: true,
     },
   });
 
   return {
     props: {
       session,
-      events: JSON.parse(JSON.stringify(events)),
+      donations: JSON.parse(JSON.stringify(donations)),
     },
   };
 };
-export default getEventPageProps;
+export default getDonationPageProps;

@@ -38,7 +38,7 @@ const PlacesAutocomplete = ({ setSelected, placeholder, setAddress }) => {
         className='px-2 py-4 border-2 rounded-lg w-full'
         placeholder={placeholder}
       />
-      <ComboboxPopover className='z-20'>
+      <ComboboxPopover className='z-50'>
         <ComboboxList className='bg-white text-black p-2 z-20'>
           {status === 'OK' &&
             data.map(({ place_id, description }) => (

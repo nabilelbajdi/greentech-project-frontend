@@ -15,21 +15,25 @@ const getEventPageProps = async (context) => {
     };
   }
 
-  if (!session.user.fullyRegistered) {
-    return {
-      redirect: {
-        destination: '/register',
-        permanent: false,
-      },
-    };
-  }
+  const slug = context.query.slug;
 
-  const events = await prisma.event.findMany({
-    orderBy: {
-      created: 'desc',
-    },
+  const event = await prisma.event.findUnique({
+    where: { id: slug },
     include: {
-      admin: { select: { firstName: true, lastName: true, image: true } },
+      admin: { select: { name: true, image: true } },
+      posts: {
+        orderBy: {
+          created: 'desc',
+        },
+        include: {
+          comments: {
+            include: { author: { select: { name: true, image: true } } },
+          },
+          author: { select: { name: true, image: true } },
+          likes: true,
+          images: true,
+        },
+      },
       image: true,
     },
   });
@@ -37,7 +41,7 @@ const getEventPageProps = async (context) => {
   return {
     props: {
       session,
-      events: JSON.parse(JSON.stringify(events)),
+      event: JSON.parse(JSON.stringify(event)),
     },
   };
 };

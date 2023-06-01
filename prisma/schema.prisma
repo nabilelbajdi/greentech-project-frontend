@@ -72,6 +72,7 @@ model User {
   liked_posts                Like[]
   eventsCreated              Event[]
   attendingEvents            Event[] @relation("event")
+  donations                  Donation[]
 }
 
 model VerificationToken {
@@ -116,17 +117,19 @@ model Comment {
 }
 
 model Image {
-  id        String  @id @default(cuid())
-  author    User?   @relation(fields: [author_id], references: [id], onDelete: Cascade)
-  author_id String?
-  post      Post?   @relation(fields: [post_id], references: [id], onDelete: Cascade)
-  post_id   String?
-  event     Event?  @relation(fields: [event_id], references: [id], onDelete: Cascade)
-  event_id  String? @unique
-  url       String
+  id           String  @id @default(cuid())
+  author       User?   @relation(fields: [author_id], references: [id], onDelete: Cascade)
+  author_id    String?
+  post         Post?   @relation(fields: [post_id], references: [id], onDelete: Cascade)
+  post_id      String?
+  event        Event?  @relation(fields: [event_id], references: [id], onDelete: Cascade)
+  event_id     String? @unique
+  donation     Donation?  @relation(fields: [donation_id], references: [id], onDelete: Cascade)
+  donation_id  String? @unique
+  url          String
 
-  created DateTime @default(now())
-  updated DateTime @default(now()) @updatedAt
+  created      DateTime @default(now())
+  updated      DateTime @default(now()) @updatedAt
 
   @@index([author_id])
   @@index([post_id])
@@ -167,4 +170,25 @@ model Event {
   updated DateTime @default(now()) @updatedAt
 
   @@index([admin_id])
+}
+
+model Donation {
+  id              String @id @default(cuid())
+  user            User?  @relation(fields: [user_id], references: [id], onDelete: Cascade)
+  user_id         String?
+  name            String?
+  description     String?
+  category        String?
+  condition       String?
+  pickUpLocation  String?
+  lat             String?
+  lng             String?
+  pickUpTime      String?
+  pickUpDate      String?
+  images          Image[]
+
+  created DateTime @default(now())
+  updated DateTime @default(now()) @updatedAt
+
+  @@index([user_id])
 }
