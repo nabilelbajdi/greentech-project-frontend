@@ -4,7 +4,7 @@ import { CameraIcon, VideoCameraIcon } from '@heroicons/react/solid';
 import { EmojiHappyIcon } from '@heroicons/react/outline';
 import { useRef, useState } from 'react';
 
-const StatusBox = ({ posts, setPosts }) => {
+const StatusBox = ({ posts, setPosts, eventId }) => {
   const inputRef = useRef(null);
   const imageRef = useRef(null);
   const [uploadImages, setUploadImages] = useState();
@@ -24,7 +24,7 @@ const StatusBox = ({ posts, setPosts }) => {
     const response = await fetch('/api/prisma/posts', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ text: text, images }),
+      body: JSON.stringify({ text: text, images, event_id: eventId }),
     });
     if (response.status !== 200) {
       console.log('something went wrong');
@@ -44,7 +44,7 @@ const StatusBox = ({ posts, setPosts }) => {
       form.append('images', image);
     });
 
-    const response = await fetch('api/images', {
+    const response = await fetch('/api/images', {
       method: 'POST',
       body: form,
     });
@@ -72,7 +72,7 @@ const StatusBox = ({ posts, setPosts }) => {
             <input
               type='text'
               ref={inputRef}
-              placeholder={`What's on your mind, ${session.user.name}?`}
+              placeholder={`Vad har du på hjärtat, ${session.user.name}?`}
               className=' rounded-full focus:outline-none h-12 bg-gray-100 flex-grow px-5 text-xs sm:text-base'
             />
             <button className='hidden' type='submit' onClick={handleNewPost}>
@@ -89,8 +89,9 @@ const StatusBox = ({ posts, setPosts }) => {
                   <Image
                     className='object-contain p-1 m-1'
                     key={idx}
-                    /* src={URL.createObjectURL(uploadImage)} */
                     src={URL.createObjectURL(image)}
+                   /* src={URL.createObjectURL(uploadImage)} */
+
                     alt='Image set to upload'
                     width={40}
                     height={40}
@@ -102,10 +103,6 @@ const StatusBox = ({ posts, setPosts }) => {
           )}
         </div>
         <div className=' justify-evenly flex p-3 border-t'>
-          <div className='inputIcon flex-col sm:flex-row'>
-            <VideoCameraIcon className=' h-7 text-red-500' />
-            <p className='text-xs sm:text-sm xl:text-base'>Live Video</p>
-          </div>
           <div
             className='inputIcon flex-col sm:flex-row'
             onClick={() => imageRef.current.click()}
@@ -125,8 +122,8 @@ const StatusBox = ({ posts, setPosts }) => {
               hidden
             />
           </div>
-          <div className='inputIcon flex-col sm:flex-row hidden sm:inline-flex'>
-            <EmojiHappyIcon className=' h-7 text-yellow-300' />
+          <div className='inputIcon flex-col sm:flex-row'>
+          <EmojiHappyIcon className=' h-7 text-yellow-300' />
             <p className='text-xs sm:text-sm xl:text-base'>Feeling/Activity</p>
           </div>
         </div>

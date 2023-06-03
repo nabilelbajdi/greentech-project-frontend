@@ -15,7 +15,6 @@ const getProps = async (context) => {
     };
   }
 
-  const authorId = session.user.id;
   const posts = await prisma.post.findMany({
     orderBy: {
       created: 'desc',
@@ -28,21 +27,10 @@ const getProps = async (context) => {
     },
   });
 
-  const comments = await prisma.post.findMany({
-    where: {
-      author_id: authorId,
-    },
-    include: {
-      comments: true,
-    },
-  });
-
   return {
     props: {
       session,
       posts: JSON.parse(JSON.stringify(posts)),
-      comments: JSON.parse(JSON.stringify(comments)),
-      authorId: JSON.parse(JSON.stringify(authorId)),
     },
   };
 };
@@ -51,7 +39,7 @@ export const getServerSideProps = getProps;
 const TestPosts = (props) => {
   const [posts, setPosts] = useState(props.posts);
 
-  return <Posts posts={posts} setPosts={setPosts} authorId={props.authorId} />;
+  return <Posts posts={posts} setPosts={setPosts} />;
 };
 
 export default TestPosts;

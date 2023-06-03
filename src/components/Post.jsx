@@ -1,10 +1,11 @@
-import { useEffect, useRef, useState } from 'react';
+import { useRef, useState } from 'react';
 import Comment from './Comment';
 import Image from 'next/image';
 import { ChatIcon, HeartIcon } from '@heroicons/react/outline';
 import TimeStamp from './TimeStamp';
+import { useSession } from 'next-auth/react';
 
-const Post = ({ post, posts, setPosts, authorId, likedByUser }) => {
+const Post = ({ post, posts, setPosts }) => {
   const [edit, setEdit] = useState(false);
   const [reply, setReply] = useState(false);
   const [postText, setPostText] = useState(post.text);
@@ -13,7 +14,16 @@ const Post = ({ post, posts, setPosts, authorId, likedByUser }) => {
   const commentText = useRef();
   const [nrOfComments, setNrOfComments] = useState(post.comments.length);
   const [likes, setLikes] = useState(post.likes.length);
-  const [likeStatus, setLikeStatus] = useState(likedByUser);
+  const { data: session } = useSession();
+  const currentUser = session.user.id;
+
+  //checks to see if the logged in user already liked the post
+  let alreadyLiked = post.likes.filter(
+    (like) => like.liked_by_id === session.user.id
+  );
+  const [likeStatus, setLikeStatus] = useState(
+    alreadyLiked.length === 1 ? true : false
+  );
 
   const editPost = async (postId) => {
     setEdit(!edit);
@@ -112,7 +122,7 @@ const Post = ({ post, posts, setPosts, authorId, likedByUser }) => {
   };
 
   return (
-    <div className='relative bg-green-100 p-4 rounded-lg'>
+    <div className='relative rounded-2xl bg-gray-100 p-4 pb-0 shadow-md'>
       <div className='flex items-center gap-4 w-full mb-2'>
         {post.author.image && (
           <Image
@@ -131,7 +141,7 @@ const Post = ({ post, posts, setPosts, authorId, likedByUser }) => {
       {edit ? (
         <>
           {/* if you are the author, and you are in edit mode, you may save the edits done to the post */}
-          {authorId === post.author_id && (
+          {currentUser === post.author_id && (
             <>
               <button
                 className='absolute top-4 right-12'
@@ -148,8 +158,8 @@ const Post = ({ post, posts, setPosts, authorId, likedByUser }) => {
         </>
       ) : (
         <>
-          <p className='my-4'>{postText}</p>
-          {post.images && (
+          <p className=' ml-1 my-4'>{postText}</p>
+          {post.images.length ? (
             <div className={`flex my-4`}>
               {post.images.map((image) => {
                 return (
@@ -164,13 +174,20 @@ const Post = ({ post, posts, setPosts, authorId, likedByUser }) => {
                 );
               })}
             </div>
-          )}
-          <div className='flex justify-between text-xs px-8'>
-            <p>{likes} gillar</p>
-            <p>{nrOfComments} kommentarer</p>
+          ) : null}
+          <div className='flex justify-between text-xs px-8 mb-1'>
+            <div className='flex items-center space-x-2'>
+              <div className=' rounded-full bg-red-600 outline-4 outline outline-red-600'>
+              <HeartIcon fill='true' className='h-4 w-4 fill-white text-white'/>
+              </div>
+            
+            <p className=' text-base'> {likes} </p>
+            </div>
+            
+            <p className=' text-base'>{nrOfComments} Kommentarer</p>
           </div>
           {/* if you are the author, and you are NOT in edit mode, you may edit the post */}
-          {authorId === post.author_id ? (
+          {currentUser === post.author_id ? (
             <>
               <button
                 className='absolute top-4 right-12'
@@ -188,11 +205,12 @@ const Post = ({ post, posts, setPosts, authorId, likedByUser }) => {
           ) : reply ? (
             <>
               {/* if you're NOT the author you may only reply to the post */}
-              {authorId !== post.author_id && (
+              {currentUser !== post.author_id && (
                 <div className='relative'>
                   <textarea
                     className='w-full h-20 rounded-lg p-2 resize-none mt-2'
                     ref={commentText}
+                    
                   />
                   <button
                     className='absolute top-4 right-4'
@@ -210,25 +228,31 @@ const Post = ({ post, posts, setPosts, authorId, likedByUser }) => {
               )}
             </>
           ) : (
-            <div className='flex justify-between px-8 border-y-2 py-2 mb-4 border-green-300'>
+            <div className='flex justify-between px-8 border-y-2 py-2 mb-4 border-gray-300'>
               {/* set edit state */}
+              <div className='w-1/2 flex justify-center'>
               <button
                 className='flex gap-2 items-center'
                 onClick={() => handleLike(post.id)}
               >
                 {likeStatus ? (
-                  <HeartIcon fill='true' className={`h-5 w-5`} />
+                  <HeartIcon fill='true' className={`h-5 w-5 fill-red-500 text-red-500`} />
                 ) : (
                   <HeartIcon className={`h-5 w-5`} />
                 )}
                 Gilla
               </button>
+              </div>
+              
+              <div className='w-1/2 flex justify-center'>
               <button
                 className='flex gap-2 items-center'
                 onClick={() => setReply(true)}
               >
                 <ChatIcon className='h-5 w-5' /> Kommentera
               </button>
+              </div>
+              
             </div>
           )}
         </>
@@ -236,7 +260,7 @@ const Post = ({ post, posts, setPosts, authorId, likedByUser }) => {
 
       {/* creating Comment components */}
       {comments.length !== 0 && (
-        <div className='flex flex-col gap-4 my-2'>
+        <div className='flex flex-col gap-4 my-2 mb-3'>
           {comments.map((comment) => (
             <Comment
               key={comment.id}
@@ -244,6 +268,7 @@ const Post = ({ post, posts, setPosts, authorId, likedByUser }) => {
               setComments={setComments}
               comments={comments}
               setNrOfComments={setNrOfComments}
+              author={post.author}
             />
           ))}
         </div>

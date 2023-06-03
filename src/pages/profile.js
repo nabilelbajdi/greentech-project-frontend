@@ -1,43 +1,40 @@
-import Sidebar from "@/components/Sidebar";
-import ProfileFeed from "@/components/ProfileFeed";
+import Sidebar from '@/components/Sidebar';
+import ProfileFeed from '@/components/ProfileFeed';
 import { PrismaClient } from '@prisma/client';
 import { getServerSession } from 'next-auth';
 import { authOptions } from '../pages/api/auth/[...nextauth]';
 
 const getProps = async (context) => {
-    const session = await getServerSession(context.req, context.res, authOptions);
-    const prisma = new PrismaClient()
-    const posts = await prisma.post.findMany(
+  const session = await getServerSession(context.req, context.res, authOptions);
+  const prisma = new PrismaClient();
+  const posts = await prisma.post.findMany();
 
-
-    )
-  
-    if (!session) {
-      return {
-        redirect: {
-          destination: '/api/auth/signin',
-          permanent: false,
-        },
-      };
-    }
-  
+  if (!session) {
     return {
-      props: {
-        session,
-        posts: JSON.parse(JSON.stringify(posts)),
+      redirect: {
+        destination: '/api/auth/signin',
+        permanent: false,
       },
     };
+  }
+
+  return {
+    props: {
+      session,
+      posts: JSON.parse(JSON.stringify(posts)),
+    },
   };
-  export const getServerSideProps = getProps;
+};
+export const getServerSideProps = getProps;
 
-  const Profile = ({posts}) => {
-    return (  
-        <div className="flex">
-        <Sidebar/>
-        <ProfileFeed/>
-        </div>
-    );
-}
+const Profile = ({ posts }) => {
+  const places = ['places'];
+  return (
+    <div className='flex'>
+      <Sidebar />
+      <ProfileFeed places={places} />
+    </div>
+  );
+};
 
- 
 export default Profile;
