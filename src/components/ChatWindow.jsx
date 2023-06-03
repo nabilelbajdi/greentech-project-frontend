@@ -67,7 +67,7 @@ const ChatWindow = ({ conversation, openConversations, setOpenConversations }) =
     useEffect(() => { scrollRef.current.scrollIntoView(); }, [openConversations])
 
     return (
-        <div className="h-96 w-72 z-10 rounded-t-xl overflow-hidden mx-2 border border-slate-600">
+        <div className="h-96 w-72 z-50 rounded-t-xl overflow-hidden mx-2 border border-slate-600">
             <div className="grid grid-rows-[1.5rem_auto_3rem] w-full h-full px-2 pt-2 bg-slate-500">
                 <div className="flex justify-between text-chas-primary text-sm">
                     {conversation.displayName}

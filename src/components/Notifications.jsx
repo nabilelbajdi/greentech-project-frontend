@@ -1,6 +1,5 @@
 import { useState } from 'react'
-import { MdNotifications } from 'react-icons/md'
-
+import { BellIcon } from '@heroicons/react/outline';
 
 const Notifications = ({ setDropdown }) => {
 
@@ -34,7 +33,7 @@ const Notifications = ({ setDropdown }) => {
             })
         }}>
             <div className='relative'>
-                <MdNotifications className={`text-2xl hover:text-green-500 text-gray-500`} />
+                <BellIcon className='headerIcon' />
                 {renderUnseen && <div className='absolute flex justify-center items-center -top-2 -right-2 text-red-400 font-bold rounded-full bg-gray-300 h-5 w-5'>
                     {renderUnseen}
                 </div>}

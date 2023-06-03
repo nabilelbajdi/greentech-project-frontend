@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { RiMessengerFill } from 'react-icons/Ri'
 import ChatWindow from './ChatWindow';
+import { ChatAlt2Icon } from '@heroicons/react/outline';
 
 const Messenger = ({ setDropdown, openConversations, setOpenConversations }) => {
 
@@ -22,26 +23,29 @@ const Messenger = ({ setDropdown, openConversations, setOpenConversations }) => 
         <>
             <button>
                 <div className='relative'>
-                    <RiMessengerFill onClick={() => {
-                        setDropdown((dropdown) => {
-                            if (dropdown === 'conversations') {
+                    <ChatAlt2Icon
+                        className='headerIcon'
+                        onClick={() => {
+                            setDropdown((dropdown) => {
+                                if (dropdown === 'conversations') {
 
-                                return '';
+                                    return '';
 
-                            } else {
+                                } else {
 
-                                return 'conversations'
+                                    return 'conversations'
 
-                            }
-                        })
-                    }} className={`text-2xl hover:text-green-500 text-gray-500`} />
+                                }
+                            })
+                        }} />
                     {renderUnseen && <div className='absolute flex justify-center items-center -top-2 -right-2 text-red-400 font-bold rounded-full bg-gray-300 h-5 w-5'>
                         {renderUnseen}
                     </div>}
                 </div>
             </button>
-            <div className='flex justify-end w-5/6 mx-12 fixed bottom-0 '>
+            <div className='flex justify-end w-full px-2 fixed left-0 bottom-0 '>
                 {openConversations.map((convo, index) => {
+                    console.log(convo)
                     return (
                         <ChatWindow key={`messenger${index}`} conversation={convo} setOpenConversations={setOpenConversations} openConversations={openConversations} />
                     )
