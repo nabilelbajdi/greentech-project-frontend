@@ -7,8 +7,14 @@ const EventPage = (props) => {
   return (
     <div className='w-full'>
       <main className='flex'>
-        <Sidebar />
-        <Event event={props.event} />
+        {props.event ? (
+          <>
+            <Sidebar />
+            <Event event={props.event} />
+          </>
+        ) : (
+          <h1>Evenemanget existerar inte</h1>
+        )}
       </main>
     </div>
   );

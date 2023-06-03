@@ -14,9 +14,10 @@ build:
     - docker push $CI_REGISTRY_IMAGE:$CI_COMMIT_SHA
     - docker push $CI_REGISTRY_IMAGE:$CI_COMMIT_REF_SLUG
     - docker push $CI_REGISTRY_IMAGE:latest
-  only:
-    - merge_requests
-    - main
+  rules: # Comment out to run pipeline
+    - exists: # Comment out to run pipeline
+      - $SKIP_BUILD # Comment out to run pipeline
+
 
 lint:
   stage: lint
@@ -26,12 +27,15 @@ lint:
     - npm install eslint eslint-plugin-react eslint-plugin-react-hooks eslint-plugin-import eslint-plugin-jsx-a11y eslint-config-next --save-dev
     - npm run lint
   allow_failure: true
+#  rules: # Comment out to run pipeline
+#    - exists: # Comment out to run pipeline
+#      - $SKIP_LINT # Comment out to run pipeline
 
-
+# Placeholder
 deploy-test:
   stage: deploy
   script:
     - echo "Deploying application"
-  only:
-    - merge_requests
-    - main
+  rules: # Comment out to run pipeline
+    - exists: # Comment out to run pipeline
+      - $SKIP_DEPLOY # Comment out to run pipeline
