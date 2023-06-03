@@ -1,7 +1,12 @@
 import Image from 'next/image';
 import socket from "@/socket";
+import { useContext } from 'react';
+import { SocketContext } from '@/context';
 
-const Conversation = ({ conversation, openConversations, setOpenConversations, setDropdown }) => {
+
+const Conversation = ({ conversation }) => {
+
+    const { openConversations } = useContext(SocketContext);
 
     const openConversation = async (userPath) => {
 

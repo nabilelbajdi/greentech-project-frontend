@@ -1,12 +1,14 @@
 import socket from "@/socket";
 import io from 'socket.io-client'
 import { useSession, getSession, } from "next-auth/react";
-import { useEffect } from "react";
+import { useContext, useEffect } from "react";
+import { SocketContext } from "@/context";
 
 let firstRender = true;
 
-const Socket = ({ openConversations, conversationsList, setOpenConversations, setConversationsList, setDropdown }) => {
+const Socket = ({ conversationsList, setConversationsList, setDropdown }) => {
     const { data: session, update } = useSession();
+    const { openConversations, setOpenConversations } = useContext(SocketContext);
 
     const socketInitializer = async () => {
 
