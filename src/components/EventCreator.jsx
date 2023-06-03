@@ -29,7 +29,7 @@ const EventCreator = ({ setNewEvent }) => {
     }
     const eventInfo = {
       name: eventName.current.value,
-      image: image[0],
+      image: uploadImages && image[0],
       startDate: startDate,
       startTime: startTime,
       endDate: endDate,
