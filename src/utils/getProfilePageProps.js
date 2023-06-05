@@ -28,9 +28,13 @@ const getProfilePageProps = async (context) => {
         },
         include: {
           comments: {
-            include: { author: { select: { name: true, image: true } } },
+            include: {
+              author: {
+                select: { firstName: true, lastName: true, image: true },
+              },
+            },
           },
-          author: { select: { name: true, image: true } },
+          author: { select: { firstName: true, lastName: true, image: true } },
           likes: true,
           images: true,
         },

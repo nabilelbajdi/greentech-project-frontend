@@ -84,7 +84,9 @@ const Comment = ({
       <div className='flex flex-col w-full'>
         <div className='relative w-fit bg-white p-2 px-4 rounded-3xl'>
           <div className={`flex justify-between ${edit && 'flex-col'}`}>
-            <p className=' text-sm font-semibold'>{comment.author.name}</p>
+            <p className=' text-sm font-semibold'>
+              {comment.author.firstName + ' ' + comment.author.lastName}
+            </p>
             <div>
               {comment.author_id === session.user.id &&
                 (edit ? (

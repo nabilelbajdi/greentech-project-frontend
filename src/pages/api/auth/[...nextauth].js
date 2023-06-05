@@ -15,53 +15,45 @@ export const authOptions = {
   ],
   callbacks: {
     async session({ session, user }) {
-
       if (session.user) {
         session.user.id = user.id;
+        session.user.firstName = user.firstName;
+        session.user.lastName = user.lastName;
 
         let createToken = false;
 
         if (!session.user.jwtToken) {
-
           createToken = true;
-
         } else {
-
-          jwt.verify(session.user.jwtToken, process.env.JWT_SECRET, (err, data) => {
-
-            if (err) {
-
-              createToken = true;
-
+          jwt.verify(
+            session.user.jwtToken,
+            process.env.JWT_SECRET,
+            (err, data) => {
+              if (err) {
+                createToken = true;
+              }
             }
-
-          })
-
+          );
         }
 
         if (createToken) {
-
-          const token = jwt.sign({ userId: user.id }, process.env.JWT_SECRET, { expiresIn: 60 });
+          const token = jwt.sign({ userId: user.id }, process.env.JWT_SECRET, {
+            expiresIn: 60,
+          });
           session.user.jwtToken = token;
-
         }
 
         if (!session.user.fullyRegistered) {
-
           const registeredUser = await prisma.user.findUnique({
             where: {
-              id: user.id
-            }
-          })
+              id: user.id,
+            },
+          });
 
           if (!registeredUser.fullyRegistered) {
-
             session.user.fullyRegistered = null;
-
           } else {
-
             session.user.fullyRegistered = registeredUser.fullyRegistered;
-
           }
         }
       }

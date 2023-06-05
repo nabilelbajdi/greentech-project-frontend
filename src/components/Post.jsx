@@ -133,7 +133,7 @@ const Post = ({ post, posts, setPosts }) => {
           />
         )}
         <div className='flex flex-col'>
-          <p>{post.author.name}</p>
+          <p>{post.author.firstName + ' ' + post.author.lastName}</p>
           <TimeStamp time={post.created} />
         </div>
       </div>
@@ -189,7 +189,7 @@ const Post = ({ post, posts, setPosts }) => {
             <p className=' text-base'>{nrOfComments} Kommentarer</p>
           </div>
           {/* if you are the author, and you are NOT in edit mode, you may edit the post */}
-          {currentUser === post.author_id ? (
+          {currentUser === post.author_id && (
             <>
               <button
                 className='absolute top-4 right-12'
@@ -204,60 +204,58 @@ const Post = ({ post, posts, setPosts }) => {
                 X
               </button>
             </>
-          ) : reply ? (
-            <>
-              {/* if you're NOT the author you may only reply to the post */}
-              {currentUser !== post.author_id && (
-                <div className='relative'>
-                  <textarea
-                    className='w-full h-20 rounded-lg p-2 resize-none mt-2'
-                    ref={commentText}
-                  />
-                  <button
-                    className='absolute top-4 right-4'
-                    onClick={() => setReply(!reply)}
-                  >
-                    X
-                  </button>
-                  <button
-                    className='absolute bottom-4 right-4'
-                    onClick={() => handleNewComment(post.id)}
-                  >
-                    Send
-                  </button>
-                </div>
-              )}
-            </>
-          ) : (
-            <div className='flex justify-between px-8 border-y-2 py-2 mb-4 border-gray-300'>
-              {/* set edit state */}
-              <div className='w-1/2 flex justify-center'>
-                <button
-                  className='flex gap-2 items-center'
-                  onClick={() => handleLike(post.id)}
-                >
-                  {likeStatus ? (
-                    <HeartIcon
-                      fill='true'
-                      className={`h-5 w-5 fill-red-500 text-red-500`}
-                    />
-                  ) : (
-                    <HeartIcon className={`h-5 w-5`} />
-                  )}
-                  Gilla
-                </button>
-              </div>
-
-              <div className='w-1/2 flex justify-center'>
-                <button
-                  className='flex gap-2 items-center'
-                  onClick={() => setReply(true)}
-                >
-                  <ChatIcon className='h-5 w-5' /> Kommentera
-                </button>
-              </div>
-            </div>
           )}
+          {reply && (
+            // Reply mode
+            <>
+              <div className='relative'>
+                <textarea
+                  className='w-full h-20 rounded-lg p-2 resize-none mt-2'
+                  ref={commentText}
+                />
+                <button
+                  className='absolute top-4 right-4'
+                  onClick={() => setReply(!reply)}
+                >
+                  X
+                </button>
+                <button
+                  className='absolute bottom-4 right-4'
+                  onClick={() => handleNewComment(post.id)}
+                >
+                  Send
+                </button>
+              </div>
+            </>
+          )}
+          <div className='flex justify-between px-8 border-y-2 py-2 mb-4 border-gray-300'>
+            {/* set edit state */}
+            <div className='w-1/2 flex justify-center'>
+              <button
+                className='flex gap-2 items-center'
+                onClick={() => handleLike(post.id)}
+              >
+                {likeStatus ? (
+                  <HeartIcon
+                    fill='true'
+                    className={`h-5 w-5 fill-red-500 text-red-500`}
+                  />
+                ) : (
+                  <HeartIcon className={`h-5 w-5`} />
+                )}
+                Gilla
+              </button>
+            </div>
+
+            <div className='w-1/2 flex justify-center'>
+              <button
+                className='flex gap-2 items-center'
+                onClick={() => setReply(true)}
+              >
+                <ChatIcon className='h-5 w-5' /> Kommentera
+              </button>
+            </div>
+          </div>
         </>
       )}
 

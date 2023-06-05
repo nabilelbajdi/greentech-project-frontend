@@ -71,7 +71,9 @@ const StatusBox = ({ posts, setPosts, eventId }) => {
             <input
               type='text'
               ref={inputRef}
-              placeholder={`Vad har du på hjärtat, ${session.user.name}?`}
+              placeholder={`Vad har du på hjärtat, ${
+                session.user.firstName + ' ' + session.user.lastName
+              }?`}
               className=' rounded-full focus:outline-none h-12 bg-gray-100 flex-grow px-5 text-xs sm:text-base'
             />
             <button className='hidden' type='submit' onClick={handleNewPost}>
