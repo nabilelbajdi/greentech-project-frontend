@@ -1,12 +1,11 @@
 import { useSession } from 'next-auth/react';
 import Image from 'next/image';
-import { useRef, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import Calendar from './Calendar';
 import Map from './Map';
 import { useRouter } from 'next/router';
-import Button from './Button';
 
-const DonationCreator = ({ newDonation, setNewDonation }) => {
+const DonationCreator = ({ newDonation, setNewDonation, edit, donation }) => {
   const { push } = useRouter();
   const { data: session } = useSession();
   const donationName = useRef(null);
@@ -20,6 +19,22 @@ const DonationCreator = ({ newDonation, setNewDonation }) => {
   const [time, setTime] = useState(null);
   const [selected, setSelected] = useState(null);
   const [address, setAddress] = useState(null);
+
+  if (edit) {
+    useEffect(() => {
+      donationName.current.value = donation.name;
+      description.current.value = donation.description;
+      category.current.value = donation.category;
+      condition.current.value = donation.condition;
+      setDate(donation.pickUpDate);
+      setTime(donation.pickUpTime);
+      setSelected({
+        lat: parseFloat(donation.lat),
+        lng: parseFloat(donation.lng),
+      });
+      setAddress(donation.pickUpLocation);
+    }, []);
+  }
 
   const createDonation = async () => {
     let image;
@@ -39,13 +54,23 @@ const DonationCreator = ({ newDonation, setNewDonation }) => {
       lng: selected.lng.toString(),
     };
 
-    const response = await fetch('/api/prisma/donations', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ donationInfo }),
-    });
+    let response;
+    if (edit) {
+      response = await fetch(`/api/prisma/donations/${donation.id}`, {
+        method: 'PUT',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ donationInfo }),
+      });
+    } else {
+      response = await fetch('/api/prisma/donations', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ donationInfo }),
+      });
+    }
 
     const data = await response.json();
+    setNewDonation(false);
     push(`/donations/${data.id}`);
   };
 
@@ -71,7 +96,7 @@ const DonationCreator = ({ newDonation, setNewDonation }) => {
 
   return (
     <div
-      className='fixed top-0 flex flex-col items-center justify-center p-10 h-screen w-screen z-50 bg-gray-900 bg-opacity-60'
+      className='fixed top-0 left-0 flex flex-col items-center justify-center p-10 h-screen w-screen z-50 bg-gray-900 bg-opacity-60'
       onClick={(e) => (setNewDonation(false), e.stopPropagation())}
     >
       <form
@@ -80,7 +105,7 @@ const DonationCreator = ({ newDonation, setNewDonation }) => {
         onSubmit={(e) => handleSubmit(e)}
       >
         <h1 className='border-b-2 mt-4 w-full pb-4 text-center text-xl font-bold'>
-          Skapa donation
+          {edit ? 'Redigera donation' : 'Skapa donation'}
         </h1>
         {/* Image upload goes here */}
         <div className='relative h-68 w-full bg-gray-200'>
@@ -183,6 +208,7 @@ const DonationCreator = ({ newDonation, setNewDonation }) => {
             height='h-96'
             width='w-full'
             selected={selected}
+            address={address !== null ? address : ''}
             setSelected={setSelected}
             setAddress={setAddress}
           />
@@ -195,7 +221,7 @@ const DonationCreator = ({ newDonation, setNewDonation }) => {
         </div>
         <div className='sticky flex justify-center z-10 bottom-0 w-full bg-white-200 p-1'>
           <button className='p-4 bg-chas-gradient-primary rounded-xl w-full hover:bg-chas-gradient-secondary text-white'>
-            Skapa donation
+            {edit ? 'Uppdatera donation' : 'Skapa donation'}
           </button>
         </div>
       </form>

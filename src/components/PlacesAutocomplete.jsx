@@ -5,12 +5,18 @@ import {
   ComboboxOption,
   ComboboxPopover,
 } from '@reach/combobox';
+import { useEffect } from 'react';
 import usePlacesAutocomplete, {
   getGeocode,
   getLatLng,
 } from 'use-places-autocomplete';
 
-const PlacesAutocomplete = ({ setSelected, placeholder, setAddress }) => {
+const PlacesAutocomplete = ({
+  setSelected,
+  placeholder,
+  setAddress,
+  address,
+}) => {
   const {
     ready,
     value,
@@ -18,6 +24,10 @@ const PlacesAutocomplete = ({ setSelected, placeholder, setAddress }) => {
     suggestions: { status, data },
     clearSuggestions,
   } = usePlacesAutocomplete();
+
+  useEffect(() => {
+    setValue(address);
+  }, []);
 
   const handleSelect = async (address) => {
     setValue(address, false);

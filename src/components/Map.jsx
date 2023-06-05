@@ -9,6 +9,7 @@ export default function Map({
   placeholder,
   selected,
   setSelected,
+  address,
   setAddress,
   search,
 }) {
@@ -35,6 +36,7 @@ export default function Map({
           setSelected={setSelected}
           placeholder={placeholder}
           setAddress={setAddress}
+          address={address}
         />
       )}
       {selected && (

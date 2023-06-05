@@ -16,7 +16,6 @@ const StatusBox = ({ posts, setPosts, eventId }) => {
     let images;
     if (uploadImages) {
       images = await handleUploadImages();
-      console.log(images);
     }
 
     const text = inputRef.current.value;
@@ -90,7 +89,7 @@ const StatusBox = ({ posts, setPosts, eventId }) => {
                     className='object-contain p-1 m-1'
                     key={idx}
                     src={URL.createObjectURL(image)}
-                   /* src={URL.createObjectURL(uploadImage)} */
+                    /* src={URL.createObjectURL(uploadImage)} */
 
                     alt='Image set to upload'
                     width={40}
@@ -123,7 +122,7 @@ const StatusBox = ({ posts, setPosts, eventId }) => {
             />
           </div>
           <div className='inputIcon flex-col sm:flex-row'>
-          <EmojiHappyIcon className=' h-7 text-yellow-300' />
+            <EmojiHappyIcon className=' h-7 text-yellow-300' />
             <p className='text-xs sm:text-sm xl:text-base'>Feeling/Activity</p>
           </div>
         </div>

@@ -1,6 +1,7 @@
 import Sidebar from '@/components/Sidebar';
 import Event from '@/components/Event';
 import getEventPageProps from '@/utils/getEventSlugPageProps';
+import Widget from '@/components/Widget';
 export const getServerSideProps = getEventPageProps;
 
 const EventPage = (props) => {
@@ -9,8 +10,10 @@ const EventPage = (props) => {
       <main className='flex'>
         {props.event ? (
           <>
-            <Sidebar />
-            <Event event={props.event} />
+            <div className='lg:ml-28 w-full'>
+              <Event event={props.event} />
+            </div>
+            <Widget />
           </>
         ) : (
           <h1>Evenemanget existerar inte</h1>

@@ -186,6 +186,7 @@ const EventCreator = ({ setNewEvent }) => {
             selected={selected}
             setSelected={setSelected}
             setAddress={setAddress}
+            address={''}
           />
           {/* Description text */}
           <textarea

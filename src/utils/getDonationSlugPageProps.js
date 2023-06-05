@@ -20,7 +20,9 @@ const getDonationSlugPageProps = async (context) => {
   const donation = await prisma.donation.findUnique({
     where: { id: slug },
     include: {
-      user: { select: { firstName: true, lastName: true, image: true } },
+      user: {
+        select: { id: true, firstName: true, lastName: true, image: true },
+      },
       images: true,
     },
   });

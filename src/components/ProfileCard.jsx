@@ -4,7 +4,6 @@ import { useSession } from 'next-auth/react';
 
 const ProfileCard = ({ user }) => {
   const { data: session } = useSession();
-  console.log(session);
   return (
     <div className='flex flex-col items-center justify-center gap-4 mt-4'>
       <Image
