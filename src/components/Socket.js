@@ -6,9 +6,9 @@ import { SocketContext } from "@/context";
 
 let firstRender = true;
 
-const Socket = ({ conversationsList, setConversationsList, setDropdown }) => {
+const Socket = ({ setDropdown }) => {
     const { data: session, update } = useSession();
-    const { openConversations, setOpenConversations } = useContext(SocketContext);
+    const { openConversations, setOpenConversations, setUnseenConvos, setConversations } = useContext(SocketContext);
 
     const socketInitializer = async () => {
 
@@ -32,44 +32,99 @@ const Socket = ({ conversationsList, setConversationsList, setDropdown }) => {
         socket.io.on('connect', () => {
             console.log('socket connected')
 
+            socket.io.emit('get conversation list');
+
             socket.io.on('private message', ({ message }) => {
+
+                const checkExistingOpen = (open) => {
+
+                    for (let i = 0; i < open.length; i++) {
+
+                        if (open[i].with === message.from.userPath) {
+                            return i;
+                        }
+
+                    }
+
+                    return -1;
+
+                }
+
+                const checkExistingList = (list) => {
+
+                    for (let i = 0; i < list.length; i++) {
+
+                        if (list[i].to.userPath === message.from.userPath) {
+                            return i;
+                        }
+
+                    }
+
+                    return -1;
+
+                }
+
+
+                let openExists = -1;
+                let listExists = -1;
 
                 setOpenConversations((oldConvos) => {
 
-                    const checkExisting = () => {
+                    openExists = checkExistingOpen(oldConvos);
+                    const newConvos = [...oldConvos];
 
-                        for (let i = 0; i < oldConvos.length; i++) {
+                    if (openExists > -1) {
 
-                            if (oldConvos[i].with === message.from.userPath) {
-                                return i;
-                            }
-
-                        }
-
-                        return -1;
+                        newConvos[openExists].messages.push(message);
 
                     }
 
-                    const exists = checkExisting()
-
-                    if (exists > -1) {
-
-                        const newConvos = [...oldConvos];
-                        newConvos[exists].messages.push(message);
-                        return newConvos;
-
-                    } else {
-
-                        return oldConvos;
-
-                    }
+                    return newConvos;
 
                 })
 
+                setConversations((oldConvos) => {
+
+                    listExists = checkExistingList(oldConvos);
+
+                    const newConvos = [...oldConvos];
+
+                    if (listExists > -1) {
+
+                        const convo = {
+
+                            created: message.created,
+                            message: message.message,
+                            unseen: newConvos[listExists].unseen + 1,
+                            to: newConvos[listExists].to,
+                            seen: message.seen,
+
+                        }
+
+                        if (openExists > -1) {
+
+                            convo.unseen = 0;
+
+                        }
+
+                        newConvos[listExists] = convo;
+
+                    }
+
+                    return newConvos;
+                })
             });
 
             socket.io.on('get conversation list', ({ conversations }) => {
-                setConversationsList(conversations)
+                setConversations(conversations)
+                let unseen = 0;
+
+                conversations.forEach(convo => {
+                    if (convo.unseen > 0) unseen++;
+                });
+
+                setUnseenConvos(unseen);
+
             })
 
             socket.io.on('get conversation', (dbConversation) => {
@@ -116,7 +171,7 @@ const Socket = ({ conversationsList, setConversationsList, setDropdown }) => {
 
     const initSocket = async () => {
         const freshSession = await getSession()
-        socketInitializer(freshSession, openConversations, conversationsList, setOpenConversations, setConversationsList);
+        socketInitializer();
     }
 
     useEffect(() => {
@@ -128,12 +183,8 @@ const Socket = ({ conversationsList, setConversationsList, setDropdown }) => {
         }
     }, [])
 
-
-
     return <></>;
 
 }
-
-
 
 export default Socket;
