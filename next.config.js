@@ -12,7 +12,7 @@ const nextConfig = {
       'img.freepik.com',
     ],
   },
-  reactStrictMode: true,
+  reactStrictMode: false,
 };
 
 module.exports = nextConfig;
