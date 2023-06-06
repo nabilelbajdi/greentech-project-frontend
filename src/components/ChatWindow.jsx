@@ -4,10 +4,9 @@ import { AiOutlineSend, AiOutlineClose } from 'react-icons/ai';
 import socket from "@/socket";
 import { SocketContext } from "@/context";
 
-
 const ChatWindow = ({ conversationId }) => {
 
-    const { openConversations, setOpenConversations, setUnseenConvos, setConversations } = useContext(SocketContext);
+    const { openConversations, setOpenConversations, setConversations } = useContext(SocketContext);
     const { data: session } = useSession();
 
     const openExists = [];

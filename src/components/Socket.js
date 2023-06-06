@@ -8,7 +8,7 @@ let firstRender = true;
 
 const Socket = ({ setDropdown }) => {
     const { data: session, update } = useSession();
-    const { openConversations, setOpenConversations, unseenConvos, setUnseenConvos, conversations, setConversations } = useContext(SocketContext);
+    const { openConversations, setOpenConversations, setUnseenConvos, setConversations } = useContext(SocketContext);
 
     const socketInitializer = async () => {
 
@@ -183,12 +183,8 @@ const Socket = ({ setDropdown }) => {
         }
     }, [])
 
-
-
     return <></>;
 
 }
-
-
 
 export default Socket;

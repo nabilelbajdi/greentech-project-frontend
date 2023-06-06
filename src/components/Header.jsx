@@ -1,15 +1,13 @@
 import Image from 'next/image';
 import { useSession } from 'next-auth/react';
-import { SearchIcon, UserCircleIcon, BellIcon, ChatAlt2Icon } from '@heroicons/react/outline';
+import { SearchIcon, UserCircleIcon } from '@heroicons/react/outline';
 import { MenuIcon } from '@heroicons/react/solid';
-import { useContext, useState } from 'react';
+import { useState } from 'react';
 import Messenger from './Messenger';
 import ConversationsMenu from './ConversationsMenu';
 import NotificationsMenu from './NotificationsMenu';
 import Notifications from './Notifications';
 import Socket from './Socket';
-import { SocketContext } from '@/pages/_app';
-
 
 const Header = () => {
   const { data: session, status } = useSession();
