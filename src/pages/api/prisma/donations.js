@@ -4,6 +4,8 @@ import prisma from '../../../../server/db/prisma';
 
 const donationHandler = async (req, res) => {
   const body = req.body;
+  const { query } = req;
+  const page = query.page;
 
   try {
     const session = await getServerSession(req, res, authOptions);
@@ -21,19 +23,24 @@ const donationHandler = async (req, res) => {
 
       switch (method) {
         case 'GET':
-        // const posts = await prisma.post.findMany({
-        //   orderBy: {
-        //     created: 'desc',
-        //   },
-        //   where: {
-        //     author_id: authorId,
-        //   },
-        //   include: {
-        //     comments: true,
-        //   },
-        // });
+          const donations = await prisma.donation.findMany({
+            orderBy: {
+              created: 'desc',
+            },
+            include: {
+              user: {
+                select: {
+                  firstName: true,
+                  lastName: true,
+                  image: true,
+                },
+              },
+            },
+            take: 6,
+            skip: (page - 1) * 6,
+          });
 
-        // return res.status(200).json(posts);
+          return res.status(200).json(donations);
         case 'POST':
           const donationInfo = body.donationInfo;
 

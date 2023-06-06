@@ -6,16 +6,24 @@ import Head from 'next/head';
 import { LocalizationProvider } from '@mui/x-date-pickers';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 
+import { ReactQueryDevtools } from 'react-query/devtools';
+
+import { QueryClient, QueryClientProvider } from 'react-query';
+
+const queryClient = new QueryClient();
+
 export default function App({
   Component,
   pageProps: { session, ...pageProps },
 }) {
   return (
     <SessionProvider session={session}>
-      <LocalizationProvider dateAdapter={AdapterDayjs}>
-        <Header />
-        <Component {...pageProps} />
-      </LocalizationProvider>
+      <QueryClientProvider client={queryClient}>
+        <LocalizationProvider dateAdapter={AdapterDayjs}>
+          <Header />
+          <Component {...pageProps} />
+        </LocalizationProvider>
+      </QueryClientProvider>
     </SessionProvider>
   );
 }

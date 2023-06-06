@@ -2,7 +2,7 @@ import Image from 'next/image';
 
 const DonationPreview = ({ donation }) => {
   return (
-    <div className='relative flex flex-col items-center overflow-hidden rounded-xl'>
+    <div className='relative flex flex-col items-center overflow-hidden rounded-xl shadow-md'>
       <p className='absolute top-2 right-2 bg-chas-gradient-primary text-white p-2 rounded-xl'>
         {donation.category}
       </p>
