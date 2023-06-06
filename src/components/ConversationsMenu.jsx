@@ -4,7 +4,7 @@ import { AiOutlineClose, AiOutlineSearch } from 'react-icons/ai';
 import { BiMessageRoundedAdd } from 'react-icons/bi';
 import Conversation from "./Conversation";
 
-const ConversationsMenu = ({ setDropdown, openConversations, setOpenConversations, conversationsList }) => {
+const ConversationsMenu = ({ setDropdown, conversationsList }) => {
 
     const inputRef = useRef(null);
 
@@ -55,7 +55,7 @@ const ConversationsMenu = ({ setDropdown, openConversations, setOpenConversation
                             return (
 
                                 <li key={`msg${index}`} className={`flex w-full`}>
-                                    <Conversation conversation={convo} openConversations={openConversations} setOpenConversations={setOpenConversations} setDropdown={setDropdown} />
+                                    <Conversation conversation={convo} />
                                 </li>
                             )
                         })}

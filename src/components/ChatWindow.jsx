@@ -1,9 +1,13 @@
 import { useSession } from "next-auth/react";
-import { useRef, useEffect } from "react";
+import { useRef, useEffect, useContext } from "react";
 import { AiOutlineSend, AiOutlineClose } from 'react-icons/ai';
 import socket from "@/socket";
+import { SocketContext } from "@/context";
 
-const ChatWindow = ({ conversation, openConversations, setOpenConversations }) => {
+
+const ChatWindow = ({ conversation }) => {
+
+    const { openConversations, setOpenConversations } = useContext(SocketContext);
     const { data: session } = useSession();
 
     const inputRef = useRef(null);

@@ -1,11 +1,12 @@
-import { useState } from 'react';
-import { RiMessengerFill } from 'react-icons/Ri'
+import { useContext, useState } from 'react';
 import ChatWindow from './ChatWindow';
 import { ChatAlt2Icon } from '@heroicons/react/outline';
+import { SocketContext } from '@/context';
 
-const Messenger = ({ setDropdown, openConversations, setOpenConversations }) => {
+const Messenger = ({ setDropdown }) => {
 
     const [unseen, setUnseen] = useState(0);
+    const { openConversations } = useContext(SocketContext);
 
     let renderUnseen = '';
 
@@ -45,9 +46,9 @@ const Messenger = ({ setDropdown, openConversations, setOpenConversations }) => 
             </button>
             <div className='flex justify-end w-full px-2 fixed left-0 bottom-0 '>
                 {openConversations.map((convo, index) => {
-                    console.log(convo)
+
                     return (
-                        <ChatWindow key={`messenger${index}`} conversation={convo} setOpenConversations={setOpenConversations} openConversations={openConversations} />
+                        <ChatWindow key={`messenger${index}`} conversation={convo} />
                     )
                 })}
             </div>
