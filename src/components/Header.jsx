@@ -14,7 +14,6 @@ import { SocketContext } from '@/pages/_app';
 const Header = () => {
   const { data: session, status } = useSession();
   const [dropdown, setDropdown] = useState('');
-  const [conversationsList, setConversationsList] = useState([]);
 
   let DropDownRender = undefined;
 
@@ -35,7 +34,7 @@ const Header = () => {
   if (status === "authenticated") {
     return (
       <>
-        <Socket conversationsList={conversationsList} setConversationsList={setConversationsList} setDropdown={setDropdown} />
+        <Socket setDropdown={setDropdown} />
         <div className='sticky flex-col top-0 z-50 items-center lg:px-5 h-min-24 shadow-sm p-5 w-full bg-gradient-to-b from-[#3A4F6F] to-chas-secondary'>
           <div>
             <div className=' flex items-top lg:w-full justify-between pr-10 mb-3'>
@@ -78,7 +77,7 @@ const Header = () => {
               </label>
             </div>
           </div>
-          {DropDownRender && <DropDownRender setDropdown={setDropdown} conversationsList={conversationsList} setConversationsList={setConversationsList} />}
+          {DropDownRender && <DropDownRender setDropdown={setDropdown} />}
         </div>
       </>
 

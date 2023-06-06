@@ -1,10 +1,12 @@
 import socket from "@/socket";
-import { useRef, useEffect } from "react";
+import { useRef, useEffect, useContext } from "react";
 import { AiOutlineClose, AiOutlineSearch } from 'react-icons/ai';
 import { BiMessageRoundedAdd } from 'react-icons/bi';
 import Conversation from "./Conversation";
+import { SocketContext } from "@/context";
 
-const ConversationsMenu = ({ setDropdown, conversationsList }) => {
+const ConversationsMenu = ({ setDropdown }) => {
+    const { conversations } = useContext(SocketContext)
 
     const inputRef = useRef(null);
 
@@ -48,7 +50,7 @@ const ConversationsMenu = ({ setDropdown, conversationsList }) => {
                 </form>
                 <div className="w-full h-full bg-slate-600 rounded-lg shadow-inner shadow-slate-800/30 overflow-hidden">
                     <ul className="flex flex-col gap-2 p-2 overflow-auto h-full w-full">
-                        {conversationsList.map((convo, index) => {
+                        {conversations.map((convo, index) => {
 
                             const time = new Date(convo.created).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
 
