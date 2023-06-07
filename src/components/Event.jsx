@@ -6,21 +6,23 @@ import { useState } from 'react';
 import { CalendarIcon } from '@heroicons/react/solid';
 import Button from './Button';
 import ParticipantCard from './ParticipantCard';
+import { useRouter } from 'next/router';
+import { PencilIcon, TrashIcon } from '@heroicons/react/solid';
+import { useSession } from 'next-auth/react';
+import EventCreator from './EventCreator';
 
 const Event = ({ event }) => {
+  const { data: session } = useSession();
   const [posts, setPosts] = useState(event.posts);
-  let startTime = new Date(event.start_time);
-  startTime = startTime
-    .toTimeString()
-    .split('')
-    .filter((l, indx) => indx <= 4)
-    .join('');
+  const [edit, setEdit] = useState(false);
+  const { push } = useRouter();
+  const startTime = event.start_time;
 
   let startDate = new Date(event.start_date);
 
   const sDay = getWeekName(startDate.getDay());
   const sMonth = getMonthName(startDate.getMonth());
-  const sDate = startDate.getDate();
+  const sDate = startDate.getUTCDate();
   const sYear = startDate.getFullYear();
 
   let endDate;
@@ -34,18 +36,43 @@ const Event = ({ event }) => {
     endDate = new Date(event.end_date);
     eDay = getWeekName(endDate.getDay());
     eMonth = getMonthName(endDate.getMonth());
-    eDate = endDate.getDate();
+    eDate = endDate.getUTCDate();
     eYear = endDate.getFullYear();
-    endTime = new Date(event.end_time);
-    endTime = endTime
-      .toTimeString()
-      .split('')
-      .filter((l, indx) => indx <= 4)
-      .join('');
+    endTime = event.end_time;
   }
 
+  const handleDelete = async () => {
+    const response = await fetch(`/api/prisma/events/${event.id}`, {
+      method: 'DELETE',
+      headers: { 'Content-Type': 'application/json' },
+    });
+
+    if (response.status !== 200) {
+      console.log('something went wrong');
+      //add error banner
+    } else {
+      const deletedEvent = await response.json();
+      push('/events');
+    }
+  };
+
+  const handleEdit = async () => {
+    const response = await fetch(`/api/prisma/events/${event.id}`, {
+      method: 'GET',
+      headers: { 'Content-Type': 'application/json' },
+    });
+
+    if (response.status !== 200) {
+      console.log('something went wrong');
+      //add error banner
+    } else {
+      const eventInEdit = await response.json();
+      setEdit(true);
+    }
+  };
+
   return (
-    <section className='p-4 w-full bg-gray-100 rounded-xl'>
+    <section className='relative p-4 w-full bg-gray-100 rounded-xl'>
       <div>
         {event.image ? (
           <Image
@@ -54,7 +81,7 @@ const Event = ({ event }) => {
             priority
             height={300}
             width={700}
-            className='h-96 w-full bg-slate-300'
+            className='h-96 w-auto bg-slate-300'
           />
         ) : (
           <Image
@@ -63,10 +90,22 @@ const Event = ({ event }) => {
             priority
             height={300}
             width={700}
-            className='h-96 w-full bg-slate-300'
+            className='h-96 w-auto bg-slate-300'
           />
         )}
-
+        <div>
+          {/* Edit/delete if session user is the admin  */}
+          {event.admin_id === session.user.id && (
+            <div className='absolute top-2 right-2 flex gap-4'>
+              <button onClick={handleEdit} className='h-5 w-5'>
+                <PencilIcon />
+              </button>
+              <button className='h-5 w-5' onClick={handleDelete}>
+                <TrashIcon />
+              </button>
+            </div>
+          )}
+        </div>
         <div className='flex flex-col gap-2 p-2 border-b-2 mb-4'>
           <h1 className='text-4xl font-bold'>{event.name}</h1>
           <div className='flex lg:flex-row flex-col justify-between lg:items-center items-start gap-3'>
@@ -112,8 +151,8 @@ const Event = ({ event }) => {
                     </h2>
                     <p>Evenemang av: {event.admin.name}</p>
                     <p>
-                      Datum: {sDate}/{startDate.getMonth() + 1}{' '}
-                      {eDate && `- ${eDate}/${endDate.getMonth() + 1}`}
+                      Datum: {sDate}/{startDate.getMonth()}{' '}
+                      {eDate && `- ${eDate}/${endDate.getMonth()}`}
                     </p>
                     <p>
                       Tid: {startTime} {endTime && `- ${endTime}`}
@@ -154,6 +193,7 @@ const Event = ({ event }) => {
           </div>
         </div>
       </div>
+      {edit && <EventCreator setNewEvent={setEdit} event={event} edit={true} />}
     </section>
   );
 };

@@ -24,20 +24,12 @@ const getDonationPageProps = async (context) => {
     };
   }
 
-  const donations = await prisma.donation.findMany({
-    orderBy: {
-      created: 'desc',
-    },
-    include: {
-      user: { select: { firstName: true, lastName: true, image: true } },
-      images: true,
-    },
-  });
+  const donations = await prisma.donation.findMany();
 
   return {
     props: {
       session,
-      donations: JSON.parse(JSON.stringify(donations)),
+      donationsLength: JSON.parse(JSON.stringify(donations.length)),
     },
   };
 };

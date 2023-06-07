@@ -73,7 +73,7 @@ const Comment = ({
   };
 
   return (
-    <div className='flex items-center px-2 '>
+    <div className='flex items-center px-2'>
       <Image
         src={comment.author.image}
         alt='author image'
@@ -84,7 +84,7 @@ const Comment = ({
       <div className='flex flex-col w-full'>
         <div className='relative w-fit bg-white p-2 px-4 rounded-3xl'>
           <div className={`flex justify-between ${edit && 'flex-col'}`}>
-            <p className=' text-sm font-semibold'>
+            <p className=' text-sm font-semibold mr-4'>
               {comment.author.firstName + ' ' + comment.author.lastName}
             </p>
             <div>

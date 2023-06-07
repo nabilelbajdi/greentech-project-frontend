@@ -1,53 +1,89 @@
 import { useSession } from 'next-auth/react';
 import Image from 'next/image';
-import { useRef, useState } from 'react';
+import { useRef, useState, useEffect } from 'react';
 import Calendar from './Calendar';
 import Map from './Map';
-import dayjs from 'dayjs';
 import { useRouter } from 'next/router';
+import dayjs from 'dayjs';
 
-const EventCreator = ({ setNewEvent }) => {
+const EventCreator = ({ setNewEvent, event, edit }) => {
   const { push } = useRouter();
   const { data: session } = useSession();
   const eventName = useRef();
   const description = useRef();
   const imageRef = useRef(null);
-
   const [uploadImages, setUploadImages] = useState();
   const [enableEndTime, setEnableEndTime] = useState(false);
-  const [startDate, setStartDate] = useState(null);
-  const [endDate, setEndDate] = useState(null);
-  const [startTime, setStartTime] = useState(null);
-  const [endTime, setEndTime] = useState(null);
-  const [selected, setSelected] = useState(null);
-  const [address, setAddress] = useState(null);
+  const [startDate, setStartDate] = useState(edit && event.start_date);
+  const [endDate, setEndDate] = useState(
+    edit && event.end_date && event.end_date
+  );
+  const [startTime, setStartTime] = useState(edit && event.start_time);
+  const [endTime, setEndTime] = useState(edit && event.end_time);
+  const [selected, setSelected] = useState(
+    edit && {
+      lat: parseFloat(event.lat),
+      lng: parseFloat(event.lng),
+    }
+  );
+  const [address, setAddress] = useState(edit && event.address);
+
+  if (edit) {
+    useEffect(() => {
+      eventName.current.value = event.name;
+      description.current.value = event.description;
+    }, []);
+  }
 
   const createEvent = async () => {
     let image;
     if (uploadImages) {
       image = await handleUploadImages();
     }
+
     const eventInfo = {
       name: eventName.current.value,
       image: uploadImages && image[0],
-      startDate: startDate,
-      startTime: startTime,
-      endDate: endDate,
-      endTime: endTime,
+      startDate: dayjs(startDate).format('YYYY-MM-DD'),
+      startTime:
+        edit && startTime['$d'] === undefined
+          ? startTime.slice(-5)
+          : edit
+          ? dayjs(startTime).format('HH:mm')
+          : dayjs(startTime).format('HH:mm'),
+      endDate: dayjs(endDate).format('YYYY-MM-DD'),
+      endTime:
+        edit && endTime['$d'] === undefined
+          ? endTime.slice(-5)
+          : edit
+          ? dayjs(endTime).format('HH:mm')
+          : dayjs(endTime).format('HH:mm'),
       address: address.formatted_address,
       lat: selected.lat.toString(),
       lng: selected.lng.toString(),
       description: description.current.value,
     };
 
-    const response = await fetch('/api/prisma/events', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ eventInfo }),
-    });
+    let response;
+    if (edit) {
+      console.log('edit: ', eventInfo);
+      response = await fetch(`/api/prisma/events/${event.id}`, {
+        method: 'PUT',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ eventInfo }),
+      });
+    } else {
+      response = await fetch('/api/prisma/events', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ eventInfo }),
+      });
+    }
 
     const data = await response.json();
+    console.log('data: ', data);
     push(`/events/${data.id}`);
+    setNewEvent(false);
   };
 
   const handleSubmit = (e) => {
@@ -73,7 +109,7 @@ const EventCreator = ({ setNewEvent }) => {
 
   return (
     <div
-      className='fixed top-0 flex flex-col items-center justify-center p-10 h-screen w-screen z-50 bg-gray-900 bg-opacity-60'
+      className='fixed top-0 left-0 flex flex-col items-center justify-center p-10 h-screen w-screen z-50 bg-gray-900 bg-opacity-60'
       onClick={(e) => (setNewEvent(false), e.stopPropagation())}
     >
       <form
@@ -153,6 +189,8 @@ const EventCreator = ({ setNewEvent }) => {
               tidText={'Starttid'}
               setSelectedDate={setStartDate}
               setSelectedTime={setStartTime}
+              dateValue={edit ? startDate : ''}
+              timeValue={edit ? startTime : ''}
             />
             {enableEndTime ? (
               <>
@@ -161,6 +199,8 @@ const EventCreator = ({ setNewEvent }) => {
                   tidText={'Sluttid'}
                   setSelectedDate={setEndDate}
                   setSelectedTime={setEndTime}
+                  dateValue={edit ? endDate : ''}
+                  timeValue={edit ? endTime : ''}
                 />
                 <button
                   className='hover:text-green-500'
@@ -186,7 +226,7 @@ const EventCreator = ({ setNewEvent }) => {
             selected={selected}
             setSelected={setSelected}
             setAddress={setAddress}
-            address={''}
+            address={address !== null ? address : ''}
           />
           {/* Description text */}
           <textarea
@@ -197,7 +237,7 @@ const EventCreator = ({ setNewEvent }) => {
         </div>
         <div className='sticky z-10 bottom-0 w-full bg-white-200 p-1'>
           <button className='p-4 bg-chas-gradient-primary rounded-xl w-full hover:bg-chas-gradient-secondary text-white'>
-            Skapa evenemang
+            {edit ? 'Uppdatera evenemang' : 'Skapa evenemang'}
           </button>
         </div>
       </form>

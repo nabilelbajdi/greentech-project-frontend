@@ -24,20 +24,12 @@ const getEventPageProps = async (context) => {
     };
   }
 
-  const events = await prisma.event.findMany({
-    orderBy: {
-      created: 'desc',
-    },
-    include: {
-      admin: { select: { firstName: true, lastName: true, image: true } },
-      image: true,
-    },
-  });
+  const events = await prisma.event.findMany();
 
   return {
     props: {
       session,
-      events: JSON.parse(JSON.stringify(events)),
+      eventsLength: JSON.parse(JSON.stringify(events.length)),
     },
   };
 };

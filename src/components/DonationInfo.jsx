@@ -12,12 +12,7 @@ const DonationInfo = ({ donation }) => {
   const { data: session } = useSession();
   const [edit, setEdit] = useState(false);
   const { push } = useRouter();
-  let time = new Date(donation.pickUpTime);
-  time = time
-    .toTimeString()
-    .split('')
-    .filter((l, indx) => indx <= 4)
-    .join('');
+  const time = donation.pickUpTime;
 
   let date = new Date(donation.pickUpDate);
 

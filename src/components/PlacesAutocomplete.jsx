@@ -42,7 +42,7 @@ const PlacesAutocomplete = ({
   return (
     <Combobox onSelect={handleSelect}>
       <ComboboxInput
-        value={value}
+        value={value ? value : ''}
         onChange={(e) => setValue(e.target.value)}
         disabled={!ready}
         className='px-2 py-4 border-2 rounded-lg w-full'

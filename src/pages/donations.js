@@ -17,13 +17,14 @@ const DonationsPage = (props) => {
       <main className='flex'>
         <div className='lg:ml-28 bg-white rounded-xl overflow-hidden w-full'>
           <div className='rounded-xl overflow-hidden'>
-            <div className='w-fit mt-4 m-auto rounded-xl overflow-hidden'>
+            <div className='w-fit h-auto mt-4 m-auto rounded-xl overflow-hidden'>
               <Image
                 src='https://img.freepik.com/free-vector/people-carrying-donation-charity-related-icons_53876-43091.jpg?w=1480&t=st=1685986411~exp=1685987011~hmac=184a1f3daaa30effa8567dedafe1591dbbdfc36a3426d5b77eaf4f7d3a93385f'
                 alt='donationsbild'
                 priority
                 height={300}
-                width={600}
+                width={500}
+                className='w-full h-auto'
               />
             </div>
             <div className='p-8 flex flex-col gap-6 border-b-2'>
@@ -66,7 +67,11 @@ const DonationsPage = (props) => {
             </div>
           </div>
           <div className='p-8 border-b-2'>
-            <PaginationPage length={props.donations.length} />
+            <PaginationPage
+              length={props.donationsLength}
+              item='donations'
+              title='Se vad andra användare donerar bort just nu!'
+            />
           </div>
           <div className='flex items-center justify-center p-8'>
             <div className='flex flex-col items-center justify-center mt-6 gap-6 w-full'>

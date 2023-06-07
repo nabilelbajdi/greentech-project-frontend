@@ -2,8 +2,8 @@ import Image from 'next/image';
 
 const EventPreview = ({ event }) => {
   return (
-    <div className='relative flex flex-col items-center overflow-hidden rounded-xl'>
-      <div className='bg-white w-full h-60 rounded-xl flex items-center justify-center'>
+    <div className='relative flex flex-col items-center overflow-hidden rounded-xl shadow-md'>
+      <div className='bg-white w-auto h-60 rounded-xl flex items-center justify-center'>
         <Image
           src={
             !event.image

@@ -121,7 +121,7 @@ const Post = ({ post, posts, setPosts }) => {
   };
 
   return (
-    <div className='relative rounded-2xl bg-gray-100 p-4 pb-0 shadow-md'>
+    <div className='relative rounded-2xl bg-white p-4 pb-0 shadow-md'>
       <div className='flex items-center gap-4 w-full mb-2'>
         {post.author.image && (
           <Image
@@ -261,7 +261,7 @@ const Post = ({ post, posts, setPosts }) => {
 
       {/* creating Comment components */}
       {comments.length !== 0 && (
-        <div className='flex flex-col gap-4 my-2 mb-3'>
+        <div className='flex flex-col gap-4 my-2 mb-3 bg-gray-100 rounded-xl p-2'>
           {comments.map((comment) => (
             <Comment
               key={comment.id}

@@ -1,16 +1,14 @@
 import { getServerSession } from 'next-auth';
-import { authOptions } from '../auth/[...nextauth]';
-import prisma from '../../../../server/db/prisma';
+import { authOptions } from '../../auth/[...nextauth]';
+import prisma from '../../../../../server/db/prisma';
 
-const eventHandler = async (req, res) => {
-  const body = req.body;
-  const { query } = req;
-  const page = query.page;
-
+const eventQueryHandler = async (req, res) => {
   try {
     const session = await getServerSession(req, res, authOptions);
     const { method } = req;
-    const adminId = session.user.id;
+    const body = req.body;
+    const eventId = req.query.eventId;
+
     if (session) {
       const prismaUser = await prisma.user.findUnique({
         where: { email: session.user.email },
@@ -23,35 +21,32 @@ const eventHandler = async (req, res) => {
 
       switch (method) {
         case 'GET':
-          const events = await prisma.event.findMany({
-            orderBy: {
-              created: 'desc',
-            },
-            include: {
-              admin: {
-                select: {
-                  firstName: true,
-                  lastName: true,
-                  image: true,
-                },
-              },
-            },
-            take: 6,
-            skip: (page - 1) * 6,
+          const event = await prisma.event.findUnique({
+            where: { id: eventId },
           });
 
-          return res.status(200).json(events);
+          return res.status(200).json(event);
 
-        case 'POST':
+        case 'DELETE':
+          const deletedEvent = await prisma.event.delete({
+            where: { id: eventId },
+          });
+
+          return res.status(200).json(deletedEvent);
+
+        case 'PUT':
           const eventInfo = body.eventInfo;
           // let startDate;
           // let endDate;
 
           // if (eventInfo.startDate) {
           //   startDate = eventInfo.startDate.substring(0, 10);
-          //   const correctStartDate = (
-          //     parseInt(startDate.slice(-2)) + 1
-          //   ).toString();
+          //   let correctStartDate = parseInt(startDate.slice(-2)) + 1;
+          //   if (correctStartDate < 10) {
+          //     correctStartDate = '0' + correctStartDate.toString();
+          //   } else {
+          //     correctStartDate.toString();
+          //   }
           //   startDate =
           //     startDate.substring(0, 8) +
           //     correctStartDate +
@@ -60,7 +55,18 @@ const eventHandler = async (req, res) => {
 
           // if (eventInfo.endDate) {
           //   endDate = eventInfo.endDate.substring(0, 10);
-          //   const correctEndDate = (parseInt(endDate.slice(-2)) + 1).toString();
+          //   let correctEndDate = parseInt(endDate.slice(-2)) + 1;
+          //   if (correctEndDate < 10 && correctEndDate !== 0) {
+          //     correctEndDate = '0' + correctEndDate.toString();
+          //   } else if (correctEndDate === 0) {
+          //     correctEndDate = '3' + correctEndDate.toString();
+          //   } else {
+          //     correctEndDate.toString();
+          //   }
+          //   endDate =
+          //     endDate.substring(0, 8) +
+          //     correctEndDate +
+          //     eventInfo.endDate.slice(-14);
           //   endDate =
           //     endDate.substring(0, 8) +
           //     correctEndDate +
@@ -69,10 +75,11 @@ const eventHandler = async (req, res) => {
           //   endDate = null;
           // }
 
-          const createdEvent = await prisma.event.create({
+          const updatedEvent = await prisma.event.update({
+            where: { id: eventId },
             data: {
-              admin_id: adminId,
               name: eventInfo.name,
+              description: eventInfo.description,
               start_date: eventInfo.startDate,
               end_date: eventInfo.endDate,
               start_time: eventInfo.startTime,
@@ -80,7 +87,6 @@ const eventHandler = async (req, res) => {
               address: eventInfo.address,
               lat: eventInfo.lat,
               lng: eventInfo.lng,
-              description: eventInfo.description,
             },
           });
           if (eventInfo.image) {
@@ -89,27 +95,12 @@ const eventHandler = async (req, res) => {
                 id: eventInfo.image,
               },
               data: {
-                event_id: createdEvent.id,
+                event_id: updatedEvent.id,
               },
             });
           }
 
-          console.log(createdEvent);
-          return res.status(200).json(createdEvent);
-
-        // if (body.images) {
-        //   for (let i = 0; i < body.images.length; i++) {
-        //     const dbImage = await prisma.image.update({
-        //       where: {
-        //         id: body.images[i],
-        //       },
-        //       data: {
-        //         post_id: createdPost.id,
-        //       },
-        //     });
-        //     createdPost.images.push(dbImage);
-        //   }
-        // }
+          return res.status(200).json(updatedEvent);
 
         default:
           res.status(405).send();
@@ -122,4 +113,4 @@ const eventHandler = async (req, res) => {
   }
 };
 
-export default eventHandler;
+export default eventQueryHandler;

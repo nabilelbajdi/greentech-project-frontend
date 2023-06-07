@@ -1,13 +1,8 @@
 import '@/styles/globals.css';
 import Header from '@/components/Header';
 import { SessionProvider } from 'next-auth/react';
-import Sidebar from '@/components/Sidebar';
-import Head from 'next/head';
 import { LocalizationProvider } from '@mui/x-date-pickers';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
-
-import { ReactQueryDevtools } from 'react-query/devtools';
-
 import { QueryClient, QueryClientProvider } from 'react-query';
 
 const queryClient = new QueryClient();

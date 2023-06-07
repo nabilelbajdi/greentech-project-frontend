@@ -4,8 +4,9 @@ import { useEffect, useRef, useState } from 'react';
 import Calendar from './Calendar';
 import Map from './Map';
 import { useRouter } from 'next/router';
+import dayjs from 'dayjs';
 
-const DonationCreator = ({ newDonation, setNewDonation, edit, donation }) => {
+const DonationCreator = ({ setNewDonation, edit, donation }) => {
   const { push } = useRouter();
   const { data: session } = useSession();
   const donationName = useRef(null);
@@ -15,10 +16,15 @@ const DonationCreator = ({ newDonation, setNewDonation, edit, donation }) => {
   const imageRef = useRef(null);
 
   const [uploadImages, setUploadImages] = useState();
-  const [date, setDate] = useState(null);
-  const [time, setTime] = useState(null);
-  const [selected, setSelected] = useState(null);
-  const [address, setAddress] = useState(null);
+  const [date, setDate] = useState(edit && donation.pickUpDate);
+  const [time, setTime] = useState(edit && donation.pickUpTime);
+  const [selected, setSelected] = useState(
+    edit && {
+      lat: parseFloat(donation.lat),
+      lng: parseFloat(donation.lng),
+    }
+  );
+  const [address, setAddress] = useState(edit && donation.pickUpLocation);
 
   if (edit) {
     useEffect(() => {
@@ -26,13 +32,6 @@ const DonationCreator = ({ newDonation, setNewDonation, edit, donation }) => {
       description.current.value = donation.description;
       category.current.value = donation.category;
       condition.current.value = donation.condition;
-      setDate(donation.pickUpDate);
-      setTime(donation.pickUpTime);
-      setSelected({
-        lat: parseFloat(donation.lat),
-        lng: parseFloat(donation.lng),
-      });
-      setAddress(donation.pickUpLocation);
     }, []);
   }
 
@@ -47,8 +46,13 @@ const DonationCreator = ({ newDonation, setNewDonation, edit, donation }) => {
       category: category.current.value,
       condition: condition.current.value,
       image: uploadImages && image[0],
-      pickUpTime: time,
-      pickUpDate: date,
+      pickUpTime:
+        edit && time['$d'] === undefined
+          ? time.slice(-5)
+          : edit
+          ? dayjs(time).format('HH:mm')
+          : dayjs(time).format('HH:mm'),
+      pickUpDate: dayjs(date).format('YYYY-MM-DD'),
       pickUpLocation: address.formatted_address,
       lat: selected.lat.toString(),
       lng: selected.lng.toString(),
@@ -200,6 +204,8 @@ const DonationCreator = ({ newDonation, setNewDonation, edit, donation }) => {
               tidText={'Tid för upphämtning'}
               setSelectedDate={setDate}
               setSelectedTime={setTime}
+              dateValue={edit ? date : ''}
+              timeValue={edit ? time : ''}
             />
           </div>
           {/* Address & lat/lng */}
