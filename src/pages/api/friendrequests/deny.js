@@ -25,7 +25,7 @@ const confirm = async (req, res) => {
                     const { userId } = req.body;
 
                     if (!prismaUser.id === userId) {
-                        res.status(403).end('You can´t confirm a friend request from yourself.');
+                        res.status(403).end('You can´t deny a friend request from yourself.');
                         return;
                     };
 
@@ -72,11 +72,6 @@ const confirm = async (req, res) => {
                                     id: prismaUser.id,
                                 },
                             },
-                            friends: {
-                                connect: {
-                                    id: prismaUser.id,
-                                },
-                            },
                         },
 
                     });
@@ -92,21 +87,8 @@ const confirm = async (req, res) => {
                                     id: userId,
                                 },
                             },
-                            friends: {
-                                connect: {
-                                    id: userId,
-                                },
-                            },
                         },
                     });
-
-                    const notification = await prisma.notification.create({
-                        data: {
-                            to_id: receiverUser.id,
-                            from_id: senderUser.id,
-                            type: 'friendrequest confirmed',
-                        }
-                    })
 
                     res.status(200).send({ userPath: receiverUser.userPath });
                     break;

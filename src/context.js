@@ -5,6 +5,8 @@ const Context = ({ children }) => {
     const [conversations, setConversations] = useState([]);
     const [openConversations, setOpenConversations] = useState([]);
     const [unseenConvos, setUnseenConvos] = useState(0);
+    const [unseenNotifications, setUnseenNotifications] = useState(0);
+    const [notifications, setNotifications] = useState([]);
 
     useEffect(() => {
 
@@ -54,6 +56,10 @@ const Context = ({ children }) => {
             setUnseenConvos,
             conversations,
             setConversations,
+            unseenNotifications,
+            setUnseenNotifications,
+            notifications,
+            setNotifications,
         }}>
             {children}
         </SocketContext.Provider>

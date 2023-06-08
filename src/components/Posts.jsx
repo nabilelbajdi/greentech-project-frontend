@@ -9,7 +9,7 @@ const Posts = ({ posts, setPosts, eventId }) => {
 
   return (
     <section className='w-full flex flex-col py-2 p-3'>
-      <div className='flex flex-col m-auto w-full  md:w-[700px] space-y-5'>
+      <div className='flex flex-col  m-auto w-full h-full  md:w-[700px] space-y-5'>
         <StatusBox posts={posts} setPosts={setPosts} eventId={eventId} />
         <div className='flex flex-col gap-6 text-slate-800  rounded-md'>
           {posts.map((post) => {
