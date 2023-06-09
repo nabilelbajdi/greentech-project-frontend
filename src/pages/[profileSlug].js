@@ -3,6 +3,7 @@ import ProfileCard from '@/components/ProfileCard';
 import getProfilePageProps from '@/utils/getProfilePageProps';
 import Link from 'next/link';
 export const getServerSideProps = getProfilePageProps;
+import Gallery from '@/components/Gallery';
 
 const EventPage = (props) => {
   return (
@@ -24,6 +25,7 @@ const EventPage = (props) => {
               <ProfileCard user={props.user} />
               <Posts posts={props.user.posts} />
             </div>
+            <Gallery images={props.user.images} size={12} />
           </div>
         ) : (
           <h1>Användaren hittades inte</h1>

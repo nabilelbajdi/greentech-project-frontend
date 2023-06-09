@@ -5,6 +5,8 @@ import { ChatIcon, HeartIcon } from '@heroicons/react/outline';
 import TimeStamp from './TimeStamp';
 import { useSession } from 'next-auth/react';
 
+import ImageModal from './ImageModal';
+
 const Post = ({ post, posts, setPosts }) => {
   const [edit, setEdit] = useState(false);
   const [reply, setReply] = useState(false);
@@ -16,6 +18,12 @@ const Post = ({ post, posts, setPosts }) => {
   const [likes, setLikes] = useState(post.likes.length);
   const { data: session } = useSession();
   const currentUser = session.user.id;
+
+  const [modalImage, setModalImage] = useState();
+
+  const closeModal = () => {
+    setModalImage();
+  };
 
   //checks to see if the logged in user already liked the post
   let alreadyLiked = post.likes.filter(
@@ -160,8 +168,8 @@ const Post = ({ post, posts, setPosts }) => {
         <>
           <p className=' ml-1 my-4'>{postText}</p>
           {post.images.length ? (
-            <div className={`flex my-4`}>
-              {post.images.map((image) => {
+            <div className={`flex my-4 rounded-lg overflow-hidden`}>
+              {post.images.map((image, idx) => {
                 return (
                   <Image
                     src={image.url}
@@ -170,6 +178,10 @@ const Post = ({ post, posts, setPosts }) => {
                     height={0}
                     width={1000}
                     style={{ width: `${100 / post.images.length}%` }}
+                    className='cursor-pointer object-cover hover:opacity-95 hover:scale-[1.02]'
+                    onClick={() => {
+                      setModalImage(idx);
+                    }}
                   />
                 );
               })}
@@ -178,12 +190,15 @@ const Post = ({ post, posts, setPosts }) => {
           <div className='flex justify-between text-xs px-8 mb-1'>
             <div className='flex items-center space-x-2'>
               <div className=' rounded-full bg-red-600 outline-4 outline outline-red-600'>
-              <HeartIcon fill='true' className='h-4 w-4 fill-white text-white'/>
+                <HeartIcon
+                  fill='true'
+                  className='h-4 w-4 fill-white text-white'
+                />
               </div>
-            
-            <p className=' text-base'> {likes} </p>
+
+              <p className=' text-base'> {likes} </p>
             </div>
-            
+
             <p className=' text-base'>{nrOfComments} Kommentarer</p>
           </div>
           {/* if you are the author, and you are NOT in edit mode, you may edit the post */}
@@ -210,7 +225,6 @@ const Post = ({ post, posts, setPosts }) => {
                   <textarea
                     className='w-full h-20 rounded-lg p-2 resize-none mt-2'
                     ref={commentText}
-                    
                   />
                   <button
                     className='absolute top-4 right-4'
@@ -231,28 +245,30 @@ const Post = ({ post, posts, setPosts }) => {
             <div className='flex justify-between px-8 border-y-2 py-2 mb-4 border-gray-300'>
               {/* set edit state */}
               <div className='w-1/2 flex justify-center'>
-              <button
-                className='flex gap-2 items-center'
-                onClick={() => handleLike(post.id)}
-              >
-                {likeStatus ? (
-                  <HeartIcon fill='true' className={`h-5 w-5 fill-red-500 text-red-500`} />
-                ) : (
-                  <HeartIcon className={`h-5 w-5`} />
-                )}
-                Gilla
-              </button>
+                <button
+                  className='flex gap-2 items-center'
+                  onClick={() => handleLike(post.id)}
+                >
+                  {likeStatus ? (
+                    <HeartIcon
+                      fill='true'
+                      className={`h-5 w-5 fill-red-500 text-red-500`}
+                    />
+                  ) : (
+                    <HeartIcon className={`h-5 w-5`} />
+                  )}
+                  Gilla
+                </button>
               </div>
-              
+
               <div className='w-1/2 flex justify-center'>
-              <button
-                className='flex gap-2 items-center'
-                onClick={() => setReply(true)}
-              >
-                <ChatIcon className='h-5 w-5' /> Kommentera
-              </button>
+                <button
+                  className='flex gap-2 items-center'
+                  onClick={() => setReply(true)}
+                >
+                  <ChatIcon className='h-5 w-5' /> Kommentera
+                </button>
               </div>
-              
             </div>
           )}
         </>
@@ -272,6 +288,13 @@ const Post = ({ post, posts, setPosts }) => {
             />
           ))}
         </div>
+      )}
+      {modalImage >= 0 && (
+        <ImageModal
+          images={post.images}
+          idx={modalImage}
+          closeModal={closeModal}
+        />
       )}
     </div>
   );

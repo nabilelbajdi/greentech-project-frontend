@@ -37,6 +37,7 @@ const getProfilePageProps = async (context) => {
         },
       },
       eventsCreated: true,
+      images: true,
     },
   });
 
