@@ -3,7 +3,7 @@ import ProfileCard from '@/components/ProfileCard';
 import getProfilePageProps from '@/utils/getProfilePageProps';
 export const getServerSideProps = getProfilePageProps;
 
-const EventPage = (props) => {
+const ProfilePage = (props) => {
   return (
     <div className='w-full'>
       <main className='flex flex-col'>
@@ -22,4 +22,4 @@ const EventPage = (props) => {
   );
 };
 
-export default EventPage;
+export default ProfilePage;

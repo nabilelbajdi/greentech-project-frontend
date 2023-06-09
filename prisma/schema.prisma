@@ -126,7 +126,7 @@ model Post {
   id        String    @id @default(cuid())
   author    User?     @relation(fields: [author_id], references: [id], onDelete: Cascade)
   author_id String?
-  text      String
+  text      String    @db.Text
   comments  Comment[] @relation("comments")
   images    Image[]
   likes     Like[]
@@ -206,7 +206,7 @@ model Event {
   address     String?
   lat         String?
   lng         String?
-  description String?
+  description String? @db.Text
   attendings  User[]  @relation("event")
   posts       Post[]
 
@@ -221,7 +221,7 @@ model Donation {
   user            User?  @relation(fields: [user_id], references: [id], onDelete: Cascade)
   user_id         String?
   name            String?
-  description     String?
+  description     String? @db.Text
   category        String?
   condition       String?
   address         String?
@@ -245,7 +245,7 @@ model Group {
   admin_id      String?
   name          String?
   image         Image?
-  description   String?
+  description   String? @db.Text
   attendings    User[] @relation("group")
   posts         Post[]
   start_date    String?
