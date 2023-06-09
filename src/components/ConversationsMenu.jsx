@@ -1,5 +1,5 @@
 import socket from "@/socket";
-import { useRef, useEffect, useContext } from "react";
+import { useRef, useEffect, useContext, useState } from "react";
 import { AiOutlineClose, AiOutlineSearch } from 'react-icons/ai';
 import { BiMessageRoundedAdd } from 'react-icons/bi';
 import Conversation from "./Conversation";
@@ -7,6 +7,7 @@ import { SocketContext } from "@/context";
 
 const ConversationsMenu = ({ setDropdown }) => {
     const { conversations } = useContext(SocketContext)
+    const [sortedConversations, setSortedConversations] = useState([])
 
     const inputRef = useRef(null);
 
@@ -17,6 +18,20 @@ const ConversationsMenu = ({ setDropdown }) => {
     }
 
     useEffect(initConversations, [])
+
+    useEffect(() => {
+
+        const sorted = conversations.sort((a, b) => {
+
+            if (a.updated < b.updated) return 1;
+            if (a.updated > b.updated) return -1;
+            return 0;
+
+        })
+
+        setSortedConversations(sorted);
+
+    }, [conversations])
 
     const search = (e) => {
         e.preventDefault();
@@ -35,7 +50,7 @@ const ConversationsMenu = ({ setDropdown }) => {
 
     return (
 
-        <div className="fixed z-50 right-0 h-5/6 w-96 rounded-b-xl overflow-hidden mx-1 border border-slate-600">
+        <div className="fixed z-50 right-0 bottom-0 h-3/4 w-96 rounded-t-xl overflow-hidden mx-1 border border-slate-600">
             <div className="grid grid-rows-[1.5rem_3rem_auto] w-full h-full px-2 py-2 bg-slate-500">
                 <div className="flex justify-between text-chas-primary text-sm">
                     Konversationer
@@ -50,7 +65,7 @@ const ConversationsMenu = ({ setDropdown }) => {
                 </form>
                 <div className="w-full h-full bg-slate-600 rounded-lg shadow-inner shadow-slate-800/30 overflow-hidden">
                     <ul className="flex flex-col gap-2 p-2 overflow-auto h-full w-full">
-                        {conversations.map((convo, index) => {
+                        {sortedConversations.map((convo, index) => {
 
                             const time = new Date(convo.created).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
 

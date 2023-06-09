@@ -53,7 +53,7 @@ const Conversation = ({ conversation }) => {
 
         <button
             onClick={() => { openConversation(conversation.to.userPath) }}
-            className="flex gap-3 w-full h-[4.5rem] bg-slate-700 hover:bg-slate-700/70 text-chas-secondary rounded-lg p-3">
+            className="flex items-center gap-3 w-full h-[4.5rem] bg-slate-700 hover:bg-slate-700/70 text-chas-secondary rounded-lg p-3">
 
             <div className='relative'>
                 <Image
@@ -68,7 +68,7 @@ const Conversation = ({ conversation }) => {
             </div>
             <div className='flex flex-col items-start justify-start h-full w-full'>
                 <p className='font-semibold'>{conversation.to.firstName} {conversation.to.lastName}</p>
-                <div className="whitespace-nowrap text-ellipsis text-sm  w-4/5 overflow-hidden">{conversation.message}</div>
+                <div className="text-left whitespace-nowrap text-ellipsis text-sm  w-4/5 overflow-hidden">{conversation.message}</div>
 
             </div>
         </button>
