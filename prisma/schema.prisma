@@ -64,6 +64,8 @@ model User {
   posts                      Post[]
   privateMessagesSent        PrivateMessage[] @relation("privateMessagesSent")
   privateMessagesReceived    PrivateMessage[] @relation("privateMessagesReceived")
+  notificationsSent          Notification[]   @relation("notificationsSent")
+  notificationsReceived      Notification[]   @relation("notificationsReceived")
   comments                   Comment[]
   images                     Image[]
   friends                    User[]           @relation("friends")
@@ -96,6 +98,23 @@ model PrivateMessage {
   to_id   String
   message String
   seen    DateTime?
+  created DateTime  @default(now())
+  updated DateTime  @default(now()) @updatedAt
+
+  @@index([to_id])
+  @@index([from_id])
+}
+
+model Notification {
+  id      String    @id @default(cuid())
+  from    User?     @relation(name: "notificationsSent", fields: [from_id], references: [id])
+  to      User      @relation(name: "notificationsReceived", fields: [to_id], references: [id])
+  from_id String?
+  to_id   String
+  message String?
+  type    String?
+  seen    DateTime?
+  clicked Boolean   @default(false)
   created DateTime  @default(now())
   updated DateTime  @default(now()) @updatedAt
 
@@ -175,21 +194,21 @@ model Like {
 }
 
 model Event {
-  id            String @id @default(cuid())
-  admin         User?  @relation(fields: [admin_id], references: [id], onDelete: Cascade)
-  admin_id      String?
-  name          String?
-  image         Image?
-  start_date    String?
-  end_date      String?
-  start_time    String?
-  end_time      String?
-  address       String?
-  lat           String?
-  lng           String?
-  description   String?
-  attendings    User[] @relation("event")
-  posts         Post[]
+  id          String  @id @default(cuid())
+  admin       User?   @relation(fields: [admin_id], references: [id], onDelete: Cascade)
+  admin_id    String?
+  name        String?
+  image       Image?
+  start_date  String?
+  end_date    String?
+  start_time  String?
+  end_time    String?
+  address     String?
+  lat         String?
+  lng         String?
+  description String?
+  attendings  User[]  @relation("event")
+  posts       Post[]
 
   created DateTime @default(now())
   updated DateTime @default(now()) @updatedAt

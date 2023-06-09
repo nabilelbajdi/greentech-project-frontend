@@ -32,7 +32,7 @@ const Header = () => {
     return (
       <>
         <Socket setDropdown={setDropdown} />
-        <div className='sticky flex-col top-0 z-50 items-center lg:px-5 h-min-24 shadow-sm p-5 w-full bg-gradient-to-b from-[#3A4F6F] to-chas-secondary'>
+        <div className='sticky flex-col top-0 z-50 items-center lg:px-5 h-min-24 border-none p-5 w-full bg-gradient-to-b from-[#3A4F6F] to-chas-secondary'>
           <div>
             <div className=' flex items-top lg:w-full justify-between pr-10 mb-3'>
               <Link href='/'>

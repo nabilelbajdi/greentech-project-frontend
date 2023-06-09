@@ -41,7 +41,7 @@ const send = async (req, res) => {
                     })
 
                     if (!checkUser) {
-                        receiverUser.status(404).end('User does not exist.');
+                        res.status(404).end('User does not exist.');
                         return;
                     }
 
@@ -99,6 +99,14 @@ const send = async (req, res) => {
                         }
                     });
 
+                    const notification = await prisma.notification.create({
+                        data: {
+                            to_id: receiverUser.id,
+                            from_id: senderUser.id,
+                            type: 'friendrequest',
+                        }
+                    })
+
                     res.status(200).json({ receiverUser, senderUser });
                     break;
 
@@ -115,6 +123,7 @@ const send = async (req, res) => {
     } catch (e) {
 
         res.status(500).send({ error: e.message });
+        console.log(e.message);
 
     }
 }

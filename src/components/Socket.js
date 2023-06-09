@@ -8,7 +8,14 @@ let firstRender = true;
 
 const Socket = ({ setDropdown }) => {
     const { data: session, update } = useSession();
-    const { openConversations, setOpenConversations, setUnseenConvos, setConversations } = useContext(SocketContext);
+    const {
+        openConversations,
+        setOpenConversations,
+        setUnseenConvos,
+        setConversations,
+        setUnseenNotifications,
+        setNotifications,
+    } = useContext(SocketContext);
 
     const socketInitializer = async () => {
 
@@ -33,6 +40,7 @@ const Socket = ({ setDropdown }) => {
             console.log('socket connected')
 
             socket.io.emit('get conversation list');
+            socket.io.emit('check unseen notifications');
 
             socket.io.on('private message', ({ message }) => {
 
@@ -160,6 +168,19 @@ const Socket = ({ setDropdown }) => {
                 })
 
                 setDropdown('')
+
+            })
+
+            socket.io.on('notification', (unseen) => {
+
+                console.log('unseen:', unseen);
+                setUnseenNotifications(unseen);
+
+            })
+
+            socket.io.on('get notifications', (notifications) => {
+
+                setNotifications(notifications);
 
             })
         });

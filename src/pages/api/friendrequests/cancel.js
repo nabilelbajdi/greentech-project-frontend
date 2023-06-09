@@ -2,7 +2,7 @@ import { getServerSession } from "next-auth";
 import { authOptions } from "../auth/[...nextauth]";
 import prisma from "../../../../server/db/prisma";
 
-const confirm = async (req, res) => {
+const cancel = async (req, res) => {
 
     try {
 
@@ -25,7 +25,7 @@ const confirm = async (req, res) => {
                     const { userId } = req.body;
 
                     if (!prismaUser.id === userId) {
-                        res.status(403).end('You can´t confirm a friend request from yourself.');
+                        res.status(403).end('You can´t cancel a friend request to yourself.');
                         return;
                     };
 
@@ -47,12 +47,13 @@ const confirm = async (req, res) => {
 
                     let allOk = false;
 
-                    checkUser.friendRequestsSent.forEach(user => {
+                    checkUser.friendRequests.forEach(user => {
                         if (user.id === prismaUser.id) allOk = true;
                     });
                     checkUser.friends.forEach(user => {
                         if (user.id === prismaUser.id) allOk = false;
                     });
+
 
                     if (!allOk) {
 
@@ -67,19 +68,33 @@ const confirm = async (req, res) => {
                             id: userId,
                         },
                         data: {
-                            friendRequestsSent: {
+                            friendRequests: {
                                 disconnect: {
                                     id: prismaUser.id,
                                 },
                             },
-                            friends: {
-                                connect: {
-                                    id: prismaUser.id,
-                                },
-                            },
                         },
+                        include: {
+                            notificationsReceived: true,
+                        }
 
                     });
+
+                    for (let i = 0; i < receiverUser.notificationsReceived.length; i++) {
+
+                        const note = receiverUser.notificationsReceived[i];
+
+                        if (note.type === 'friendrequest' && note.from_id === prismaUser.id) {
+
+                            await prisma.notification.delete({
+                                where: {
+                                    id: note.id,
+                                }
+                            })
+
+                        }
+
+                    }
 
                     const senderUser = await prisma.user.update({
 
@@ -87,28 +102,16 @@ const confirm = async (req, res) => {
                             id: prismaUser.id,
                         },
                         data: {
-                            friendRequests: {
+                            friendRequestsSent: {
                                 disconnect: {
                                     id: userId,
                                 },
                             },
-                            friends: {
-                                connect: {
-                                    id: userId,
-                                },
-                            },
                         },
+
                     });
 
-                    const notification = await prisma.notification.create({
-                        data: {
-                            to_id: receiverUser.id,
-                            from_id: senderUser.id,
-                            type: 'friendrequest confirmed',
-                        }
-                    })
-
-                    res.status(200).send({ userPath: receiverUser.userPath });
+                    res.status(200).send();
                     break;
 
                 default:
@@ -122,10 +125,10 @@ const confirm = async (req, res) => {
         }
 
     } catch (e) {
-
+        console.log(e.message)
         res.status(500).send({ error: e.message });
 
     }
 }
 
-export default confirm;
+export default cancel;

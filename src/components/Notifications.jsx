@@ -1,25 +1,30 @@
-import { useState } from 'react'
+import { useContext, useState } from 'react'
 import { BellIcon } from '@heroicons/react/outline';
+import Unseen from './Unseen';
+import { SocketContext } from '@/context';
+import socket from '@/socket';
 
 const Notifications = ({ setDropdown }) => {
 
-    const [unseen, setUnseen] = useState(0);
+    const { unseenNotifications, setUnseenNotifications } = useContext(SocketContext);
 
-    let renderUnseen = '';
+    let renderUnseen;
 
-    if (unseen > 0) {
+    if (unseenNotifications > 0) {
 
-        renderUnseen = unseen;
+        renderUnseen = true;
 
     } else {
 
-        renderUnseen = undefined
+        renderUnseen = false
 
     }
 
     return (
 
         <button onClick={() => {
+            socket.io.emit('get notifications');
+            setUnseenNotifications(0);
             setDropdown((dropdown) => {
                 if (dropdown === 'notifications') {
 
@@ -34,10 +39,7 @@ const Notifications = ({ setDropdown }) => {
         }}>
             <div className='relative'>
                 <BellIcon className='headerIcon' />
-                {renderUnseen && <div className='absolute flex justify-center items-center -top-2 -right-2 text-red-400 font-bold rounded-full bg-gray-300 h-5 w-5'>
-                    {renderUnseen}
-                </div>}
-
+                {renderUnseen && <Unseen unseen={unseenNotifications} />}
             </div>
 
         </button>

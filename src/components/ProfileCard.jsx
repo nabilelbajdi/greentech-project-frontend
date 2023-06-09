@@ -5,10 +5,62 @@ import { useContext } from 'react';
 import { SocketContext } from '@/context';
 import socket from '@/socket';
 import sendFriendRequest from '@/functions/sendFriendRequest';
+import confirmFriendRequest from '@/functions/confirmFriendRequest';
+import denyFriendRequest from '@/functions/denyFriendRequest';
+import cancelFriendRequest from '@/functions/cancelFriendRequest';
+import { useRouter } from 'next/router';
+import deleteFriend from '@/functions/deleteFriend';
 
 const ProfileCard = ({ user }) => {
   const { data: session } = useSession();
   const { openConversations } = useContext(SocketContext);
+  const router = useRouter();
+
+  const reloadPage = () => {
+    router.reload(window.location.pathname);
+  };
+
+  let friendRequestButton = [];
+
+  if (user.isFriend) {
+    friendRequestButton.push({
+      title: 'Ta bort vän',
+      callback: () => {
+        deleteFriend(user.id, reloadPage);
+      },
+    });
+  } else {
+    if (user.hasFriendRequest) {
+      friendRequestButton.push(
+        {
+          title: 'Bekräfta vän',
+          callback: () => {
+            confirmFriendRequest(user.id, reloadPage);
+          },
+        },
+        {
+          title: 'Neka vän',
+          callback: () => {
+            denyFriendRequest(user.id, reloadPage);
+          },
+        }
+      );
+    } else if (user.hasSentFriendRequest) {
+      friendRequestButton.push({
+        title: 'Avbryt vänförfrågan',
+        callback: () => {
+          cancelFriendRequest(user.id, reloadPage);
+        },
+      });
+    } else {
+      friendRequestButton.push({
+        title: 'Lägg till vän',
+        callback: () => {
+          sendFriendRequest(user.id, reloadPage);
+        },
+      });
+    }
+  }
 
   const openConversation = async (userPath) => {
     const checkExisting = () => {
@@ -38,10 +90,16 @@ const ProfileCard = ({ user }) => {
       </h1>
       {user.id !== session.user.id && (
         <div className='flex gap-8'>
-          <Button
-            title='Lägg till vän'
-            callback={() => sendFriendRequest(user.id)}
-          />
+          {friendRequestButton.map((button, index) => {
+            return (
+              <Button
+                key={`requestButton${index}`}
+                title={button.title}
+                callback={button.callback}
+              />
+            );
+          })}
+
           <Button
             title='Chatta'
             callback={() => {

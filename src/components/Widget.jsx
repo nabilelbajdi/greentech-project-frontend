@@ -24,7 +24,7 @@ const contacts = [
 const Widget = () => {
   const { data: session } = useSession();
   return (
-    <div className=' hidden h-screen sticky top-[220px] lg:flex flex-col w-[700px] p-2 mt-5'>
+    <div className=' hidden sticky top-[220px] lg:flex flex-col p-2 mx-8 mt-5'>
       <div className=' outline p-8 mx-auto rounded-2xl outline-gray-400 shadow-md '>
         <div className='mb-5'>
           <Image
@@ -32,7 +32,6 @@ const Widget = () => {
             height={80}
             className=' rounded-full cursor-pointer  min-w-[50px] min-h-[50px] outline outline-4 outline-white m-auto'
             src={session.user.image}
-            alt='användarens profilbild'
           />
         </div>
         {contacts.map((contact) => (
