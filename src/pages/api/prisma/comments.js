@@ -33,7 +33,11 @@ const commentHandler = async (req, res) => {
               author_id: authorId,
               post_id: postId,
             },
-            include: { author: { select: { name: true, image: true } } },
+            include: {
+              author: {
+                select: { firstName: true, lastName: true, image: true },
+              },
+            },
           });
 
           return res.status(200).json(createdComment);

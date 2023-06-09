@@ -3,6 +3,9 @@ import Header from '@/components/Header';
 import { SessionProvider } from 'next-auth/react';
 import { LocalizationProvider } from '@mui/x-date-pickers';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
+import { QueryClient, QueryClientProvider } from 'react-query';
+
+const queryClient = new QueryClient();
 import { createContext, useState } from 'react';
 import Context from '@/context';
 
@@ -10,17 +13,16 @@ export default function App({
   Component,
   pageProps: { session, ...pageProps },
 }) {
-
   return (
     <Context>
       <SessionProvider session={session}>
-        <LocalizationProvider dateAdapter={AdapterDayjs}>
-          <Header />
-          <Component {...pageProps} />
-        </LocalizationProvider>
+        <QueryClientProvider client={queryClient}>
+          <LocalizationProvider dateAdapter={AdapterDayjs}>
+            <Header />
+            <Component {...pageProps} />
+          </LocalizationProvider>
+        </QueryClientProvider>
       </SessionProvider>
     </Context>
-
-
   );
 }
