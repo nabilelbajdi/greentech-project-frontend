@@ -29,8 +29,6 @@ const Notification = ({ note }) => {
 
     let renderUnseen = '';
 
-    console.log(note)
-
     if (!note.seen) {
 
         renderUnseen = true;
