@@ -30,6 +30,7 @@ const Widget = () => {
           <Image
             width={80}
             height={80}
+            alt='profilbild'
             className=' rounded-full cursor-pointer  min-w-[50px] min-h-[50px] outline outline-4 outline-white m-auto'
             src={session.user.image}
           />
