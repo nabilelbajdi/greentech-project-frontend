@@ -54,6 +54,7 @@ export const authOptions = {
             session.user.fullyRegistered = null;
           } else {
             session.user.fullyRegistered = registeredUser.fullyRegistered;
+            session.user.userPath = registeredUser.userPath;
           }
         }
       }

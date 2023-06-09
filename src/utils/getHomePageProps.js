@@ -5,7 +5,9 @@ import prisma from '../../server/db/prisma';
 // All props to the event pages goes here
 
 const getHomePageProps = async (context) => {
+
   const session = await getServerSession(context.req, context.res, authOptions);
+  console.log(session);
   if (!session) {
     return {
       redirect: {
@@ -14,6 +16,8 @@ const getHomePageProps = async (context) => {
       },
     };
   }
+
+
 
   if (!session.user.fullyRegistered) {
     return {

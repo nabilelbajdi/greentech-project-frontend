@@ -18,6 +18,7 @@ const getProfilePageProps = async (context) => {
   const user = await prisma.user.findUnique({
     where: { userPath: slug },
     select: {
+      userPath: true,
       id: true,
       firstName: true,
       lastName: true,

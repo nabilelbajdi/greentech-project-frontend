@@ -6,19 +6,23 @@ import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { QueryClient, QueryClientProvider } from 'react-query';
 
 const queryClient = new QueryClient();
+import { createContext, useState } from 'react';
+import Context from '@/context';
 
 export default function App({
   Component,
   pageProps: { session, ...pageProps },
 }) {
   return (
-    <SessionProvider session={session}>
-      <QueryClientProvider client={queryClient}>
-        <LocalizationProvider dateAdapter={AdapterDayjs}>
-          <Header />
-          <Component {...pageProps} />
-        </LocalizationProvider>
-      </QueryClientProvider>
-    </SessionProvider>
+    <Context>
+      <SessionProvider session={session}>
+        <QueryClientProvider client={queryClient}>
+          <LocalizationProvider dateAdapter={AdapterDayjs}>
+            <Header />
+            <Component {...pageProps} />
+          </LocalizationProvider>
+        </QueryClientProvider>
+      </SessionProvider>
+    </Context>
   );
 }

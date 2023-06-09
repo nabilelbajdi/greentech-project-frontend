@@ -1,8 +1,9 @@
-import { getSession, useSession } from "next-auth/react";
+import { useSession } from "next-auth/react";
 
 const BackendCall = () => {
 
-    const { data: session } = useSession();
+    const { data: session, update } = useSession();
+
 
     const testBackendAuth = async (session) => {
 
@@ -16,7 +17,9 @@ const BackendCall = () => {
 
         if (response.status === 401) {
 
-            const updatedSession = await getSession();
+            // session uppdateras inte som den ska och gammal token läses in, fixa!
+
+            const updatedSession = await update();
             testBackendAuth(updatedSession);
             return;
 

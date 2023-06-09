@@ -46,29 +46,32 @@ model Session {
 }
 
 model User {
-  id                         String    @id @default(cuid())
+  id                         String           @id @default(cuid())
+  socketId                   String?
   name                       String?
   firstName                  String?
   lastName                   String?
   country                    String?
   city                       String?
   dateOfBirth                DateTime?
-  userPath                   String?   @unique
-  fullyRegistered            Boolean   @default(false)
-  email                      String?   @unique
+  userPath                   String?          @unique
+  fullyRegistered            Boolean          @default(false)
+  email                      String?          @unique
   emailVerified              DateTime?
   image                      String?
   accounts                   Account[]
   sessions                   Session[]
   posts                      Post[]
+  privateMessagesSent        PrivateMessage[] @relation("privateMessagesSent")
+  privateMessagesReceived    PrivateMessage[] @relation("privateMessagesReceived")
   comments                   Comment[]
   images                     Image[]
-  friends                    User[]    @relation("friends")
-  friendsRelation            User[]    @relation("friends")
-  friendRequests             User[]    @relation("friendRequests")
-  friendRequestsRelation     User[]    @relation("friendRequests")
-  friendRequestsSent         User[]    @relation("friendRequestsSent")
-  friendRequestsSentRelation User[]    @relation("friendRequestsSent")
+  friends                    User[]           @relation("friends")
+  friendsRelation            User[]           @relation("friends")
+  friendRequests             User[]           @relation("friendRequests")
+  friendRequestsRelation     User[]           @relation("friendRequests")
+  friendRequestsSent         User[]           @relation("friendRequestsSent")
+  friendRequestsSentRelation User[]           @relation("friendRequestsSent")
   liked_posts                Like[]
   eventsCreated              Event[]
   attendingEvents            Event[]   @relation("event")
@@ -83,6 +86,21 @@ model VerificationToken {
   expires    DateTime
 
   @@unique([identifier, token])
+}
+
+model PrivateMessage {
+  id      String    @id @default(cuid())
+  from    User      @relation(name: "privateMessagesSent", fields: [from_id], references: [id])
+  to      User      @relation(name: "privateMessagesReceived", fields: [to_id], references: [id])
+  from_id String
+  to_id   String
+  message String
+  seen    DateTime?
+  created DateTime  @default(now())
+  updated DateTime  @default(now()) @updatedAt
+
+  @@index([to_id])
+  @@index([from_id])
 }
 
 model Post {
