@@ -1,6 +1,6 @@
 import socket from "@/socket";
 
-const sendFriendRequest = async (userId) => {
+const sendFriendRequest = async (userId, callback) => {
 
     const response = await fetch('http://localhost:3000/api/friendrequests/send', {
         method: 'POST',
@@ -19,6 +19,7 @@ const sendFriendRequest = async (userId) => {
         }
 
         socket.io.emit('notification', notification);
+        callback();
 
 
     } else {
