@@ -39,7 +39,7 @@ export default function Map({
           address={address}
         />
       )}
-      {selected && (
+      {selected && address !== '' && (
         <GoogleMap
           zoom={15}
           center={selected !== null ? selected : center}

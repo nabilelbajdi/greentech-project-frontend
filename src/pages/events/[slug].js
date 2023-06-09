@@ -1,8 +1,7 @@
-import Sidebar from '@/components/Sidebar';
 import Event from '@/components/Event';
-import getEventPageProps from '@/utils/getEventSlugPageProps';
+import getEventSlugPageProps from '@/utils/getEventSlugPageProps';
 import Widget from '@/components/Widget';
-export const getServerSideProps = getEventPageProps;
+export const getServerSideProps = getEventSlugPageProps;
 
 const EventPage = (props) => {
   return (

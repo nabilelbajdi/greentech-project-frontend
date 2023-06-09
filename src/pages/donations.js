@@ -1,16 +1,16 @@
 import Button from '@/components/Button';
-import DonationCreator from '@/components/DonationCreator';
 import DonationOrganizationName from '@/components/DonationOrganizationName';
 import getDonationPageProps from '@/utils/getDonationPageProps';
 import { useState } from 'react';
 import Widget from '@/components/Widget';
 import Image from 'next/image';
 import PaginationPage from '@/components/PaginationPage';
+import ModalCreator from '@/components/ModalCreator';
 export const getServerSideProps = getDonationPageProps;
 
 const DonationsPage = (props) => {
   const [newDonation, setNewDonation] = useState(false);
-  const [category, setCategory] = useState('Kläder');
+  // const [category, setCategory] = useState('Kläder');
 
   return (
     <div className='w-full'>
@@ -19,7 +19,7 @@ const DonationsPage = (props) => {
           <div className='rounded-xl overflow-hidden'>
             <div className='w-fit h-auto mt-4 m-auto rounded-xl overflow-hidden'>
               <Image
-                src='https://img.freepik.com/free-vector/people-carrying-donation-charity-related-icons_53876-43091.jpg?w=1480&t=st=1685986411~exp=1685987011~hmac=184a1f3daaa30effa8567dedafe1591dbbdfc36a3426d5b77eaf4f7d3a93385f'
+                src='https://img.freepik.com/free-vector/people-carrying-donation-charity-related-icons_53876-43091.jpg?w=1800&t=st=1686152257~exp=1686152857~hmac=ef90dcd9ea3e4a4d2ff28d05223afb776986884b351a4f2c3022cab74f66a55a'
                 alt='donationsbild'
                 priority
                 height={300}
@@ -69,8 +69,8 @@ const DonationsPage = (props) => {
           <div className='p-8 border-b-2'>
             <PaginationPage
               length={props.donationsLength}
-              item='donations'
               title='Se vad andra användare donerar bort just nu!'
+              typeOfItem='donation'
             />
           </div>
           <div className='flex items-center justify-center p-8'>
@@ -86,10 +86,7 @@ const DonationsPage = (props) => {
         <Widget />
       </main>
       {newDonation && (
-        <DonationCreator
-          newDonation={newDonation}
-          setNewDonation={setNewDonation}
-        />
+        <ModalCreator setNewItem={setNewDonation} typeOfItem='donation' />
       )}
     </div>
   );

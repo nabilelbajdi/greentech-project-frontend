@@ -35,7 +35,9 @@ const Header = () => {
         <div className='flex'>
           <div className='flex flex-grow'>
             <div className=' flex space-x-3 w-4/5 justify-between px-5 sm:space-x-4'>
-              <p className='menuIcon'>Grupper</p>
+              <Link href='/groups' className='menuIcon'>
+                Grupper
+              </Link>
               <Link href='/events' className='menuIcon'>
                 Evenemang
               </Link>

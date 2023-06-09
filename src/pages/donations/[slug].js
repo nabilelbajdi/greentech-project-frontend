@@ -1,4 +1,4 @@
-import DonationInfo from '@/components/DonationInfo';
+import Donation from '@/components/Donation';
 import getDonationSlugPageProps from '@/utils/getDonationSlugPageProps';
 export const getServerSideProps = getDonationSlugPageProps;
 import Widget from '@/components/Widget';
@@ -10,7 +10,7 @@ const DonationPage = (props) => {
         {props.donation ? (
           <>
             <div className='lg:ml-28 w-full'>
-              <DonationInfo donation={props.donation} />
+              <Donation donation={props.donation} />
             </div>
             <Widget />
           </>

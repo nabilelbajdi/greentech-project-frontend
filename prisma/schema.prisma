@@ -71,8 +71,10 @@ model User {
   friendRequestsSentRelation User[]    @relation("friendRequestsSent")
   liked_posts                Like[]
   eventsCreated              Event[]
-  attendingEvents            Event[] @relation("event")
+  attendingEvents            Event[]   @relation("event")
   donations                  Donation[]
+  groupsCreated              Group[]
+  attendingGroups            Group[]   @relation("group")
 }
 
 model VerificationToken {
@@ -93,12 +95,15 @@ model Post {
   likes     Like[]
   event     Event?    @relation(fields: [event_id], references: [id], onDelete: Cascade)
   event_id  String?
+  group     Group?    @relation(fields: [group_id], references: [id], onDelete: Cascade)
+  group_id  String?
 
   created DateTime @default(now())
   updated DateTime @default(now()) @updatedAt
 
   @@index([author_id])
   @@index([event_id])
+  @@index([group_id])
 }
 
 model Comment {
@@ -117,19 +122,21 @@ model Comment {
 }
 
 model Image {
-  id           String  @id @default(cuid())
-  author       User?   @relation(fields: [author_id], references: [id], onDelete: Cascade)
+  id           String     @id @default(cuid())
+  author       User?      @relation(fields: [author_id], references: [id], onDelete: Cascade)
   author_id    String?
-  post         Post?   @relation(fields: [post_id], references: [id], onDelete: Cascade)
+  post         Post?      @relation(fields: [post_id], references: [id], onDelete: Cascade)
   post_id      String?
-  event        Event?  @relation(fields: [event_id], references: [id], onDelete: Cascade)
-  event_id     String? @unique
+  event        Event?     @relation(fields: [event_id], references: [id], onDelete: Cascade)
+  event_id     String?    @unique
   donation     Donation?  @relation(fields: [donation_id], references: [id], onDelete: Cascade)
-  donation_id  String? @unique
+  donation_id  String?    @unique
+  group        Group?     @relation(fields: [group_id], references: [id], onDelete: Cascade)
+  group_id     String?    @unique
   url          String
 
-  created      DateTime @default(now())
-  updated      DateTime @default(now()) @updatedAt
+  created      DateTime   @default(now())
+  updated      DateTime   @default(now()) @updatedAt
 
   @@index([author_id])
   @@index([post_id])
@@ -180,15 +187,38 @@ model Donation {
   description     String?
   category        String?
   condition       String?
-  pickUpLocation  String?
+  address         String?
   lat             String?
   lng             String?
-  pickUpTime      String?
-  pickUpDate      String?
+  start_time      String?
+  start_date      String?
+  end_date        String?
+  end_time        String?
   images          Image[]
 
   created DateTime @default(now())
   updated DateTime @default(now()) @updatedAt
 
   @@index([user_id])
+}
+
+model Group {
+  id            String @id @default(cuid())
+  admin         User?  @relation(fields: [admin_id], references: [id], onDelete: Cascade)
+  admin_id      String?
+  name          String?
+  image         Image?
+  description   String?
+  attendings    User[] @relation("group")
+  posts         Post[]
+  start_date    String?
+  start_time    String?
+  address       String?
+  lat           String?
+  lng           String?
+
+  created DateTime @default(now())
+  updated DateTime @default(now()) @updatedAt
+
+  @@index([admin_id])
 }

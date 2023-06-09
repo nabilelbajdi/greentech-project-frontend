@@ -35,45 +35,7 @@ const eventQueryHandler = async (req, res) => {
           return res.status(200).json(deletedEvent);
 
         case 'PUT':
-          const eventInfo = body.eventInfo;
-          // let startDate;
-          // let endDate;
-
-          // if (eventInfo.startDate) {
-          //   startDate = eventInfo.startDate.substring(0, 10);
-          //   let correctStartDate = parseInt(startDate.slice(-2)) + 1;
-          //   if (correctStartDate < 10) {
-          //     correctStartDate = '0' + correctStartDate.toString();
-          //   } else {
-          //     correctStartDate.toString();
-          //   }
-          //   startDate =
-          //     startDate.substring(0, 8) +
-          //     correctStartDate +
-          //     eventInfo.startDate.slice(-14);
-          // }
-
-          // if (eventInfo.endDate) {
-          //   endDate = eventInfo.endDate.substring(0, 10);
-          //   let correctEndDate = parseInt(endDate.slice(-2)) + 1;
-          //   if (correctEndDate < 10 && correctEndDate !== 0) {
-          //     correctEndDate = '0' + correctEndDate.toString();
-          //   } else if (correctEndDate === 0) {
-          //     correctEndDate = '3' + correctEndDate.toString();
-          //   } else {
-          //     correctEndDate.toString();
-          //   }
-          //   endDate =
-          //     endDate.substring(0, 8) +
-          //     correctEndDate +
-          //     eventInfo.endDate.slice(-14);
-          //   endDate =
-          //     endDate.substring(0, 8) +
-          //     correctEndDate +
-          //     eventInfo.endDate.slice(-14);
-          // } else {
-          //   endDate = null;
-          // }
+          const eventInfo = body.itemInfo;
 
           const updatedEvent = await prisma.event.update({
             where: { id: eventId },

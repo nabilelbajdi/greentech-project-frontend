@@ -2,9 +2,7 @@ import { getServerSession } from 'next-auth';
 import { authOptions } from '@/pages/api/auth/[...nextauth]';
 import prisma from '../../server/db/prisma';
 
-// All props to the event pages goes here
-
-const getEventSlugPageProps = async (context) => {
+const getGroupSlugPageProps = async (context) => {
   const session = await getServerSession(context.req, context.res, authOptions);
   if (!session) {
     return {
@@ -17,7 +15,7 @@ const getEventSlugPageProps = async (context) => {
 
   const slug = context.query.slug;
 
-  const event = await prisma.event.findUnique({
+  const group = await prisma.group.findUnique({
     where: { id: slug },
     include: {
       admin: { select: { firstName: true, lastName: true, image: true } },
@@ -45,8 +43,8 @@ const getEventSlugPageProps = async (context) => {
   return {
     props: {
       session,
-      event: JSON.parse(JSON.stringify(event)),
+      group: JSON.parse(JSON.stringify(group)),
     },
   };
 };
-export default getEventSlugPageProps;
+export default getGroupSlugPageProps;

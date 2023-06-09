@@ -35,7 +35,7 @@ const donationQueryHandler = async (req, res) => {
           return res.status(200).json(deletedDonation);
 
         case 'PUT':
-          const donationInfo = body.donationInfo;
+          const donationInfo = body.itemInfo;
 
           const updatedDonation = await prisma.donation.update({
             where: { id: donationId },
@@ -44,9 +44,9 @@ const donationQueryHandler = async (req, res) => {
               description: donationInfo.description,
               category: donationInfo.category,
               condition: donationInfo.condition,
-              pickUpDate: donationInfo.pickUpDate,
-              pickUpTime: donationInfo.pickUpTime,
-              pickUpLocation: donationInfo.pickUpLocation,
+              start_date: donationInfo.startDate,
+              start_time: donationInfo.startTime,
+              address: donationInfo.address,
               lat: donationInfo.lat,
               lng: donationInfo.lng,
             },

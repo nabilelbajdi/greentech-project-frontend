@@ -1,27 +1,28 @@
 import Button from '@/components/Button';
-import ModalCreator from '@/components/ModalCreator';
-import getEventPageProps from '@/utils/getEventPageProps';
+import getGroupPageProps from '@/utils/getGroupPageProps';
 import { useState } from 'react';
 import PaginationPage from '@/components/PaginationPage';
 import Widget from '@/components/Widget';
 import Image from 'next/image';
-export const getServerSideProps = getEventPageProps;
+import ModalCreator from '@/components/ModalCreator';
+export const getServerSideProps = getGroupPageProps;
 
-const EventsPage = (props) => {
-  const [newEvent, setNewEvent] = useState(false);
+const GroupPage = (props) => {
+  const [newGroup, setNewGroup] = useState(false);
 
   return (
     <div className='w-full'>
       <main className='flex'>
         <div className='lg:ml-28 bg-white rounded-xl overflow-hidden w-full'>
           <div className='rounded-xl overflow-hidden'>
-            <div className='w-fit mt-4 m-auto rounded-xl overflow-hidden'>
+            <div className='w-full h-auto mt-4 m-auto rounded-xl overflow-hidden'>
               <Image
-                src='https://img.freepik.com/free-vector/time-management-calendar-method-appointment-planning-business-organizer-people-drawing-mark-work-schedule-cartoon-characters-colleagues-teamwork_335657-2096.jpg?w=1060&t=st=1686051710~exp=1686052310~hmac=64c2ffbabf3f7d82120fdc063ab738da367bf40e3a40859f456d0799c2514db8'
-                alt='eventbild'
+                src='https://img.freepik.com/free-vector/portrait-young-employee-team_74855-7822.jpg?w=1800&t=st=1686152077~exp=1686152677~hmac=815ab13d835f4f1fba8559c9476a8e87b3d3f86411ca358740c81b4539120c57'
+                alt='gruppbild'
                 priority
-                height={300}
-                width={400}
+                height={400}
+                width={600}
+                className='h-full w-auto m-auto'
               />
             </div>
             <div className='p-8 flex flex-col gap-6 border-b-2'>
@@ -43,30 +44,30 @@ const EventsPage = (props) => {
                 mot en bättre värld!
               </p>
               <Button
-                title='Skapa nytt event'
-                callback={() => setNewEvent(!newEvent)}
+                title='Skapa ny grupp'
+                callback={() => setNewGroup(!newGroup)}
               />
             </div>
           </div>
           <div className='p-8 border-b-2'>
             <PaginationPage
-              length={props.eventsLength}
-              title='Delta i andra användares event'
-              typeOfItem='event'
+              length={props.groupsLength}
+              title='Gå med i andra användares grupper'
+              typeOfItem='group'
             />
           </div>
         </div>
         <Widget />
       </main>
-      {newEvent && (
+      {newGroup && (
         <ModalCreator
-          setNewItem={setNewEvent}
-          showEndTime={true}
-          typeOfItem='event'
+          setNewItem={setNewGroup}
+          item={props.group}
+          typeOfItem='group'
         />
       )}
     </div>
   );
 };
 
-export default EventsPage;
+export default GroupPage;

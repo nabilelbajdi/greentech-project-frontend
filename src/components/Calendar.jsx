@@ -16,14 +16,14 @@ const Calendar = ({
         onChange={(date) => setSelectedDate(date)}
         className='w-full'
         format='DD/MM/YYYY'
-        defaultValue={dayjs(dateValue)}
+        defaultValue={dateValue ? dayjs(dateValue) : null}
       />
       <TimePicker
         label={tidText}
         ampm={false}
         onChange={(time) => setSelectedTime(time)}
         className='w-full'
-        defaultValue={dayjs(dateValue + 'T' + timeValue)}
+        defaultValue={timeValue ? dayjs(dateValue + 'T' + timeValue) : null}
       />
     </div>
   );

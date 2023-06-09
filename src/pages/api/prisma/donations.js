@@ -42,7 +42,7 @@ const donationHandler = async (req, res) => {
 
           return res.status(200).json(donations);
         case 'POST':
-          const donationInfo = body.donationInfo;
+          const donationInfo = body.itemInfo;
 
           const createdDonation = await prisma.donation.create({
             data: {
@@ -51,9 +51,9 @@ const donationHandler = async (req, res) => {
               description: donationInfo.description,
               category: donationInfo.category,
               condition: donationInfo.condition,
-              pickUpDate: donationInfo.pickUpDate,
-              pickUpTime: donationInfo.pickUpTime,
-              pickUpLocation: donationInfo.pickUpLocation,
+              start_date: donationInfo.startDate,
+              start_time: donationInfo.startTime,
+              address: donationInfo.address,
               lat: donationInfo.lat,
               lng: donationInfo.lng,
             },

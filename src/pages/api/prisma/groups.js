@@ -2,7 +2,7 @@ import { getServerSession } from 'next-auth';
 import { authOptions } from '../auth/[...nextauth]';
 import prisma from '../../../../server/db/prisma';
 
-const eventHandler = async (req, res) => {
+const groupHandler = async (req, res) => {
   const body = req.body;
   const { query } = req;
   const page = query.page;
@@ -23,7 +23,7 @@ const eventHandler = async (req, res) => {
 
       switch (method) {
         case 'GET':
-          const events = await prisma.event.findMany({
+          const groups = await prisma.group.findMany({
             orderBy: {
               created: 'desc',
             },
@@ -37,41 +37,41 @@ const eventHandler = async (req, res) => {
               },
             },
             take: 6,
-            skip: (page - 1) * 6,
+            skip: page ? (page - 1) * 6 : 0,
           });
 
-          return res.status(200).json(events);
+          return res.status(200).json(groups);
 
         case 'POST':
-          const eventInfo = body.itemInfo;
+          const groupInfo = body.itemInfo;
+          console.log(groupInfo);
 
-          const createdEvent = await prisma.event.create({
+          const createdGroup = await prisma.group.create({
             data: {
               admin_id: adminId,
-              name: eventInfo.name,
-              start_date: eventInfo.startDate,
-              end_date: eventInfo.endDate,
-              start_time: eventInfo.startTime,
-              end_time: eventInfo.endTime,
-              address: eventInfo.address,
-              lat: eventInfo.lat,
-              lng: eventInfo.lng,
-              description: eventInfo.description,
+              name: groupInfo.name,
+              start_date: groupInfo.startDate,
+              start_time: groupInfo.startTime,
+              address: groupInfo.address,
+              lat: groupInfo.lat,
+              lng: groupInfo.lng,
+              description: groupInfo.description,
             },
           });
-          if (eventInfo.image) {
+
+          if (groupInfo.image) {
             await prisma.image.update({
               where: {
-                id: eventInfo.image,
+                id: groupInfo.image,
               },
               data: {
-                event_id: createdEvent.id,
+                group_id: createdGroup.id,
               },
             });
           }
 
-          console.log(createdEvent);
-          return res.status(200).json(createdEvent);
+          console.log(createdGroup);
+          return res.status(200).json(createdGroup);
 
         // if (body.images) {
         //   for (let i = 0; i < body.images.length; i++) {
@@ -98,4 +98,4 @@ const eventHandler = async (req, res) => {
   }
 };
 
-export default eventHandler;
+export default groupHandler;
