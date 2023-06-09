@@ -36,10 +36,43 @@ const getProfilePageProps = async (context) => {
           images: true,
         },
       },
+      friends: {
+        select: {
+          userPath: true,
+          firstName: true,
+          lastName: true,
+          image: true,
+
+        }
+      },
+      friendRequests: {
+        select: {
+          userPath: true,
+        }
+      },
+      friendRequestsSent: {
+        select: {
+          userPath: true,
+        }
+      },
       eventsCreated: true,
       images: true,
     },
   });
+
+  if (user.friends.filter(friend => friend.userPath === session.user.userPath).length > 0) {
+
+    user.isFriend = true;
+
+  } else if (user.friendRequests.filter(friend => friend.userPath === session.user.userPath).length > 0) {
+
+    user.hasSentFriendRequest = true;
+
+  } else if (user.friendRequestsSent.filter(friend => friend.userPath === session.user.userPath).length > 0) {
+
+    user.hasFriendRequest = true;
+
+  }
 
   return {
     props: {

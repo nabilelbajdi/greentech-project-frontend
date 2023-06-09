@@ -28,25 +28,20 @@ const getHomePageProps = async (context) => {
     };
   }
 
-  const posts = await prisma.post.findMany({
-    orderBy: {
-      created: 'desc',
-    },
-    where: { event_id: null },
-    include: {
-      comments: {
-        include: { author: { select: { name: true, image: true } } },
-      },
-      author: { select: { name: true, image: true } },
-      likes: true,
-      images: true,
-    },
+  const requests = await prisma.user.findUnique({
+
+    where: { id: session.user.id },
+    select: {
+      friendRequests: true,
+      friendRequestsSent: true,
+    }
+
   });
 
   return {
     props: {
       session,
-      posts: JSON.parse(JSON.stringify(posts)),
+      friendRequests: JSON.parse(JSON.stringify(requests)),
     },
   };
 };
