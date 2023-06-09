@@ -10,6 +10,7 @@ import confirmFriendRequest from '@/functions/confirmFriendRequest';
 import denyFriendRequest from '@/functions/denyFriendRequest';
 import cancelFriendRequest from '@/functions/cancelFriendRequest';
 import { useRouter } from 'next/router';
+import deleteFriend from '@/functions/deleteFriend';
 
 
 const ProfileCard = ({ user }) => {
@@ -26,7 +27,7 @@ const ProfileCard = ({ user }) => {
     friendRequestButton.push(
       {
         title: 'Ta bort vän',
-        callback: () => { cancelFriendRequest(user.id, reloadPage) }
+        callback: () => { deleteFriend(user.id, reloadPage) }
       }
     )
 

@@ -41,7 +41,7 @@ const confirm = async (req, res) => {
                     })
 
                     if (!checkUser) {
-                        receiverUser.status(404).end('User does not exist.');
+                        res.status(404).end('User does not exist.');
                         return;
                     }
 
