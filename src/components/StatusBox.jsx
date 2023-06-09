@@ -16,7 +16,6 @@ const StatusBox = ({ posts, setPosts, eventId }) => {
     let images;
     if (uploadImages) {
       images = await handleUploadImages();
-      console.log(images);
     }
 
     const text = inputRef.current.value;
@@ -72,7 +71,9 @@ const StatusBox = ({ posts, setPosts, eventId }) => {
             <input
               type='text'
               ref={inputRef}
-              placeholder={`Vad har du på hjärtat, ${session.user.name}?`}
+              placeholder={`Vad har du på hjärtat, ${
+                session.user.firstName + ' ' + session.user.lastName
+              }?`}
               className=' rounded-full focus:outline-none h-12 bg-gray-100 flex-grow px-5 text-xs sm:text-base'
             />
             <button className='hidden' type='submit' onClick={handleNewPost}>
@@ -90,7 +91,7 @@ const StatusBox = ({ posts, setPosts, eventId }) => {
                     className='object-contain p-1 m-1'
                     key={idx}
                     src={URL.createObjectURL(image)}
-                   /* src={URL.createObjectURL(uploadImage)} */
+                    /* src={URL.createObjectURL(uploadImage)} */
 
                     alt='Image set to upload'
                     width={40}
@@ -123,7 +124,7 @@ const StatusBox = ({ posts, setPosts, eventId }) => {
             />
           </div>
           <div className='inputIcon flex-col sm:flex-row'>
-          <EmojiHappyIcon className=' h-7 text-yellow-300' />
+            <EmojiHappyIcon className=' h-7 text-yellow-300' />
             <p className='text-xs sm:text-sm xl:text-base'>Feeling/Activity</p>
           </div>
         </div>
