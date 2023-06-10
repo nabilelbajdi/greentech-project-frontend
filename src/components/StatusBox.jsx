@@ -9,6 +9,7 @@ const StatusBox = ({ posts, setPosts, eventId }) => {
   const imageRef = useRef(null);
   const [uploadImages, setUploadImages] = useState();
   const { data: session, status } = useSession();
+  const [errorMessage, setErrorMessage] = useState();
 
   const handleNewPost = async (e) => {
     e.preventDefault();
@@ -16,6 +17,9 @@ const StatusBox = ({ posts, setPosts, eventId }) => {
     let images;
     if (uploadImages) {
       images = await handleUploadImages();
+      if (images instanceof Error) {
+        return;
+      }
     }
 
     const text = inputRef.current.value;
@@ -48,17 +52,28 @@ const StatusBox = ({ posts, setPosts, eventId }) => {
       body: form,
     });
 
-    return await response.json();
+    if (response.ok) {
+      setErrorMessage();
+      return await response.json();
+    } else {
+      //console.log(await response.text());
+      setErrorMessage(await response.text());
+      return new Error();
+    }
 
     //return await data;
   };
   const removeImage = () => {
     setUploadImages(null);
+    setErrorMessage();
   };
 
   if (status === 'authenticated') {
     return (
       <div className=' bg-white p-2 rounded-2xl shadow-md text-gray-500 font-medium mt-6'>
+        {errorMessage ? (
+          <div className='pl-20 pt-2 text-red-500'>Error: {errorMessage}</div>
+        ) : null}
         <div className='flex sm:space-x-4 p-4 items-center max-w-full'>
           <Image
             className=' hidden  sm:inline-flex rounded-full'
