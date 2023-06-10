@@ -9,6 +9,7 @@ const StatusBox = ({ posts, setPosts, eventId }) => {
   const imageRef = useRef(null);
   const [uploadImages, setUploadImages] = useState();
   const { data: session, status } = useSession();
+  const [errorMessage, setErrorMessage] = useState();
 
   const handleNewPost = async (e) => {
     e.preventDefault();
@@ -49,17 +50,27 @@ const StatusBox = ({ posts, setPosts, eventId }) => {
       body: form,
     });
 
-    return await response.json();
+    if (response.ok) {
+      setErrorMessage();
+      return await response.json();
+    } else {
+      //console.log(await response.text());
+      setErrorMessage(await response.text());
+    }
 
     //return await data;
   };
   const removeImage = () => {
     setUploadImages(null);
+    setErrorMessage();
   };
 
   if (status === 'authenticated') {
     return (
       <div className=' bg-white p-2 rounded-2xl shadow-md text-gray-500 font-medium mt-6'>
+        {errorMessage ? (
+          <div className='pl-20 pt-2 text-red-500'>Error: {errorMessage}</div>
+        ) : null}
         <div className='flex sm:space-x-4 p-4 items-center max-w-full'>
           <Image
             className=' hidden  sm:inline-flex rounded-full'
@@ -90,7 +101,7 @@ const StatusBox = ({ posts, setPosts, eventId }) => {
                     className='object-contain p-1 m-1'
                     key={idx}
                     src={URL.createObjectURL(image)}
-                   /* src={URL.createObjectURL(uploadImage)} */
+                    /* src={URL.createObjectURL(uploadImage)} */
 
                     alt='Image set to upload'
                     width={40}
@@ -123,7 +134,7 @@ const StatusBox = ({ posts, setPosts, eventId }) => {
             />
           </div>
           <div className='inputIcon flex-col sm:flex-row'>
-          <EmojiHappyIcon className=' h-7 text-yellow-300' />
+            <EmojiHappyIcon className=' h-7 text-yellow-300' />
             <p className='text-xs sm:text-sm xl:text-base'>Feeling/Activity</p>
           </div>
         </div>
