@@ -29,9 +29,13 @@ const getProfilePageProps = async (context) => {
         },
         include: {
           comments: {
-            include: { author: { select: { name: true, image: true } } },
+            include: {
+              author: {
+                select: { firstName: true, lastName: true, image: true },
+              },
+            },
           },
-          author: { select: { name: true, image: true } },
+          author: { select: { firstName: true, lastName: true, image: true } },
           likes: true,
           images: true,
         },
@@ -60,17 +64,21 @@ const getProfilePageProps = async (context) => {
     },
   });
 
-  if (user.friends.filter(friend => friend.userPath === session.user.userPath).length > 0) {
+  if (user) {
 
-    user.isFriend = true;
+    if (user.friends.filter(friend => friend.userPath === session.user.userPath).length > 0) {
 
-  } else if (user.friendRequests.filter(friend => friend.userPath === session.user.userPath).length > 0) {
+      user.isFriend = true;
 
-    user.hasSentFriendRequest = true;
+    } else if (user.friendRequests.filter(friend => friend.userPath === session.user.userPath).length > 0) {
 
-  } else if (user.friendRequestsSent.filter(friend => friend.userPath === session.user.userPath).length > 0) {
+      user.hasSentFriendRequest = true;
 
-    user.hasFriendRequest = true;
+    } else if (user.friendRequestsSent.filter(friend => friend.userPath === session.user.userPath).length > 0) {
+
+      user.hasFriendRequest = true;
+
+    }
 
   }
 

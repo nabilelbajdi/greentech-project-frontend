@@ -5,12 +5,18 @@ import {
   ComboboxOption,
   ComboboxPopover,
 } from '@reach/combobox';
+import { useEffect } from 'react';
 import usePlacesAutocomplete, {
   getGeocode,
   getLatLng,
 } from 'use-places-autocomplete';
 
-const PlacesAutocomplete = ({ setSelected, placeholder, setAddress }) => {
+const PlacesAutocomplete = ({
+  setSelected,
+  placeholder,
+  setAddress,
+  address,
+}) => {
   const {
     ready,
     value,
@@ -18,6 +24,10 @@ const PlacesAutocomplete = ({ setSelected, placeholder, setAddress }) => {
     suggestions: { status, data },
     clearSuggestions,
   } = usePlacesAutocomplete();
+
+  useEffect(() => {
+    setValue(address);
+  }, []);
 
   const handleSelect = async (address) => {
     setValue(address, false);
@@ -32,13 +42,13 @@ const PlacesAutocomplete = ({ setSelected, placeholder, setAddress }) => {
   return (
     <Combobox onSelect={handleSelect}>
       <ComboboxInput
-        value={value}
+        value={value ? value : ''}
         onChange={(e) => setValue(e.target.value)}
         disabled={!ready}
         className='px-2 py-4 border-2 rounded-lg w-full'
         placeholder={placeholder}
       />
-      <ComboboxPopover className='z-20'>
+      <ComboboxPopover className='z-50'>
         <ComboboxList className='bg-white text-black p-2 z-20'>
           {status === 'OK' &&
             data.map(({ place_id, description }) => (

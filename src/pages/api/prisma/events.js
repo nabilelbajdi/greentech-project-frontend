@@ -4,6 +4,8 @@ import prisma from '../../../../server/db/prisma';
 
 const eventHandler = async (req, res) => {
   const body = req.body;
+  const { query } = req;
+  const page = query.page;
 
   try {
     const session = await getServerSession(req, res, authOptions);
@@ -21,21 +23,27 @@ const eventHandler = async (req, res) => {
 
       switch (method) {
         case 'GET':
-        // const posts = await prisma.post.findMany({
-        //   orderBy: {
-        //     created: 'desc',
-        //   },
-        //   where: {
-        //     author_id: authorId,
-        //   },
-        //   include: {
-        //     comments: true,
-        //   },
-        // });
+          const events = await prisma.event.findMany({
+            orderBy: {
+              created: 'desc',
+            },
+            include: {
+              admin: {
+                select: {
+                  firstName: true,
+                  lastName: true,
+                  image: true,
+                },
+              },
+            },
+            take: 6,
+            skip: (page - 1) * 6,
+          });
 
-        // return res.status(200).json(posts);
+          return res.status(200).json(events);
+
         case 'POST':
-          const eventInfo = body.eventInfo;
+          const eventInfo = body.itemInfo;
 
           const createdEvent = await prisma.event.create({
             data: {
@@ -62,6 +70,7 @@ const eventHandler = async (req, res) => {
             });
           }
 
+          console.log(createdEvent);
           return res.status(200).json(createdEvent);
 
         // if (body.images) {
