@@ -7,7 +7,11 @@ const ItemInformation = ({ item, btnTitle, itemType }) => {
   const timeDate = setTimeDateVariables(item);
   return (
     <div className='bg-white p-4 rounded-xl flex flex-col'>
-      <div className='flex lg:flex-row flex-col justify-between mb-4'>
+      <div
+        className={`grid ${
+          item.address ? 'lg:grid-cols-2' : 'lg:grid-cols-1'
+        } lg:flex-row flex-col justify-between mb-4`}
+      >
         <div>
           <div className='flex flex-col gap-2'>
             <h2 className='text-xl font-semibold text-center'>
@@ -38,7 +42,7 @@ const ItemInformation = ({ item, btnTitle, itemType }) => {
           )}
         </div>
         {item.address && (
-          <div className='h-fit lg:w-96 w-full rounded-xl lg:mt-0 mt-4 bg-gray-100'>
+          <div className='h-fit lg:w-96 w-full rounded-xl lg:mt-0 mt-4 ml-auto bg-gray-100'>
             <Map
               selected={{
                 lat: parseFloat(item.lat),
