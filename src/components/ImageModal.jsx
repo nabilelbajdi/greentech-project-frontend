@@ -2,7 +2,7 @@ import Image from 'next/image';
 import { useEffect, useState } from 'react';
 import { ArrowRightIcon, ArrowLeftIcon } from '@heroicons/react/outline';
 
-const ImageModal = ({ images, idx, closeModal, next, previous }) => {
+const ImageModal = ({ images, idx, closeModal, reversed }) => {
   const [currentImage, setCurrentImage] = useState(idx);
 
   useEffect(() => {
@@ -34,14 +34,14 @@ const ImageModal = ({ images, idx, closeModal, next, previous }) => {
       <div className='z-10 flex items-center justify-center gap-2 '>
         <button
           className=' z-[100] cursor-pointer w-10 h-10 rounded-full text-white hover:text-gray-400'
-          onClick={previousImage}
+          onClick={!reversed ? previousImage : nextImage}
         >
           <ArrowLeftIcon />
         </button>
         <Image src={images[currentImage].url} width={700} height={700}></Image>
         <button
           className=' z-[100] cursor-pointer w-10 h-10 rounded-full text-white hover:text-gray-400'
-          onClick={nextImage}
+          onClick={!reversed ? nextImage : previousImage}
         >
           <ArrowRightIcon />
         </button>

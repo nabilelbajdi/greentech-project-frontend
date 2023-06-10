@@ -14,7 +14,7 @@ const Gallery = ({ images, size }) => {
 
   return (
     <>
-      <div className='grid grid-cols-3 self-start place-items-center gap-1 rounded-2xl bg-gray-100 overflow-hidden mt-[188px] shadow-md max-w-sm'>
+      <div className='grid grid-cols-3 self-start place-items-center gap-1 rounded-2xl bg-gray-100 overflow-hidden  shadow-md max-w-sm'>
         {imagesReversed.slice(0, size).map((image, idx) => {
           return (
             <div
@@ -28,14 +28,20 @@ const Gallery = ({ images, size }) => {
                 src={image.url}
                 width={500}
                 height={500}
-                className='w-full h-full object-cover '
+                className='w-full h-full object-cover'
+                alt='Gallery image'
               />
             </div>
           );
         })}
       </div>
       {modalImage >= 0 && (
-        <ImageModal images={images} idx={modalImage} closeModal={closeModal} />
+        <ImageModal
+          images={images}
+          idx={modalImage}
+          reversed={true}
+          closeModal={closeModal}
+        />
       )}
     </>
   );

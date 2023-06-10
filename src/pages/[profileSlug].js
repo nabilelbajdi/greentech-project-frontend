@@ -14,7 +14,9 @@ const ProfilePage = (props) => {
               <ProfileCard user={props.user} />
               <Posts posts={props.user.posts} />
             </div>
-            <Gallery images={props.user.images} size={12} />
+            <div className='mt-[188px]'>
+              <Gallery images={props.user.images} size={12} />
+            </div>
           </div>
         ) : (
           <h1>Användaren hittades inte</h1>
