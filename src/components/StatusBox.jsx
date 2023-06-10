@@ -17,6 +17,9 @@ const StatusBox = ({ posts, setPosts, eventId }) => {
     let images;
     if (uploadImages) {
       images = await handleUploadImages();
+      if (images instanceof Error) {
+        return;
+      }
     }
 
     const text = inputRef.current.value;
@@ -55,6 +58,7 @@ const StatusBox = ({ posts, setPosts, eventId }) => {
     } else {
       //console.log(await response.text());
       setErrorMessage(await response.text());
+      return new Error();
     }
 
     //return await data;
