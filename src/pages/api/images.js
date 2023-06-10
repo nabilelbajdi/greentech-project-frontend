@@ -32,7 +32,7 @@ const fileFilter = (req, file, cb) => {
 };
 
 // Setting up multer with the previous options + a filesize limit, and appying it as middleware.
-const upload = multer({ storage, fileFilter, limits: { fileSize: 100000 } });
+const upload = multer({ storage, fileFilter, limits: { fileSize: 10000000 } });
 //apiRoute.use(upload.single('image'));
 
 apiRoute.use(upload.array('images', 10));
