@@ -24,6 +24,10 @@ const getProfilePageProps = async (context) => {
       lastName: true,
       image: true,
       posts: {
+        where: {
+          event_id: null,
+          group_id: null,
+        },
         orderBy: {
           created: 'desc',
         },

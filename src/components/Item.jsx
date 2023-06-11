@@ -109,7 +109,12 @@ const Item = ({
             <>
               <ItemParticipants />
               <div>
-                <Posts posts={posts} setPosts={setPosts} eventId={item.id} />
+                <Posts
+                  posts={posts}
+                  setPosts={setPosts}
+                  itemId={item.id}
+                  itemType={itemType}
+                />
               </div>
             </>
           )}
