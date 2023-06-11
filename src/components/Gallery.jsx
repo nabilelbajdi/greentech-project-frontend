@@ -57,6 +57,7 @@ const Gallery = ({ images = [null], width, height }) => {
                   className='aspect-square w-full h-full bg-gray-200'
                   width={500}
                   height={500}
+                  alt='placeholder image'
                 />
               ) : (
                 <Image
