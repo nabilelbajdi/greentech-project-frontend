@@ -80,7 +80,6 @@ const StatusBox = ({ posts, setPosts, itemId, itemType }) => {
           <div className='pl-20 pt-2 text-red-500'>Error: {errorMessage}</div>
         ) : null}
         <div className='flex sm:space-x-4 p-4 items-center max-w-full'>
-          {console.log(session.user)}
           <Image
             className=' hidden  sm:inline-flex rounded-full'
             src={session.user.image}

@@ -1,7 +1,6 @@
 import SearchResultsCategory from './SearchResultsCategory';
 
 const SearchBarContainer = ({ results, setInput }) => {
-  console.log('container: ', results.users);
   return (
     <div className='w-full lg:p-0 p-3'>
       {results.users.length !== 0 && (

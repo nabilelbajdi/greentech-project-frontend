@@ -15,8 +15,8 @@ import ProfileModalPreview from './ProfileModalPreview';
 
 const SearchedProfile = ({ user, setInput, title }) => {
   const { data: session } = useSession();
-  const { openConversations } = useContext(SocketContext);
-  const router = useRouter();
+  // const { openConversations } = useContext(SocketContext);
+  // const router = useRouter();
 
   const path = {
     Evenemang: 'events',
@@ -29,72 +29,72 @@ const SearchedProfile = ({ user, setInput, title }) => {
     temporaryImage = path[title].split('s')[0];
   }
 
-  const reloadPage = () => {
-    router.reload(window.location.pathname);
-  };
+  // const reloadPage = () => {
+  //   router.reload(window.location.pathname);
+  // };
 
-  let friendRequestButton = [];
+  // let friendRequestButton = [];
 
-  if (user.isFriend) {
-    friendRequestButton.push({
-      title: 'Ta bort vän',
-      callback: () => {
-        deleteFriend(user.id, reloadPage);
-      },
-    });
-  } else {
-    if (user.hasFriendRequest) {
-      friendRequestButton.push(
-        {
-          title: 'Bekräfta vän',
-          callback: () => {
-            confirmFriendRequest(user.id, reloadPage);
-          },
-        },
-        {
-          title: 'Neka vän',
-          callback: () => {
-            denyFriendRequest(user.id, reloadPage);
-          },
-        }
-      );
-    } else if (user.hasSentFriendRequest) {
-      friendRequestButton.push({
-        title: 'Avbryt vänförfrågan',
-        callback: () => {
-          cancelFriendRequest(user.id, reloadPage);
-        },
-      });
-    } else {
-      friendRequestButton.push({
-        title: 'Lägg till vän',
-        callback: () => {
-          sendFriendRequest(user.id, reloadPage);
-        },
-      });
-    }
-  }
+  // if (user.isFriend) {
+  //   friendRequestButton.push({
+  //     title: 'Ta bort vän',
+  //     callback: () => {
+  //       deleteFriend(user.id, reloadPage);
+  //     },
+  //   });
+  // } else {
+  //   if (user.hasFriendRequest) {
+  //     friendRequestButton.push(
+  //       {
+  //         title: 'Bekräfta vän',
+  //         callback: () => {
+  //           confirmFriendRequest(user.id, reloadPage);
+  //         },
+  //       },
+  //       {
+  //         title: 'Neka vän',
+  //         callback: () => {
+  //           denyFriendRequest(user.id, reloadPage);
+  //         },
+  //       }
+  //     );
+  //   } else if (user.hasSentFriendRequest) {
+  //     friendRequestButton.push({
+  //       title: 'Avbryt vänförfrågan',
+  //       callback: () => {
+  //         cancelFriendRequest(user.id, reloadPage);
+  //       },
+  //     });
+  //   } else {
+  //     friendRequestButton.push({
+  //       title: 'Lägg till vän',
+  //       callback: () => {
+  //         sendFriendRequest(user.id, reloadPage);
+  //       },
+  //     });
+  //   }
+  // }
 
-  const openConversation = async (userPath) => {
-    const checkExisting = () => {
-      for (let i = 0; i < openConversations.length; i++) {
-        if (openConversations[i].with === userPath) {
-          return true;
-        }
-      }
-    };
+  // const openConversation = async (userPath) => {
+  //   const checkExisting = () => {
+  //     for (let i = 0; i < openConversations.length; i++) {
+  //       if (openConversations[i].with === userPath) {
+  //         return true;
+  //       }
+  //     }
+  //   };
 
-    if (checkExisting()) return;
+  //   if (checkExisting()) return;
 
-    socket.io.emit('get conversation', { userPath });
-  };
+  //   socket.io.emit('get conversation', { userPath });
+  // };
 
   const [preview, setPreview] = useState(false);
 
-  const openModalPreview = (e) => {
-    setPreview(true);
-    e.stopPropagation();
-  };
+  // const openModalPreview = (e) => {
+  //   setPreview(true);
+  //   e.stopPropagation();
+  // };
 
   return (
     <>
@@ -113,14 +113,12 @@ const SearchedProfile = ({ user, setInput, title }) => {
             className='rounded-full'
           />
           <div>
-            <p onMouseEnter={(e) => openModalPreview(e)}>
-              {user.firstName + ' ' + user.lastName}
-            </p>
+            <p>{user.firstName + ' ' + user.lastName}</p>
             {user.city && <p>Bor i: {user.city}</p>}
             {setInput && user.isFriend && <p className='text-sm'>Vän</p>}
           </div>
         </div>
-        {user.id !== session.user.id && !setInput && (
+        {/* {user.id !== session.user.id && !setInput && (
           <div className='flex gap-8'>
             {friendRequestButton.map((button, index) => {
               console.log(index);
@@ -133,7 +131,7 @@ const SearchedProfile = ({ user, setInput, title }) => {
               );
             })}
           </div>
-        )}
+        )} */}
       </Link>
       {!setInput && preview && (
         <ProfileModalPreview user={user} setPreview={setPreview} />

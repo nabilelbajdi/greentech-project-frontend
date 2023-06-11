@@ -19,7 +19,6 @@ const Post = ({ post, posts, setPosts }) => {
   const [likes, setLikes] = useState(post.likes.length);
   const { data: session } = useSession();
   const currentUser = session.user.id;
-  console.log(post);
 
   const [modalImage, setModalImage] = useState();
 

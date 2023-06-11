@@ -9,6 +9,7 @@ const SearchBar = () => {
   const [results, setResults] = useState(null);
   const [showResults, setShowResults] = useState(false);
   const router = useRouter();
+  const [showInput, setShowInput] = useState(true);
 
   useEffect(() => {
     if (input !== '') {
@@ -44,18 +45,22 @@ const SearchBar = () => {
 
   return (
     <div
-      className='absolute md:flex hidden lg:right-10 right-0 flex-col bg-white outline-black outline outline-1 ml-2 items-center p-2 rounded-md md:w-1/3 w-screen'
+      className={`absolute flex sm:right-10 sm:left-auto left-0 flex-col bg-white outline-black outline outline-1 sm:ml-2 ml-0 items-center p-2 rounded-md sm:translate-y-0 -translate-y-5 ${
+        showInput ? 'md:w-1/3 w-screen' : 'w-10'
+      } `}
       onBlur={() =>
         setTimeout(() => {
           setShowResults(false);
         }, 200)
       }
     >
-      <div className='w-full flex'>
-        <SearchIcon className='h-6 text-gray-400' />
-        <MenuIcon className=' sm:hidden h-6 text-gray-600' />
+      <div className={`relative flex ${showInput ? 'w-full' : 'w-6'}`}>
+        <SearchIcon
+          className='absolute left-0 h-6 text-gray-400'
+          onClick={() => setShowInput(!showInput)}
+        />
         <input
-          className='w-full flex ml-2 items-center outline-none placeholder-gray-400 flex-shrink '
+          className='pl-6 w-full flex ml-2 items-center outline-none placeholder-gray-400 flex-shrink '
           type='text'
           placeholder='Sök'
           value={input}
@@ -63,7 +68,7 @@ const SearchBar = () => {
           onKeyUp={(e) => e.key === 'Enter' && goToSearch()}
         />
       </div>
-      {input !== '' && showResults && (
+      {input !== '' && showResults && showInput && (
         <div
           className={`flex flex-col p-2 w-full max-h-40 overflow-y-scroll bg-white  ${
             !results && 'hidden'

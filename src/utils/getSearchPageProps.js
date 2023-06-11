@@ -37,6 +37,9 @@ const getSearchPageProps = async (context) => {
       image: true,
       userPath: true,
       city: true,
+      friends: true,
+      friendRequests: true,
+      friendRequestsSent: true,
     },
   });
 

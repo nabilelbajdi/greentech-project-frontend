@@ -7,7 +7,6 @@ import Gallery from '@/components/Gallery';
 
 const ProfilePage = (props) => {
   const [posts, setPosts] = useState(props.user.posts);
-  console.log(props);
 
   return (
     <div className='w-full'>

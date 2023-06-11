@@ -1,7 +1,6 @@
 import Image from 'next/image';
 import { useSession } from 'next-auth/react';
-import { SearchIcon, UserCircleIcon } from '@heroicons/react/outline';
-import { MenuIcon } from '@heroicons/react/solid';
+import { UserCircleIcon } from '@heroicons/react/outline';
 import { useState } from 'react';
 import Messenger from './Messenger';
 import ConversationsMenu from './ConversationsMenu';
@@ -55,7 +54,7 @@ const Header = () => {
               </div>
             </div>
           </div>
-          <div className='flex'>
+          <div className='flex w-3/4'>
             <div className='flex flex-grow'>
               <div className=' flex space-x-3 w-4/5 justify-between px-5 sm:space-x-4'>
                 <Link href='/groups' className='menuIcon'>
@@ -70,24 +69,16 @@ const Header = () => {
                 <Link href={`/${session.user.userPath}`} className='menuIcon'>
                   Profil
                 </Link>
-                <Link href={`/${session.user.userPath}/friends`} className='menuIcon'>
+                <Link
+                  href={`/${session.user.userPath}/friends`}
+                  className='menuIcon'
+                >
                   Vänner
                 </Link>
               </div>
             </div>
 
             <SearchBar />
-            {/* <div className=' flex ml-2 items-center bg-white p-2 rounded-md outline-black outline outline-1 lg:w-1/4 lg:mr-10'>
-              <label className=' flex'>
-                <SearchIcon className=' hidden sm:inline-flex h-6 text-gray-400' />
-                <MenuIcon className=' sm:hidden h-6 text-gray-600' />
-                <input
-                  className=' hidden lg:inline-flex ml-2 items-center outline-none placeholder-gray-400 flex-shrink '
-                  type='text'
-                  placeholder='Sök'
-                />
-              </label>
-            </div> */}
           </div>
           {DropDownRender && <DropDownRender setDropdown={setDropdown} />}
         </div>

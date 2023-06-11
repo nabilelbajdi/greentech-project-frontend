@@ -12,7 +12,6 @@ import { useRouter } from 'next/router';
 import deleteFriend from '@/functions/deleteFriend';
 import setProfilePicture from '@/functions/setProfilePicture';
 
-
 const ProfileCard = ({ user }) => {
   const { data: session } = useSession();
   const { openConversations } = useContext(SocketContext);
