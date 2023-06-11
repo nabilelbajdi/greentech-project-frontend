@@ -8,7 +8,7 @@ const { useSession, signOut } = require("next-auth/react")
 
 
 
-const UserMenu = () => {
+const UserMenu = ({size}) => {
     const { data: session, status } = useSession();
     const [menuVisible, setMenuVisible] = useState(false);
     const [menuContent, setMenuContent] = useState([]);
@@ -59,8 +59,8 @@ const UserMenu = () => {
                 <Image
                     src={pic}
                     alt='Min profilbild'
-                    height={24}
-                    width={24}
+                    height={size ? `${size}`:32}
+                    width={size ? `${size}`:32}
                     className='rounded-full border-2 border-chas-primary cursor-pointer aspect-square object-cover hover:opacity-90'
                 />
             </button>

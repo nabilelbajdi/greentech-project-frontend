@@ -11,6 +11,7 @@ import Notifications from "./Notifications";
 import Socket from "./Socket";
 import Link from "next/link";
 import SearchBar from "./SearchBar";
+import UserMenu from "./UserMenu";
 
 
 const HeaderMobile = () => {
@@ -95,15 +96,7 @@ const HeaderMobile = () => {
                 </Link>
                 </div>
                <div>
-               <Link href={`/${session.user.userPath}`}>
-                    <Image
-                    src={session.user.image}
-                    width={75}
-                    height={75}
-                    alt="Profil bild"
-                    className=" rounded-full outline outline-4 outline-white"
-                    />
-                  </Link>
+               <UserMenu size={75}/>
                </div>
                 <div>
                 <Notifications setDropdown={setDropdown} />
