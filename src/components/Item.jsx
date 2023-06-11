@@ -8,6 +8,7 @@ import Posts from './Posts';
 import { useSession } from 'next-auth/react';
 import Button from './Button';
 import ItemConditionQuality from './ItemConditionQuality';
+import Link from 'next/link';
 
 const Item = ({
   item,
@@ -79,16 +80,25 @@ const Item = ({
           </div>
         </div>
         <div className='flex gap-4 items-center'>
-          <Image
-            src={itemType === 'donation' ? item.user.image : item.admin.image}
-            alt='admins profilbild'
-            height={40}
-            width={40}
-            className='rounded-full'
-          />
-          {itemType === 'donation'
-            ? `${item.user.firstName} ${item.user.lastName}`
-            : `${item.admin.firstName} ${item.admin.lastName}`}
+          <Link
+            href={`/${
+              itemType === 'donation' ? item.user.userPath : item.admin.userPath
+            }`}
+            className='flex items-center gap-2'
+          >
+            <Image
+              src={itemType === 'donation' ? item.user.image : item.admin.image}
+              alt='admins profilbild'
+              height={40}
+              width={40}
+              className='rounded-full'
+            />
+            <p className='border-b-2 border-b-gray-100 hover:border-b-black'>
+              {itemType === 'donation'
+                ? `${item.user.firstName} ${item.user.lastName}`
+                : `${item.admin.firstName} ${item.admin.lastName}`}
+            </p>
+          </Link>
           {itemType === 'donation' && item.user_id !== session.user.id && (
             <>
               <Button title='Skicka meddelande' />

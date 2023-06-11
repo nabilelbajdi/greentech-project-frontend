@@ -3,6 +3,7 @@ import { useRef, useState } from 'react';
 import Image from 'next/image';
 import { PencilIcon } from '@heroicons/react/outline';
 import TimeStamp from './TimeStamp';
+import Link from 'next/link';
 
 const Comment = ({
   comment,
@@ -73,20 +74,31 @@ const Comment = ({
   };
 
   return (
-    <div className='flex items-center px-2'>
-      <Image
-        src={comment.author.image}
-        alt='author image'
-        height={25}
-        width={25}
-        className='rounded-full mr-4'
-      />
+    <div
+      className={`flex ${
+        comment.author_id === session.user.id && 'flex-row-reverse ml-auto'
+      } items-center px-2`}
+    >
+      <Link href={`/${comment.author.userPath}`}>
+        <Image
+          src={comment.author.image}
+          alt='author image'
+          height={25}
+          width={25}
+          className={`rounded-full ${
+            comment.author_id === session.user.id ? 'ml-4' : 'mr-4'
+          }`}
+        />
+      </Link>
       <div className='flex flex-col w-full'>
-        <div className='relative w-fit bg-white p-2 px-4 rounded-3xl'>
+        <div className='relative w-fit bg-gray-200 p-2 px-4 rounded-3xl'>
           <div className={`flex justify-between ${edit && 'flex-col'}`}>
-            <p className=' text-sm font-semibold mr-4'>
+            <Link
+              href={`/${comment.author.userPath}`}
+              className=' text-sm font-semibold mr-4 border-b-2 border-gray-200 hover:border-b-2 hover:border-black'
+            >
               {comment.author.firstName + ' ' + comment.author.lastName}
-            </p>
+            </Link>
             <div>
               {comment.author_id === session.user.id &&
                 (edit ? (
@@ -98,7 +110,7 @@ const Comment = ({
                       Save
                     </button>
                     <textarea
-                      className='w-full h-20 rounded-lg p-2 resize-none mt-10'
+                      className='w-full h-20 rounded-lg p-2 resize-none mt-10 outline outline-1 outline-black'
                       ref={editText}
                     />
                   </div>
@@ -113,7 +125,7 @@ const Comment = ({
             </div>
           </div>
           {!edit && commentText}
-          {/* <TimeStamp time={comment.created} /> */}
+          <TimeStamp time={comment.created} />
         </div>
       </div>
     </div>
