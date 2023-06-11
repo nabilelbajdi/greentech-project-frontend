@@ -23,6 +23,7 @@ const getProfilePageProps = async (context) => {
       firstName: true,
       lastName: true,
       image: true,
+      profilePicture: true,
       posts: {
         orderBy: {
           created: 'desc',
@@ -46,18 +47,17 @@ const getProfilePageProps = async (context) => {
           firstName: true,
           lastName: true,
           image: true,
-
-        }
+        },
       },
       friendRequests: {
         select: {
           userPath: true,
-        }
+        },
       },
       friendRequestsSent: {
         select: {
           userPath: true,
-        }
+        },
       },
       eventsCreated: true,
       images: true,
@@ -65,21 +65,24 @@ const getProfilePageProps = async (context) => {
   });
 
   if (user) {
-
-    if (user.friends.filter(friend => friend.userPath === session.user.userPath).length > 0) {
-
+    if (
+      user.friends.filter((friend) => friend.userPath === session.user.userPath)
+        .length > 0
+    ) {
       user.isFriend = true;
-
-    } else if (user.friendRequests.filter(friend => friend.userPath === session.user.userPath).length > 0) {
-
+    } else if (
+      user.friendRequests.filter(
+        (friend) => friend.userPath === session.user.userPath
+      ).length > 0
+    ) {
       user.hasSentFriendRequest = true;
-
-    } else if (user.friendRequestsSent.filter(friend => friend.userPath === session.user.userPath).length > 0) {
-
+    } else if (
+      user.friendRequestsSent.filter(
+        (friend) => friend.userPath === session.user.userPath
+      ).length > 0
+    ) {
       user.hasFriendRequest = true;
-
     }
-
   }
 
   return {
