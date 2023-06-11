@@ -52,7 +52,12 @@ const Gallery = ({ images = [null], width, height }) => {
           return (
             <>
               {image === null ? (
-                <div className='aspect-square w-full bg-gray-200' />
+                <Image
+                  src={'/placeholder.png'}
+                  className='aspect-square w-full bg-gray-200'
+                  width={500}
+                  height={500}
+                />
               ) : (
                 <div
                   key={image.id}

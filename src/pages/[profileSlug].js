@@ -13,11 +13,11 @@ const ProfilePage = (props) => {
     <div className='w-full'>
       <main className='flex flex-col'>
         {props.user ? (
-          <div className='flex mx-auto'>
-            <div>
+          <div className='flex mx-auto w-full md:w-auto'>
+            <div className='w-full md:w-auto'>
               <ProfileCard user={props.user} />
-              <Posts posts={posts} setPosts={setPosts} />
-              <div className='mx-3 mt-8 block  md:w-[700px] lg:hidden bg-white rounded-2xl'>
+
+              <div className='mx-3 md:mx-auto mt-8 block  md:w-[700px] lg:hidden bg-white rounded-2xl'>
                 <div className='flex py-2 px-6 justify-between items-center'>
                   <div>
                     <h2 className='font-semibold'>Bilder</h2>
@@ -39,7 +39,7 @@ const ProfilePage = (props) => {
                   <Gallery images={props.user.images} width={3} height={2} />
                 </div>
               </div>
-              <Posts posts={props.user.posts} />
+              <Posts posts={posts} setPosts={setPosts} />
             </div>
             <div className='mt-[188px] mr-3  hidden lg:block max-w-sm bg-white rounded-2xl self-start'>
               <div className='flex py-2 px-6 justify-between items-center'>
