@@ -15,6 +15,7 @@ const Socket = ({ setDropdown }) => {
         setConversations,
         setUnseenNotifications,
         setNotifications,
+        setFriends,
     } = useContext(SocketContext);
 
     const socketInitializer = async () => {
@@ -40,6 +41,7 @@ const Socket = ({ setDropdown }) => {
             console.log('socket connected')
 
             socket.io.emit('get conversation list');
+            socket.io.emit('get friends list');
             socket.io.emit('check unseen notifications');
 
             socket.io.on('private message', ({ message }) => {
@@ -181,6 +183,12 @@ const Socket = ({ setDropdown }) => {
             socket.io.on('get notifications', (notifications) => {
 
                 setNotifications(notifications);
+
+            })
+
+            socket.io.on('get friends list', (friends) => {
+
+                setFriends(friends);
 
             })
         });
