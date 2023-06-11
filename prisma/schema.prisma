@@ -7,6 +7,7 @@
 
 generator client {
   provider = "prisma-client-js"
+  previewFeatures = ["fullTextSearch", "fullTextIndex"]
 }
 
 datasource db {
@@ -49,8 +50,8 @@ model User {
   id                         String           @id @default(cuid())
   socketId                   String?
   name                       String?
-  firstName                  String?
-  lastName                   String?
+  firstName                  String?          
+  lastName                   String?          
   country                    String?
   city                       String?
   dateOfBirth                DateTime?
@@ -142,6 +143,7 @@ model Post {
   @@index([author_id])
   @@index([event_id])
   @@index([group_id])
+  @@fulltext([text])
 }
 
 model Comment {
@@ -150,13 +152,14 @@ model Comment {
   author_id String?
   post      Post?   @relation("comments", fields: [post_id], references: [id], onDelete: Cascade)
   post_id   String?
-  text      String
+  text      String  @db.Text
 
   created DateTime @default(now())
   updated DateTime @default(now()) @updatedAt
 
   @@index([author_id])
   @@index([post_id])
+  @@fulltext([text])
 }
 
 model Image {

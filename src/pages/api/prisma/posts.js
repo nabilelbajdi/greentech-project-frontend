@@ -37,11 +37,13 @@ const postHandler = async (req, res) => {
         case 'POST':
           const text = body.text;
           const eventId = body.event_id;
+          const groupId = body.group_id;
           const createdPost = await prisma.post.create({
             data: {
               text: text,
               author_id: authorId,
               event_id: eventId,
+              group_id: groupId,
             },
             include: {
               comments: true,

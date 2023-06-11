@@ -1,5 +1,4 @@
 const ItemConditionQuality = ({ item }) => {
-  console.log('item condition: ', item);
   return (
     <div className='flex flex-col justify-between p-2 mb-4 w-full'>
       <div className='flex flex-col gap-4'>

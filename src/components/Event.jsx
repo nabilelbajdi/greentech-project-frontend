@@ -1,19 +1,9 @@
-import Image from 'next/image';
-import Posts from './Posts';
 import { useState } from 'react';
-import Button from './Button';
-import ParticipantCard from './ParticipantCard';
 import { useRouter } from 'next/router';
-import { PencilIcon, TrashIcon } from '@heroicons/react/solid';
-import { useSession } from 'next-auth/react';
 import ModalCreator from './ModalCreator';
-import ItemTimeDate from './ItemTimeDate';
-import ItemInformation from './ItemInformation';
-import { handleDelete, handleEdit } from '@/functions/itemRequestHandler';
 import Item from './Item';
 
 const Event = ({ event }) => {
-  const { data: session } = useSession();
   const [posts, setPosts] = useState(event.posts);
   const [edit, setEdit] = useState(false);
   const { push } = useRouter();

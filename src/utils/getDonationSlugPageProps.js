@@ -21,7 +21,13 @@ const getDonationSlugPageProps = async (context) => {
     where: { id: slug },
     include: {
       user: {
-        select: { id: true, firstName: true, lastName: true, image: true },
+        select: {
+          id: true,
+          firstName: true,
+          lastName: true,
+          image: true,
+          userPath: true,
+        },
       },
       images: true,
     },
