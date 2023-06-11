@@ -44,7 +44,7 @@ const MyFriendsRequests = ({ friendRequests }) => {
 
             </div>
             <div className='relative rounded-2xl bg-gray-100 p-4 mx-8 mt-8 shadow-md'>
-                <h2 className='border-b border-gray-300 py-2 text-lg font-se'>Skickade vänförfrågningar</h2>
+                <h2 className='border-b border-gray-300 py-2 text-lg'>Skickade vänförfrågningar</h2>
                 <ul className='flex flex-col gap-2 py-2'>
                     {friendRequests.friendRequestsSent.map((request, index) => {
 

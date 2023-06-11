@@ -46,7 +46,7 @@ const getProfilePageProps = async (context) => {
           firstName: true,
           lastName: true,
           image: true,
-
+          socketId: true,
         }
       },
       friendRequests: {
