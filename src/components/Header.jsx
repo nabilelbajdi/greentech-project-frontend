@@ -70,7 +70,9 @@ const Header = () => {
                 <Link href={`/${session.user.userPath}`} className='menuIcon'>
                   Profil
                 </Link>
-                <p className='menuIcon'>Vänner </p>
+                <Link href={`/${session.user.userPath}/friends`} className='menuIcon'>
+                  Vänner
+                </Link>
               </div>
             </div>
 

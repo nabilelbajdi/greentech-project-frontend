@@ -19,6 +19,7 @@ const ModalCreator = ({
   const itemName = useRef();
   const description = useRef();
   const category = useRef(null);
+  const [errorMessage, setErrorMessage] = useState();
   const condition = useRef(null);
   const imageRef = useRef(null);
   const [uploadImages, setUploadImages] = useState();
@@ -68,6 +69,9 @@ const ModalCreator = ({
     let image;
     if (uploadImages) {
       image = await handleUploadImages();
+      if (image instanceof Error) {
+        return;
+      }
     }
 
     const itemInfo = {
@@ -164,7 +168,13 @@ const ModalCreator = ({
       body: form,
     });
 
-    return await response.json();
+    if (response.ok) {
+      return await response.json();
+    } else {
+      //console.log(await response.text());
+      setErrorMessage(await response.text());
+      return new Error();
+    }
   };
 
   return (
@@ -211,7 +221,10 @@ const ModalCreator = ({
           <button
             className='absolute bottom-4 right-8 p-2 bg-gray-300 rounded-xl hover:bg-green-500'
             type='button'
-            onClick={() => imageRef.current.click()}
+            onClick={() => {
+              imageRef.current.click();
+              setErrorMessage();
+            }}
           >
             Lägg till omslagsfoto
           </button>
@@ -374,6 +387,9 @@ const ModalCreator = ({
           />
         </div>
         <div className='sticky z-10 bottom-0 w-full bg-white-200 p-1'>
+          {errorMessage ? (
+            <div className='text-red-500'>Error: {errorMessage}</div>
+          ) : null}
           <button className='p-4 bg-chas-gradient-primary rounded-xl w-full hover:bg-chas-gradient-secondary text-white'>
             {edit ? `Uppdatera ${titleType}` : `Skapa ${titleType}`}
           </button>

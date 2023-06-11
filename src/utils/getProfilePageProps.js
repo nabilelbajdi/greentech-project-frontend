@@ -23,6 +23,7 @@ const getProfilePageProps = async (context) => {
       firstName: true,
       lastName: true,
       image: true,
+      profilePicture: true,
       posts: {
         where: {
           event_id: null,
@@ -62,6 +63,7 @@ const getProfilePageProps = async (context) => {
           firstName: true,
           lastName: true,
           image: true,
+          socketId: true,
         },
       },
       friendRequests: {
@@ -75,6 +77,7 @@ const getProfilePageProps = async (context) => {
         },
       },
       eventsCreated: true,
+      images: true,
     },
   });
 

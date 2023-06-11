@@ -6,6 +6,8 @@ import TimeStamp from './TimeStamp';
 import { useSession } from 'next-auth/react';
 import Link from 'next/link';
 
+import ImageModal from './ImageModal';
+
 const Post = ({ post, posts, setPosts }) => {
   const [edit, setEdit] = useState(false);
   const [reply, setReply] = useState(false);
@@ -18,6 +20,12 @@ const Post = ({ post, posts, setPosts }) => {
   const { data: session } = useSession();
   const currentUser = session.user.id;
   console.log(post);
+
+  const [modalImage, setModalImage] = useState();
+
+  const closeModal = () => {
+    setModalImage();
+  };
 
   //checks to see if the logged in user already liked the post
   let alreadyLiked = post.likes.filter(
@@ -168,8 +176,8 @@ const Post = ({ post, posts, setPosts }) => {
         <>
           <p className=' ml-1 my-4'>{postText}</p>
           {post.images.length ? (
-            <div className={`flex my-4`}>
-              {post.images.map((image) => {
+            <div className={`flex my-4 rounded-lg overflow-hidden`}>
+              {post.images.map((image, idx) => {
                 return (
                   <Image
                     src={image.url}
@@ -178,6 +186,10 @@ const Post = ({ post, posts, setPosts }) => {
                     height={0}
                     width={1000}
                     style={{ width: `${100 / post.images.length}%` }}
+                    className='cursor-pointer object-cover hover:opacity-95 hover:scale-[1.02]'
+                    onClick={() => {
+                      setModalImage(idx);
+                    }}
                   />
                 );
               })}
@@ -282,6 +294,13 @@ const Post = ({ post, posts, setPosts }) => {
             />
           ))}
         </div>
+      )}
+      {modalImage >= 0 && (
+        <ImageModal
+          images={post.images}
+          idx={modalImage}
+          closeModal={closeModal}
+        />
       )}
     </div>
   );
