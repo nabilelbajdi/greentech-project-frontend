@@ -14,6 +14,18 @@ const Friend = ({ user, ownProfile }) => {
   const [menuVisible, setMenuVisible] = useState(false);
   const router = useRouter();
 
+  let pic;
+
+  if (user.profilePicture) {
+
+    pic = user.profilePicture
+
+  } else {
+
+    pic = user.image;
+
+  }
+
   const reloadPage = () => {
     router.reload(window.location.pathname);
   };
@@ -55,8 +67,8 @@ const Friend = ({ user, ownProfile }) => {
       >
         <Link href={`/${user.userPath}`}>
           <Image
-            className=' rounded-full object-cover max-w-[50px] max-h-[50px]'
-            src={user.image}
+            className='aspect-square rounded-full object-cover max-w-[50px] max-h-[50px]'
+            src={pic}
             alt={`${name}s profilbild`}
             width={50}
             height={50}

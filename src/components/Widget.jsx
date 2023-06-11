@@ -9,6 +9,18 @@ const Widget = () => {
   const { friends } = useContext(SocketContext);
   const [chosen, setChosen] = useState([])
 
+  let pic;
+
+  if (session.user.profilePicture) {
+
+    pic = session.user.profilePicture
+
+  } else {
+
+    pic = session.user.image;
+
+  }
+
   let renderFriends = false;
 
   if (chosen.length > 0) renderFriends = true;
@@ -52,15 +64,15 @@ const Widget = () => {
 
   }, [friends])
   return (
-    <div className=' hidden sticky top-[220px] lg:flex flex-col p-2 mx-12 mt-5 '>
+    <div className=' hidden sticky top-[220px] lg:flex flex-col p-2 mr-12 ml-5 mt-5 '>
       <div className='py-8 rounded-2xl bg-gray-400/20 border border-gray-400/80 shadow shadow-gray-800/10 p-1  '>
         <div className='mb-5'>
           <Image
             width={80}
             height={80}
             alt='profilbild'
-            className=' rounded-full cursor-pointer  min-w-[50px] min-h-[50px] outline outline-4 outline-white m-auto'
-            src={session.user.image}
+            className='aspect-square object-cover rounded-full cursor-pointer  min-w-[50px] min-h-[50px] outline outline-4 outline-white m-auto'
+            src={pic}
           />
         </div>
         <ul className='flex flex-col gap-2 w-full px-2'>

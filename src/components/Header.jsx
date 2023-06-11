@@ -1,6 +1,5 @@
 import Image from 'next/image';
 import { useSession } from 'next-auth/react';
-import { UserCircleIcon } from '@heroicons/react/outline';
 import { useState } from 'react';
 import Messenger from './Messenger';
 import ConversationsMenu from './ConversationsMenu';
@@ -8,6 +7,7 @@ import NotificationsMenu from './NotificationsMenu';
 import Notifications from './Notifications';
 import Socket from './Socket';
 import Link from 'next/link';
+import UserMenu from './UserMenu';
 import SearchBar from './SearchBar';
 
 const Header = () => {
@@ -45,11 +45,9 @@ const Header = () => {
               </Link>
               <div>
                 <div className='flex pt-2 space-x-2'>
-                  <Link href={`/${session.user.userPath}`} className='menuIcon'>
-                    <UserCircleIcon className='headerIcon' />
-                  </Link>
-                  <Notifications setDropdown={setDropdown} />
                   <Messenger setDropdown={setDropdown} />
+                  <Notifications setDropdown={setDropdown} />
+                  <UserMenu />
                 </div>
               </div>
             </div>
