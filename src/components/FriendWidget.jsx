@@ -7,6 +7,7 @@ import deleteFriend from '@/functions/deleteFriend';
 import openConversation from '@/functions/openConversation';
 import { AiOutlineEllipsis } from 'react-icons/ai'
 import { useRouter } from 'next/router';
+import { useSession } from 'next-auth/react';
 
 const FriendWidget = ({ user, ownProfile }) => {
 
@@ -17,6 +18,18 @@ const FriendWidget = ({ user, ownProfile }) => {
   const reloadPage = () => {
     router.reload(window.location.pathname);
   };
+
+  let pic;
+
+  if (user.profilePicture) {
+
+    pic = user.profilePicture
+
+  } else {
+
+    pic = user.image;
+
+  }
 
 
   let online = false;
@@ -55,8 +68,8 @@ const FriendWidget = ({ user, ownProfile }) => {
       >
         <Link href={`/${user.userPath}`}>
           <Image
-            className=' rounded-full object-cover max-w-[50px] max-h-[50px]'
-            src={user.image}
+            className='aspect-square rounded-full object-cover max-w-[50px] max-h-[50px]'
+            src={pic}
             alt={`${name}s profilbild`}
             width={50}
             height={50}

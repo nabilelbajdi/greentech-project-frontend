@@ -50,7 +50,7 @@ const Gallery = ({ images = [null], width, height }) => {
       >
         {imagesReversed.slice(0, size).map((image, idx) => {
           return (
-            <>
+            <div key={`image${idx}`}>
               {image === null ? (
                 <Image
                   src={'/placeholder.png'}
@@ -75,7 +75,7 @@ const Gallery = ({ images = [null], width, height }) => {
                   />
                 </div>
               )}
-            </>
+            </div>
           );
         })}
       </div>
