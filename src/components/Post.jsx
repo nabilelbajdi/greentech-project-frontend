@@ -129,14 +129,26 @@ const Post = ({ post, posts, setPosts }) => {
     }
   };
 
+  let pic;
+
+  if (post.author.profilePicture) {
+
+    pic = post.author.profilePicture
+
+  } else {
+
+    pic = post.author.image
+
+  }
+
   return (
     <div className='relative rounded-2xl bg-white p-4 pb-0 shadow-md'>
       <div className='flex items-center gap-4 w-full mb-2'>
-        {post.author.image && (
+        {pic && (
           <Link href={`/${post.author.userPath}`}>
             <Image
-              className='rounded-full'
-              src={post.author.image}
+              className='aspect-square object-cover rounded-full'
+              src={pic}
               alt='author image'
               height={40}
               width={40}

@@ -36,10 +36,10 @@ const getHomePageProps = async (context) => {
     include: {
       comments: {
         include: {
-          author: { select: { firstName: true, lastName: true, image: true } },
+          author: { select: { firstName: true, lastName: true, image: true, userPath: true, profilePicture: true } },
         },
       },
-      author: { select: { firstName: true, lastName: true, image: true } },
+      author: { select: { firstName: true, lastName: true, image: true, userPath: true, profilePicture: true } },
       likes: true,
       images: true,
     },

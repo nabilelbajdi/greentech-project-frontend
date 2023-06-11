@@ -73,6 +73,18 @@ const StatusBox = ({ posts, setPosts, itemId, itemType }) => {
     setErrorMessage();
   };
 
+  let pic;
+
+  if (session.user.profilePicture) {
+
+    pic = session.user.profilePicture
+
+  } else {
+
+    pic = session.user.image
+
+  }
+
   if (status === 'authenticated') {
     return (
       <div className=' bg-white p-2 rounded-2xl shadow-md text-gray-500 font-medium mt-6'>
@@ -81,8 +93,8 @@ const StatusBox = ({ posts, setPosts, itemId, itemType }) => {
         ) : null}
         <div className='flex sm:space-x-4 p-4 items-center max-w-full'>
           <Image
-            className=' hidden  sm:inline-flex rounded-full'
-            src={session.user.image}
+            className='aspect-square object-cover hidden  sm:inline-flex rounded-full'
+            src={pic}
             alt='användarens bild'
             width={40}
             height={40}
@@ -91,9 +103,8 @@ const StatusBox = ({ posts, setPosts, itemId, itemType }) => {
             <input
               type='text'
               ref={inputRef}
-              placeholder={`Vad har du på hjärtat, ${
-                session.user.firstName + ' ' + session.user.lastName
-              }?`}
+              placeholder={`Vad har du på hjärtat, ${session.user.firstName + ' ' + session.user.lastName
+                }?`}
               className=' rounded-full focus:outline-none h-12 bg-gray-100 flex-grow px-5 text-xs sm:text-base'
             />
             <button className='hidden' type='submit' onClick={handleNewPost}>
