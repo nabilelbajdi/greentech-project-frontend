@@ -177,7 +177,7 @@ const Post = ({ post, posts, setPosts }) => {
                     height={0}
                     width={1000}
                     style={{ width: `${100 / post.images.length}%` }}
-                    className='cursor-pointer object-cover hover:opacity-95 hover:scale-[1.02]'
+                    className='cursor-pointer object-cover'
                     onClick={() => {
                       setModalImage(idx);
                     }}
