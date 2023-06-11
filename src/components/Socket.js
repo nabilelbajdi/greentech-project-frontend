@@ -16,6 +16,7 @@ const Socket = ({ setDropdown }) => {
         setUnseenNotifications,
         setNotifications,
         setFriends,
+        setChosenFriends,
     } = useContext(SocketContext);
 
     const socketInitializer = async () => {
@@ -189,6 +190,39 @@ const Socket = ({ setDropdown }) => {
             socket.io.on('get friends list', (friends) => {
 
                 setFriends(friends);
+                const offlineFriends = [];
+                const theChosenOnes = [];
+
+
+                for (let i = 0; i < friends.length; i++) {
+
+                    if (theChosenOnes.length === 8) break;
+
+                    if (friends[i].socketId) {
+
+                        theChosenOnes.push(friends[i])
+
+                    } else {
+
+                        offlineFriends.push(friends[i])
+
+                    }
+
+                }
+
+                if (theChosenOnes.length < 8) {
+
+                    for (let i = 0; i < offlineFriends.length; i++) {
+
+                        if (theChosenOnes.length === 8) break;
+
+                        theChosenOnes.push(offlineFriends[i]);
+
+                    }
+
+                }
+
+                setChosenFriends(theChosenOnes);
 
             })
         });

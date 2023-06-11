@@ -6,7 +6,7 @@ import FriendWidget from './FriendWidget';
 
 const Widget = () => {
   const { data: session } = useSession();
-  const { friends } = useContext(SocketContext);
+  const { chosenFriends } = useContext(SocketContext);
   const [chosen, setChosen] = useState([])
 
   let pic;
@@ -23,46 +23,9 @@ const Widget = () => {
 
   let renderFriends = false;
 
-  if (chosen.length > 0) renderFriends = true;
-
-  useEffect(() => {
-
-    const offlineFriends = [];
-    const theChosenOnes = [];
+  if (chosenFriends.length > 0) renderFriends = true;
 
 
-    for (let i = 0; i < friends.length; i++) {
-
-      if (theChosenOnes.length === 8) break;
-
-      if (friends[i].socketId) {
-
-        theChosenOnes.push(friends[i])
-
-      } else {
-
-        offlineFriends.push(friends[i])
-
-      }
-
-    }
-
-    if (theChosenOnes.length < 8) {
-
-      for (let i = 0; i < offlineFriends.length; i++) {
-
-        if (theChosenOnes.length === 8) break;
-
-        theChosenOnes.push(offlineFriends[i]);
-
-      }
-
-    }
-
-    setChosen(theChosenOnes);
-
-
-  }, [friends])
   return (
     <div className=' hidden sticky top-[220px] lg:flex flex-col p-2 mr-12 ml-5 mt-5 '>
       <div className='py-8 rounded-2xl bg-gray-400/20 border border-gray-400/80 shadow shadow-gray-800/10 p-1  '>
@@ -77,7 +40,7 @@ const Widget = () => {
         </div>
         <ul className='flex flex-col gap-2 w-full px-2'>
 
-          {renderFriends && chosen.map((user, index) => (
+          {renderFriends && chosenFriends.map((user, index) => (
 
             <FriendWidget
               key={`friend#${index}`}

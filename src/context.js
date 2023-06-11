@@ -8,6 +8,7 @@ const Context = ({ children }) => {
     const [unseenNotifications, setUnseenNotifications] = useState(0);
     const [notifications, setNotifications] = useState([]);
     const [friends, setFriends] = useState([]);
+    const [chosenFriends, setChosenFriends] = useState([]);
 
     useEffect(() => {
 
@@ -62,7 +63,9 @@ const Context = ({ children }) => {
             notifications,
             setNotifications,
             friends,
-            setFriends
+            setFriends,
+            chosenFriends,
+            setChosenFriends
         }}>
             {children}
         </SocketContext.Provider>
