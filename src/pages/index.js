@@ -11,7 +11,7 @@ const Home = (props) => {
     <div className='w-full'>
       <main className='flex'>
         <Posts posts={posts} setPosts={setPosts} />
-        <FriendsWidget/>
+        <FriendsWidget />
       </main>
     </div>
   );
