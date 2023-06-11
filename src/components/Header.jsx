@@ -9,6 +9,7 @@ import NotificationsMenu from './NotificationsMenu';
 import Notifications from './Notifications';
 import Socket from './Socket';
 import Link from 'next/link';
+import SearchBar from './SearchBar';
 
 const Header = () => {
   const { data: session, status } = useSession();
@@ -73,7 +74,8 @@ const Header = () => {
               </div>
             </div>
 
-            <div className=' flex ml-2 items-center bg-white p-2 rounded-md outline-black outline outline-1 lg:w-1/4 lg:mr-10'>
+            <SearchBar />
+            {/* <div className=' flex ml-2 items-center bg-white p-2 rounded-md outline-black outline outline-1 lg:w-1/4 lg:mr-10'>
               <label className=' flex'>
                 <SearchIcon className=' hidden sm:inline-flex h-6 text-gray-400' />
                 <MenuIcon className=' sm:hidden h-6 text-gray-600' />
@@ -83,7 +85,7 @@ const Header = () => {
                   placeholder='Sök'
                 />
               </label>
-            </div>
+            </div> */}
           </div>
           {DropDownRender && <DropDownRender setDropdown={setDropdown} />}
         </div>
