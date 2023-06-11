@@ -1,32 +1,11 @@
 import Link from "next/link"
 import { useEffect, useRef } from "react"
 
-const DotDotDotMeny = ({ menuContent, setMenuVisible, buttonRef }) => {
-
-    const menuRef = useRef(null);
-
-    useEffect(() => {
-        const handler = (e) => {
-
-            if (!menuRef.current.contains(e.target)) {
-
-                setMenuVisible(false);
-
-            }
-
-        };
-
-        document.addEventListener('mousedown', handler);
-
-        return () => {
-            document.removeEventListener('mousedown', handler);
-        }
-
-    }, [])
+const UserMenuDropDown = ({ menuContent, setMenuVisible }) => {
 
     return (
 
-        <ul ref={menuRef} className={`flex flex-col gap-0.5 absolute -bottom-20 text-gray-300 right-0 z-50 min-w-[150px] py-0.5 bg-slate-500 shadow shadow-slate-600/80 border border-slate-600/30 rounded`}>
+        <ul className={`flex flex-col gap-0.5 absolute -bottom-[4rem] text-gray-300 right-0 z-50 min-w-[200px] py-0.5 bg-slate-500 shadow shadow-slate-600/80 border border-slate-600/30 rounded`}>
             {menuContent.map((item, index) => {
 
                 const classNames = `w-full hover:text-chas-primary border-b border-slate-400/50 px-2 py-0.5 last:border-none`
@@ -59,4 +38,4 @@ const DotDotDotMeny = ({ menuContent, setMenuVisible, buttonRef }) => {
     )
 }
 
-export default DotDotDotMeny;
+export default UserMenuDropDown;

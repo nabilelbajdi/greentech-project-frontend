@@ -55,6 +55,7 @@ export const authOptions = {
           } else {
             session.user.fullyRegistered = registeredUser.fullyRegistered;
             session.user.userPath = registeredUser.userPath;
+            session.user.profilePicture = registeredUser.profilePicture;
           }
         }
       }

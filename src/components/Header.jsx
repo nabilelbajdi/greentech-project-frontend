@@ -9,6 +9,7 @@ import NotificationsMenu from './NotificationsMenu';
 import Notifications from './Notifications';
 import Socket from './Socket';
 import Link from 'next/link';
+import UserMenu from './UserMenu';
 
 const Header = () => {
   const { data: session, status } = useSession();
@@ -45,11 +46,9 @@ const Header = () => {
               </Link>
               <div>
                 <div className='flex pt-2 space-x-2'>
-                  <Link href={`/${session.user.userPath}`} className='menuIcon'>
-                    <UserCircleIcon className='headerIcon' />
-                  </Link>
-                  <Notifications setDropdown={setDropdown} />
                   <Messenger setDropdown={setDropdown} />
+                  <Notifications setDropdown={setDropdown} />
+                  <UserMenu />
                 </div>
               </div>
             </div>
