@@ -8,7 +8,7 @@ import openConversation from '@/functions/openConversation';
 import { AiOutlineEllipsis } from 'react-icons/ai'
 import { useRouter } from 'next/router';
 
-const Friend = ({ user, ownProfile }) => {
+const FriendWidget = ({ user, ownProfile }) => {
 
   const { openConversations } = useContext(SocketContext);
   const [menuVisible, setMenuVisible] = useState(false);
@@ -49,9 +49,9 @@ const Friend = ({ user, ownProfile }) => {
   }
 
   return (
-    <div className='flex items-center justify-between w-full bg-gray-400/20 border border-gray-400/30 shadow shadow-gray-800/10 p-1 rounded-xl'>
+    <div className='flex items-center justify-between w-full'>
       <div
-        className=' flex items-center space-x-2  relative p-2 rounded-xl cursor-pointer w-fit font-semibold'
+        className=' flex items-center space-x-2 relative p-2 rounded-xl cursor-pointer w-full font-semibold'
       >
         <Link href={`/${user.userPath}`}>
           <Image
@@ -62,22 +62,22 @@ const Friend = ({ user, ownProfile }) => {
             height={50}
           />
         </Link>
-        <Link href={`/${user.userPath}`}><p>{name}</p></Link>
+        <Link className='w-full' href={`/${user.userPath}`}><p className='w-[136px] text-ellipsis overflow-hidden whitespace-nowrap h-5'>{name}</p></Link>
         {online && <div className='absolute bottom-2 left-8 bg-green-400 h-3 w-3 rounded-full'></div>}
       </div>
       <div className='flex items-center relative '>
-        <button onClick={(e) => {
+        <button onClick={() => {
 
-          setMenuVisible((value) => !value);
+          setMenuVisible((value) => !value)
 
         }}>
           <AiOutlineEllipsis className='hover:text-slate-900 text-2xl text-slate-600' />
         </button>
-        {menuVisible && <DotDotDotMeny menuContent={dotDotDot} setMenuVisible={setMenuVisible} />}
+        {menuVisible && <DotDotDotMeny menuContent={dotDotDot} setMenuVisible={() => setMenuVisible(false)} />}
       </div>
 
     </div>
   );
 };
 
-export default Friend;
+export default FriendWidget;

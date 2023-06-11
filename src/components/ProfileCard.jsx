@@ -104,7 +104,6 @@ const ProfileCard = ({ user }) => {
           <Button
             title='Chatta'
             callback={() => {
-              console.log(user);
               openConversation(user.userPath);
             }}
           />

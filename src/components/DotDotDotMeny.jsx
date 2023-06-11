@@ -10,7 +10,7 @@ const DotDotDotMeny = ({ menuContent, setMenuVisible, buttonRef }) => {
 
             if (!menuRef.current.contains(e.target)) {
 
-                setMenuVisible();
+                setMenuVisible(false);
 
             }
 
@@ -26,7 +26,7 @@ const DotDotDotMeny = ({ menuContent, setMenuVisible, buttonRef }) => {
 
     return (
 
-        <ul ref={menuRef} className={`flex flex-col gap-0.5 absolute -bottom-10 text-gray-300 right-0 z-50 min-w-[100px] py-0.5 bg-slate-500 rounded`}>
+        <ul ref={menuRef} className={`flex flex-col gap-0.5 absolute -bottom-20 text-gray-300 right-0 z-50 min-w-[100px] py-0.5 bg-slate-500 rounded`}>
             {menuContent.map((item, index) => {
 
                 const classNames = `w-full hover:text-chas-primary border-b border-slate-400/50 px-2 py-0.5 last:border-none`
