@@ -3,7 +3,6 @@ import SidebarRow from './SidebarRow';
 import { ChevronDownIcon, UserGroupIcon } from '@heroicons/react/outline';
 import { CalendarIcon, ClockIcon, UsersIcon } from '@heroicons/react/solid';
 import { useState } from 'react';
-import EventCreator from './EventCreator';
 
 const Sidebar = () => {
   const { data: session, status } = useSession();
@@ -26,9 +25,6 @@ const Sidebar = () => {
           <SidebarRow Icon={ClockIcon} title='Memories' />
           <SidebarRow Icon={ChevronDownIcon} title='See More' />
         </div>
-        {newEvent && (
-          <EventCreator newEvent={newEvent} setNewEvent={setNewEvent} />
-        )}
       </>
     );
   }

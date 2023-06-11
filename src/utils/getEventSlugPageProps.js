@@ -20,7 +20,14 @@ const getEventSlugPageProps = async (context) => {
   const event = await prisma.event.findUnique({
     where: { id: slug },
     include: {
-      admin: { select: { firstName: true, lastName: true, image: true } },
+      admin: {
+        select: {
+          firstName: true,
+          lastName: true,
+          image: true,
+          userPath: true,
+        },
+      },
       posts: {
         orderBy: {
           created: 'desc',
@@ -29,11 +36,23 @@ const getEventSlugPageProps = async (context) => {
           comments: {
             include: {
               author: {
-                select: { firstName: true, lastName: true, image: true },
+                select: {
+                  firstName: true,
+                  lastName: true,
+                  image: true,
+                  userPath: true,
+                },
               },
             },
           },
-          author: { select: { firstName: true, lastName: true, image: true } },
+          author: {
+            select: {
+              firstName: true,
+              lastName: true,
+              image: true,
+              userPath: true,
+            },
+          },
           likes: true,
           images: true,
         },

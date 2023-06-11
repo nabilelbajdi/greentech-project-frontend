@@ -4,6 +4,7 @@ import Image from 'next/image';
 import { ChatIcon, HeartIcon } from '@heroicons/react/outline';
 import TimeStamp from './TimeStamp';
 import { useSession } from 'next-auth/react';
+import Link from 'next/link';
 
 import ImageModal from './ImageModal';
 
@@ -132,16 +133,23 @@ const Post = ({ post, posts, setPosts }) => {
     <div className='relative rounded-2xl bg-white p-4 pb-0 shadow-md'>
       <div className='flex items-center gap-4 w-full mb-2'>
         {post.author.image && (
-          <Image
-            className='rounded-full'
-            src={post.author.image}
-            alt='author image'
-            height={40}
-            width={40}
-          />
+          <Link href={`/${post.author.userPath}`}>
+            <Image
+              className='rounded-full'
+              src={post.author.image}
+              alt='author image'
+              height={40}
+              width={40}
+            />
+          </Link>
         )}
         <div className='flex flex-col'>
-          <p>{post.author.firstName + ' ' + post.author.lastName}</p>
+          <Link
+            href={`/${post.author.userPath}`}
+            className='border-b-2 border-white hover:border-b-2 hover:border-black'
+          >
+            {post.author.firstName + ' ' + post.author.lastName}
+          </Link>
           <TimeStamp time={post.created} />
         </div>
       </div>
@@ -222,7 +230,7 @@ const Post = ({ post, posts, setPosts }) => {
             <>
               <div className='relative'>
                 <textarea
-                  className='w-full h-20 rounded-lg p-2 resize-none mt-2'
+                  className='w-full h-20 rounded-lg p-2 resize-none mt-2 outline outline-1 outline-black'
                   ref={commentText}
                 />
                 <button
@@ -273,7 +281,7 @@ const Post = ({ post, posts, setPosts }) => {
 
       {/* creating Comment components */}
       {comments.length !== 0 && (
-        <div className='flex flex-col gap-4 my-2 mb-3 bg-gray-100 rounded-xl p-2'>
+        <div className='flex flex-col gap-4 my-2 mb-3 bg-white rounded-xl p-2'>
           {comments.map((comment) => (
             <Comment
               key={comment.id}

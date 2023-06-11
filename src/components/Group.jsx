@@ -1,5 +1,3 @@
-import Image from 'next/image';
-import Posts from './Posts';
 import { useState } from 'react';
 import { useRouter } from 'next/router';
 import ModalCreator from './ModalCreator';

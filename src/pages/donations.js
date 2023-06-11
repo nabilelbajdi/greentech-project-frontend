@@ -17,7 +17,7 @@ const DonationsPage = (props) => {
       <main className='flex'>
         <div className='lg:ml-28 bg-white rounded-xl overflow-hidden w-full'>
           <div className='rounded-xl overflow-hidden'>
-            <div className='w-fit h-auto mt-4 m-auto rounded-xl overflow-hidden'>
+            <div className='w-fit h-auto md:mt-4 m-auto rounded-xl overflow-hidden'>
               <Image
                 src='https://img.freepik.com/free-vector/people-carrying-donation-charity-related-icons_53876-43091.jpg?w=1800&t=st=1686152257~exp=1686152857~hmac=ef90dcd9ea3e4a4d2ff28d05223afb776986884b351a4f2c3022cab74f66a55a'
                 alt='donationsbild'

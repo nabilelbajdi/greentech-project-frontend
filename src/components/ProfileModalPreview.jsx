@@ -1,7 +1,5 @@
 import Image from 'next/image';
-import Button from './Button';
-import { useSession } from 'next-auth/react';
-import { useContext, useRef, useState } from 'react';
+import { useContext } from 'react';
 import { SocketContext } from '@/context';
 import socket from '@/socket';
 import sendFriendRequest from '@/functions/sendFriendRequest';
@@ -10,14 +8,14 @@ import denyFriendRequest from '@/functions/denyFriendRequest';
 import cancelFriendRequest from '@/functions/cancelFriendRequest';
 import { useRouter } from 'next/router';
 import deleteFriend from '@/functions/deleteFriend';
-import setProfilePicture from '@/functions/setProfilePicture';
+import { useSession } from 'next-auth/react';
+import Button from './Button';
+import Link from 'next/link';
 
-const ProfileCard = ({ user }) => {
+const ProfileModalPreview = ({ user, setPreview }) => {
   const { data: session } = useSession();
   const { openConversations } = useContext(SocketContext);
   const router = useRouter();
-  const imageRef = useRef(null);
-  const [tempImage, setTempImage] = useState();
 
   const reloadPage = () => {
     router.reload(window.location.pathname);
@@ -80,39 +78,29 @@ const ProfileCard = ({ user }) => {
   };
 
   return (
-    <div className='flex flex-col items-center justify-center gap-4 mt-4'>
-      <Image
-        src={
-          tempImage
-            ? URL.createObjectURL(tempImage)
-            : user.profilePicture
-            ? user.profilePicture
-            : user.image
-        }
-        alt='användarens profilbild'
-        height={100}
-        width={100}
-        className='rounded-full cursor-pointer aspect-square object-cover hover:opacity-90'
-        onClick={() => imageRef.current.click()}
-      />
-      <input
-        ref={imageRef}
-        type='file'
-        id='image'
-        name='image'
-        accept='image/png, image/jpeg, image/webp'
-        onChange={(e) => {
-          setProfilePicture(e.target.files[0]);
-          setTempImage(e.target.files[0]);
-        }}
-        hidden
-      />
-      <h1>
-        {user.firstName} {user.lastName}
-      </h1>
+    <div
+      className='absolute md:flex hidden flex-col items-center justify-between p-4 bg-white border-2 shadow-lg rounded-xl w-96 h-60 '
+      onMouseLeave={() => setPreview(false)}
+    >
+      <Link href={`/${user.userPath}`} className='flex items-center gap-4'>
+        <Image
+          src={user.image}
+          alt='profilbild'
+          height={100}
+          width={100}
+          className='rounded-full'
+        />
+        <div>
+          <p>{user.firstName + ' ' + user.lastName}</p>
+          {user.city && <p>Bor i: {user.city}</p>}
+          {user.isFriend && <p className='text-sm'>Vän</p>}
+        </div>
+      </Link>
+
       {user.id !== session.user.id && (
         <div className='flex gap-8'>
           {friendRequestButton.map((button, index) => {
+            console.log(index);
             return (
               <Button
                 key={`requestButton${index}`}
@@ -121,10 +109,10 @@ const ProfileCard = ({ user }) => {
               />
             );
           })}
-
           <Button
             title='Chatta'
             callback={() => {
+              console.log(user);
               openConversation(user.userPath);
             }}
           />
@@ -134,4 +122,4 @@ const ProfileCard = ({ user }) => {
   );
 };
 
-export default ProfileCard;
+export default ProfileModalPreview;

@@ -1,11 +1,14 @@
 import Posts from '@/components/Posts';
 import ProfileCard from '@/components/ProfileCard';
+import { useState } from 'react';
 import getProfilePageProps from '@/utils/getProfilePageProps';
 export const getServerSideProps = getProfilePageProps;
 import Gallery from '@/components/Gallery';
 import Link from 'next/link';
 
 const ProfilePage = (props) => {
+  const [posts, setPosts] = useState(props.user.posts);
+
   return (
     <div className='w-full'>
       <main className='flex flex-col'>
@@ -13,6 +16,7 @@ const ProfilePage = (props) => {
           <div className='flex mx-auto'>
             <div>
               <ProfileCard user={props.user} />
+              <Posts posts={posts} setPosts={setPosts} />
               <div className='mx-3 mt-8 block  md:w-[700px] lg:hidden bg-white rounded-2xl'>
                 <div className='flex py-2 px-6 justify-between items-center'>
                   <div>

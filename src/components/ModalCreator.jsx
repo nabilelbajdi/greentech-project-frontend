@@ -52,7 +52,6 @@ const ModalCreator = ({
     donation: 'Donation',
   };
   const [titleType, setTitleType] = useState(type[typeOfItem].toLowerCase());
-  console.log(type[typeOfItem]);
 
   if (edit) {
     useEffect(() => {
@@ -226,7 +225,7 @@ const ModalCreator = ({
               setErrorMessage();
             }}
           >
-            Lägg till omslagsfoto
+            {edit ? 'Ändra omslagsfoto' : 'Lägg till omslagsfoto'}
           </button>
 
           <input
