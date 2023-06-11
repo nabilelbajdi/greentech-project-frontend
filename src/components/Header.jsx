@@ -9,6 +9,7 @@ import Notifications from './Notifications';
 import Socket from './Socket';
 import Link from 'next/link';
 import SearchBar from './SearchBar';
+import UserMenu from './UserMenu';
 
 
 const Header = () => {
@@ -52,9 +53,7 @@ const Header = () => {
                 <div className='flex pt-2 items-center space-x-2'>
                   <Notifications setDropdown={setDropdown}  />
                   <Messenger setDropdown={setDropdown} />
-                  <Link href={`/${session.user.userPath}`}>
-                    <UserCircleIcon className='headerIcon' />
-                  </Link>
+                  <UserMenu/>
                 </div>
               </div>
             </div>
