@@ -2,23 +2,28 @@
 @tailwind components;
 @tailwind utilities;
 
+
 @layer components{
 body {
-  @apply bg-chas-secondary 
+  @apply bg-chas-secondary
 }
   .icon{
     @apply hidden xl:inline-flex p-2 h-10 w-10 bg-gray-200 cursor-pointer
     hover:bg-gray-300 text-gray-700 rounded-full
   }
 
+
   .headerIcon{
-    @apply w-6 h-6 text-white hover:text-gray-200
+    @apply w-8 h-8 sm:text-white sm:hover:text-gray-200
   }
   .menuIcon{
-    @apply hidden sm:inline-flex p-2 h-10  cursor-pointer
+    @apply hidden sm:inline-flex cursor-pointer
     text-black
   }
   .inputIcon{
     @apply flex items-center space-x-1 hover:bg-gray-100 flex-grow justify-center p-2 rounded-xl cursor-pointer
+  }
+  .mobileIcon{
+    @apply w-8 h-8
   }
 }

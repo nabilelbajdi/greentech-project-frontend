@@ -5,9 +5,12 @@ import { LocalizationProvider } from '@mui/x-date-pickers';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { QueryClient, QueryClientProvider } from 'react-query';
 
+
 const queryClient = new QueryClient();
 import { createContext, useState } from 'react';
 import Context from '@/context';
+import HeaderMobile from '@/components/HeaderMobile';
+
 
 export default function App({
   Component,
@@ -19,6 +22,7 @@ export default function App({
         <QueryClientProvider client={queryClient}>
           <LocalizationProvider dateAdapter={AdapterDayjs}>
             <Header />
+            <HeaderMobile/>
             <Component {...pageProps} />
           </LocalizationProvider>
         </QueryClientProvider>
