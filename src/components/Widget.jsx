@@ -7,7 +7,6 @@ import FriendWidget from './FriendWidget';
 const Widget = () => {
   const { data: session } = useSession();
   const { chosenFriends } = useContext(SocketContext);
-  const [chosen, setChosen] = useState([])
 
   let pic;
 

@@ -51,7 +51,7 @@ const Notification = ({ note }) => {
                     alt='profile'
                     width={50}
                     height={50}
-                    className='rounded-full border border-chas-secondary'
+                    className='aspect-square object-cover rounded-full'
                 />
                 {renderUnseen && <UnseenNote />}
             </div>
