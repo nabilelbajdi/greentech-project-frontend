@@ -3,6 +3,7 @@ import socket from "@/socket";
 import { useContext, useEffect, useState } from 'react';
 import { SocketContext } from '@/context';
 import Unseen from './Unseen';
+import openConversation from '@/functions/openConversation';
 
 
 const Conversation = ({ conversation }) => {
@@ -28,31 +29,10 @@ const Conversation = ({ conversation }) => {
 
     }
 
-    const openConversation = async (userPath) => {
-
-        const checkExisting = () => {
-
-            for (let i = 0; i < openConversations.length; i++) {
-
-                if (openConversations[i].with === userPath) {
-                    return true;
-                }
-
-            }
-
-        }
-
-        if (checkExisting()) return;
-
-        socket.io.emit('get conversation', { userPath });
-
-
-    }
-
     return (
 
         <button
-            onClick={() => { openConversation(conversation.to.userPath) }}
+            onClick={() => { openConversation(conversation.to.userPath, openConversations) }}
             className="flex items-center gap-3 w-full h-[4.5rem] bg-slate-700 hover:bg-slate-700/70 text-chas-secondary rounded-lg p-3">
 
             <div className='relative'>

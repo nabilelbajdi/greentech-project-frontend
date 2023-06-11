@@ -1,31 +1,59 @@
-import ContactFriend from './ContactFriend';
+import { SocketContext } from '@/context';
 import { useSession } from 'next-auth/react';
 import Image from 'next/image';
-
-const contacts = [
-  {
-    src: 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=928&q=80',
-    name: 'Eliza',
-  },
-  {
-    src: 'https://images.unsplash.com/photo-1517841905240-472988babdf9?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=774&q=80',
-    name: 'Jennifer',
-  },
-  {
-    src: 'https://images.unsplash.com/photo-1539571696357-5a69c17a67c6?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=774&q=80',
-    name: 'Aiden',
-  },
-  {
-    src: 'https://images.unsplash.com/photo-1522556189639-b150ed9c4330?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=774&q=80',
-    name: 'Tommy',
-  },
-];
+import { useContext, useEffect, useState } from 'react';
+import FriendWidget from './FriendWidget';
 
 const Widget = () => {
   const { data: session } = useSession();
+  const { friends } = useContext(SocketContext);
+  const [chosen, setChosen] = useState([])
+
+  let renderFriends = false;
+
+  if (chosen.length > 0) renderFriends = true;
+
+  useEffect(() => {
+
+    const offlineFriends = [];
+    const theChosenOnes = [];
+
+
+    for (let i = 0; i < friends.length; i++) {
+
+      if (theChosenOnes.length === 8) break;
+
+      if (friends[i].socketId) {
+
+        theChosenOnes.push(friends[i])
+
+      } else {
+
+        offlineFriends.push(friends[i])
+
+      }
+
+    }
+
+    if (theChosenOnes.length < 8) {
+
+      for (let i = 0; i < offlineFriends.length; i++) {
+
+        if (theChosenOnes.length === 8) break;
+
+        theChosenOnes.push(offlineFriends[i]);
+
+      }
+
+    }
+
+    setChosen(theChosenOnes);
+
+
+  }, [friends])
   return (
-    <div className=' hidden sticky top-[220px] lg:flex flex-col p-2 mx-8 mt-5'>
-      <div className=' outline p-8 mx-auto rounded-2xl outline-gray-400 shadow-md '>
+    <div className=' hidden sticky top-[220px] lg:flex flex-col p-2 mx-12 mt-5 '>
+      <div className='py-8 rounded-2xl bg-gray-400/20 border border-gray-400/80 shadow shadow-gray-800/10 p-1  '>
         <div className='mb-5'>
           <Image
             width={80}
@@ -35,13 +63,19 @@ const Widget = () => {
             src={session.user.image}
           />
         </div>
-        {contacts.map((contact) => (
-          <ContactFriend
-            key={contact.src}
-            src={contact.src}
-            name={contact.name}
-          />
-        ))}
+        <ul className='flex flex-col gap-2 w-full px-2'>
+
+          {renderFriends && chosen.map((user, index) => (
+
+            <FriendWidget
+              key={`friend#${index}`}
+              user={user}
+              ownProfile={true} />
+
+          ))}
+          {!renderFriends && <li key='noFriendsKey' className='w-[234px] text-center font-semibold'>Du har inga vänner att visa än</li>}
+        </ul>
+
       </div>
     </div>
   );
