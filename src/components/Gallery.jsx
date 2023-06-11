@@ -50,7 +50,7 @@ const Gallery = ({ images = [null], width, height }) => {
       >
         {imagesReversed.slice(0, size).map((image, idx) => {
           return (
-            <>
+            <div key={`image${idx}`}>
               {image === null ? (
                 <div className='aspect-square w-full bg-gray-200' />
               ) : (
@@ -70,7 +70,7 @@ const Gallery = ({ images = [null], width, height }) => {
                   />
                 </div>
               )}
-            </>
+            </div>
           );
         })}
       </div>
