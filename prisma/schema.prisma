@@ -59,6 +59,7 @@ model User {
   email                      String?          @unique
   emailVerified              DateTime?
   image                      String?
+  profilePicture             String?          
   accounts                   Account[]
   sessions                   Session[]
   posts                      Post[]
@@ -67,7 +68,7 @@ model User {
   notificationsSent          Notification[]   @relation("notificationsSent")
   notificationsReceived      Notification[]   @relation("notificationsReceived")
   comments                   Comment[]
-  images                     Image[]
+  images                     Image[]          
   friends                    User[]           @relation("friends")
   friendsRelation            User[]           @relation("friends")
   friendRequests             User[]           @relation("friendRequests")
@@ -170,7 +171,7 @@ model Image {
   donation_id  String?    @unique
   group        Group?     @relation(fields: [group_id], references: [id], onDelete: Cascade)
   group_id     String?    @unique
-  url          String
+  url          String     @unique
 
   created      DateTime   @default(now())
   updated      DateTime   @default(now()) @updatedAt

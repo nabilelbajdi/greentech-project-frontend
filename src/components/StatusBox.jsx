@@ -75,6 +75,7 @@ const StatusBox = ({ posts, setPosts, eventId }) => {
           <div className='pl-20 pt-2 text-red-500'>Error: {errorMessage}</div>
         ) : null}
         <div className='flex sm:space-x-4 p-4 items-center max-w-full'>
+          {console.log(session.user)}
           <Image
             className=' hidden  sm:inline-flex rounded-full'
             src={session.user.image}
@@ -106,8 +107,6 @@ const StatusBox = ({ posts, setPosts, eventId }) => {
                     className='object-contain p-1 m-1'
                     key={idx}
                     src={URL.createObjectURL(image)}
-                    /* src={URL.createObjectURL(uploadImage)} */
-
                     alt='Image set to upload'
                     width={40}
                     height={40}
