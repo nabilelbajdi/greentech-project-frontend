@@ -50,30 +50,25 @@ const Gallery = ({ images = [null], width, height }) => {
       >
         {imagesReversed.slice(0, size).map((image, idx) => {
           return (
-            <div key={`image${idx}`}>
+            <div key={`image${idx}`} className='w-full h-full'>
               {image === null ? (
                 <Image
                   src={'/placeholder.png'}
-                  className='aspect-square w-full bg-gray-200'
+                  className='aspect-square w-full h-full bg-gray-200'
                   width={500}
                   height={500}
                 />
               ) : (
-                <div
-                  key={image.id}
-                  className='aspect-square cursor-pointer'
+                <Image
+                  src={image.url}
+                  width={500}
+                  height={500}
+                  className='w-full h-full object-cover aspect-square cursor-pointer'
+                  alt='Gallery image'
                   onClick={() => {
                     setModalImage(images.length - idx - 1);
                   }}
-                >
-                  <Image
-                    src={image.url}
-                    width={500}
-                    height={500}
-                    className='w-full h-full object-cover'
-                    alt='Gallery image'
-                  />
-                </div>
+                />
               )}
             </div>
           );
