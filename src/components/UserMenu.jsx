@@ -22,8 +22,8 @@ const UserMenu = ({size}) => {
             {
                 title: `Logga ut`,
                 callback: () => {
-                    console.log('Logga ut');
                     socket.io.disconnect();
+
                     signOut();
                 },
             },

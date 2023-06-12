@@ -11,7 +11,7 @@ const handleUploadImage = async (uploadImage) => {
   if (response.ok) {
     return await response.json();
   } else {
-    //console.log(await response.text());
+
     return new Error();
   }
 

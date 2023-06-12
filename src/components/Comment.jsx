@@ -74,13 +74,10 @@ const Comment = ({ comment, comments, setComments, setNrOfComments }) => {
     { title: 'Ta bort', callback: () => deleteComment(comment.id) },
   ];
 
-  console.log('comment: ', comment);
-
   return (
     <div
-      className={`flex ${
-        comment.author_id === session.user.id && 'flex-row-reverse ml-auto'
-      } items-center px-2`}
+      className={`flex ${comment.author_id === session.user.id && 'flex-row-reverse ml-auto'
+        } items-center px-2`}
     >
       <Link href={`/${comment.author.userPath}`}>
         <Image
@@ -88,9 +85,8 @@ const Comment = ({ comment, comments, setComments, setNrOfComments }) => {
           alt='author image'
           height={25}
           width={25}
-          className={`rounded-full ${
-            comment.author_id === session.user.id ? 'ml-4' : 'mr-4'
-          }`}
+          className={`rounded-full ${comment.author_id === session.user.id ? 'ml-4' : 'mr-4'
+            }`}
         />
       </Link>
       <div className='flex flex-col w-full'>

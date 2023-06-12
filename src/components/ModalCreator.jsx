@@ -35,13 +35,13 @@ const ModalCreator = ({
   const [selected, setSelected] = useState(
     edit
       ? {
-          lat: parseFloat(item.lat),
-          lng: parseFloat(item.lng),
-        }
+        lat: parseFloat(item.lat),
+        lng: parseFloat(item.lng),
+      }
       : {
-          lat: '',
-          lng: '',
-        }
+        lat: '',
+        lng: '',
+      }
   );
   const [address, setAddress] = useState(edit ? item.address : '');
   const [enableAddress, setEnableAddress] = useState(address);
@@ -84,10 +84,10 @@ const ModalCreator = ({
         ? edit && startTime['$d'] === undefined
           ? startTime.slice(-5)
           : edit
-          ? dayjs(startTime).format('HH:mm')
-          : startTime
-          ? dayjs(startTime).format('HH:mm')
-          : null
+            ? dayjs(startTime).format('HH:mm')
+            : startTime
+              ? dayjs(startTime).format('HH:mm')
+              : null
         : '',
       endDate: enableDateTime
         ? enableEndTime && endDate
@@ -99,10 +99,10 @@ const ModalCreator = ({
           ? edit && endTime['$d'] === undefined
             ? endTime.slice(-5)
             : edit
-            ? dayjs(endTime).format('HH:mm')
-            : endTime
-            ? dayjs(endTime).format('HH:mm')
-            : null
+              ? dayjs(endTime).format('HH:mm')
+              : endTime
+                ? dayjs(endTime).format('HH:mm')
+                : null
           : '',
 
       // enableDateTime
@@ -144,7 +144,7 @@ const ModalCreator = ({
     }
 
     const data = await response.json();
-    console.log('data: ', data);
+
     push(`/${typeOfItem}s/${data.id}`);
     setNewItem(false);
   };
@@ -170,7 +170,7 @@ const ModalCreator = ({
     if (response.ok) {
       return await response.json();
     } else {
-      //console.log(await response.text());
+
       setErrorMessage(await response.text());
       return new Error();
     }
