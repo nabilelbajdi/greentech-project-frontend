@@ -49,17 +49,14 @@ const Header = () => {
                   <Messenger setDropdown={setDropdown} />
                   <Link href='/groups'>
                     <UserGroupIcon className='h-8 w-8 sm:hidden' />
-                    <UserGroupIcon className='h-8 w-8 sm:hidden' />
                   </Link>
 
                   <Notifications setDropdown={setDropdown} />
                   <UserMenu size={75} />
                   <Link href='/events'>
                     <CalendarIcon className='h-8 w-8 sm:hidden' />
-                    <CalendarIcon className='h-8 w-8 sm:hidden' />
                   </Link>
                   <Link href='/donations'>
-                    <GlobeIcon className='h-8 w-8 sm:hidden' />
                     <GlobeIcon className='h-8 w-8 sm:hidden' />
                   </Link>
                 </div>

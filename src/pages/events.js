@@ -5,13 +5,11 @@ import { useState } from 'react';
 import PaginationPage from '@/components/PaginationPage';
 import Widget from '@/components/Widget';
 import Image from 'next/image';
-import { useRouter } from 'next/navigation';
 import RecycleSection from '@/components/recycleSection';
 export const getServerSideProps = getEventPageProps;
 
 const EventsPage = (props) => {
   const [newEvent, setNewEvent] = useState(false);
-  const router = useRouter();
 
   return (
     <div className='w-full'>

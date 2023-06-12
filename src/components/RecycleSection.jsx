@@ -1,7 +1,9 @@
 import Image from 'next/image';
 import Button from './Button';
+import { useRouter } from 'next/navigation';
 
 const RecycleSection = () => {
+  const router = useRouter();
   return (
     <div className='flex py-6 px-8 border-b-2'>
       <Image
