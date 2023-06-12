@@ -45,7 +45,7 @@ const SearchBar = () => {
 
   return (
     <div
-      className={`absolute flex sm:right-10 sm:left-auto left-0 flex-col bg-white outline-black outline outline-1 sm:ml-2 ml-0 items-center p-2 rounded-md sm:translate-y-0 -translate-y-5 ${
+      className={`absolute flex z-50 md:right-10 sm:right-0 sm:left-auto left-0 flex-col bg-white outline-black outline outline-1 ml-0 items-center p-2 rounded-md md:translate-y-0 sm:translate-y-8 -translate-y-5 ${
         showInput ? 'md:w-1/3 w-screen' : 'w-10'
       } `}
       onBlur={() =>
