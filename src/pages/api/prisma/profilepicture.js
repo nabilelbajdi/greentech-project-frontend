@@ -24,13 +24,13 @@ const profilePictureHandler = async (req, res) => {
       });
 
       if (prismaUser.profilePicture) {
-        console.log(prismaUser.profilePicture);
+
         const test = await prisma.image.delete({
           where: {
             url: prismaUser.profilePicture,
           },
         });
-        console.log(test);
+
         fs.rmSync('public/' + test.url, { recursive: true }, (err) => {
           if (err) {
             console.error(err.message);

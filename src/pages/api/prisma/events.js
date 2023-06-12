@@ -72,7 +72,6 @@ const eventHandler = async (req, res) => {
             });
           }
 
-          console.log(createdEvent);
           return res.status(200).json(createdEvent);
 
         // if (body.images) {

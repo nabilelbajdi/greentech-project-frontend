@@ -100,7 +100,7 @@ const ProfileModalPreview = ({ user, setPreview }) => {
       {user.id !== session.user.id && (
         <div className='flex gap-8'>
           {friendRequestButton.map((button, index) => {
-            console.log(index);
+
             return (
               <Button
                 key={`requestButton${index}`}
@@ -112,7 +112,7 @@ const ProfileModalPreview = ({ user, setPreview }) => {
           <Button
             title='Chatta'
             callback={() => {
-              console.log(user);
+
               openConversation(user.userPath);
             }}
           />

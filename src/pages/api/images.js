@@ -23,7 +23,7 @@ const nanoid = customAlphabet(alphabet);
 // Setting multer to filter out anything that isn't of image/____ minetype (image/jpg, image/png).
 const fileFilter = (req, file, cb) => {
   const filetype = file.mimetype.split('/')[0];
-  //console.log(file.mimetype);
+
   if (filetype === 'image') {
     cb(null, true);
   } else {
@@ -49,7 +49,6 @@ apiRoute.post(async (req, res) => {
     return;
   }
 
-  //console.log(req.files);
 
   const user = await prisma.user.findUnique({
     where: { email: session.user.email },
@@ -75,9 +74,8 @@ apiRoute.post(async (req, res) => {
       } */
 
       // Concatenate the save destination path for the image
-      const path = `/uploads/${user.id}/${nanoid(10)}${
-        req.files[i].originalname.split('.')[0]
-      }.webp`;
+      const path = `/uploads/${user.id}/${nanoid(10)}${req.files[i].originalname.split('.')[0]
+        }.webp`;
 
       // Using sharp to slightly compress the image + make it a webp. And outputting the file to the file system.
       // Will probably have to play with setting here to make sure images still look good.

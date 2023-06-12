@@ -72,7 +72,6 @@ const groupHandler = async (req, res) => {
             });
           }
 
-          console.log(createdGroup);
           return res.status(200).json(createdGroup);
 
         // if (body.images) {

@@ -176,7 +176,6 @@ const Socket = ({ setDropdown }) => {
 
             socket.io.on('notification', (unseen) => {
 
-                console.log('unseen:', unseen);
                 setUnseenNotifications(unseen);
 
             })
