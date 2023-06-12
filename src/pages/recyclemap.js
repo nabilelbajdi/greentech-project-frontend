@@ -6,9 +6,9 @@ import Recycle from '@/components/Recycle';
 const Maps = () => {
   const places = ['places'];
   return (
-    <main className='w-screen h-screen'>
+    <div className='w-screen h-screen'>
       <Recycle />
-    </main>
+    </div>
     // <Map places={places} placeholder={'plats'} height='screen' width='screen' />
   );
 };

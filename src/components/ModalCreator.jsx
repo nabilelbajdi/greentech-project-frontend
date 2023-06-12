@@ -35,13 +35,13 @@ const ModalCreator = ({
   const [selected, setSelected] = useState(
     edit
       ? {
-        lat: parseFloat(item.lat),
-        lng: parseFloat(item.lng),
-      }
+          lat: parseFloat(item.lat),
+          lng: parseFloat(item.lng),
+        }
       : {
-        lat: '',
-        lng: '',
-      }
+          lat: '',
+          lng: '',
+        }
   );
   const [address, setAddress] = useState(edit ? item.address : '');
   const [enableAddress, setEnableAddress] = useState(address);
@@ -84,10 +84,10 @@ const ModalCreator = ({
         ? edit && startTime['$d'] === undefined
           ? startTime.slice(-5)
           : edit
-            ? dayjs(startTime).format('HH:mm')
-            : startTime
-              ? dayjs(startTime).format('HH:mm')
-              : null
+          ? dayjs(startTime).format('HH:mm')
+          : startTime
+          ? dayjs(startTime).format('HH:mm')
+          : null
         : '',
       endDate: enableDateTime
         ? enableEndTime && endDate
@@ -99,10 +99,10 @@ const ModalCreator = ({
           ? edit && endTime['$d'] === undefined
             ? endTime.slice(-5)
             : edit
-              ? dayjs(endTime).format('HH:mm')
-              : endTime
-                ? dayjs(endTime).format('HH:mm')
-                : null
+            ? dayjs(endTime).format('HH:mm')
+            : endTime
+            ? dayjs(endTime).format('HH:mm')
+            : null
           : '',
 
       // enableDateTime
@@ -170,7 +170,6 @@ const ModalCreator = ({
     if (response.ok) {
       return await response.json();
     } else {
-
       setErrorMessage(await response.text());
       return new Error();
     }
@@ -180,6 +179,8 @@ const ModalCreator = ({
     <div
       className='fixed top-0 left-0 flex flex-col items-center justify-center lg:p-10 h-screen w-screen z-50 bg-gray-900 bg-opacity-60'
       onClick={(e) => (setNewItem(false), e.stopPropagation())}
+      role='switch'
+      aria-modal
     >
       <form
         className='flex flex-col rounded-lg items-center lg:h-full lg:w-1/2 w-screen h-screen bg-white overflow-y-scroll'
@@ -189,6 +190,7 @@ const ModalCreator = ({
         <button
           className='absolute top-4 right-4 lg:hidden h-10 w-10'
           onClick={() => setNewItem(false)}
+          role='switch'
         >
           X
         </button>
@@ -238,6 +240,8 @@ const ModalCreator = ({
               setUploadImages([...e.target.files]);
             }}
             hidden
+            aria-errormessage='err1'
+            aria-invalid='true'
           />
         </div>
         <div className='flex flex-col justify-start gap-4 p-4 w-full'>
@@ -263,12 +267,15 @@ const ModalCreator = ({
             }
             className='px-2 py-4 border-2 rounded-lg'
             ref={itemName}
+            aria-label={`Namn på ${titleType}`}
           />
 
           {typeOfItem === 'donation' && (
             <div className='flex items-center justify-center gap-10 px-4'>
               <div className='flex flex-col w-full'>
-                <label htmlFor='category'>Kategori</label>
+                <label htmlFor='category' aria-label='Kategori'>
+                  Kategori
+                </label>
                 <select id='category' required ref={category}>
                   <option value='Kläder'>Kläder</option>
                   <option value='Leksaker'>Leksaker</option>
@@ -278,7 +285,9 @@ const ModalCreator = ({
                 </select>
               </div>
               <div className='flex flex-col w-full'>
-                <label htmlFor='condition'>Skick</label>
+                <label htmlFor='condition' aria-label='Skick'>
+                  Skick
+                </label>
                 <select id='condition' required ref={condition}>
                   <option value='Ny'>Ny</option>
                   <option value='Använd fåtal gånger'>
@@ -302,6 +311,8 @@ const ModalCreator = ({
                   id='enableDateTime'
                   onChange={() => setEnableDateTime(!enableDateTime)}
                   defaultChecked={startDate || startTime}
+                  aria-checked={startDate || startTime}
+                  role='switch'
                 />
                 <label htmlFor='enableDateTime'>
                   Vill du lägga till datum & tid?
@@ -334,6 +345,7 @@ const ModalCreator = ({
                           <button
                             className='hover:text-green-500'
                             onClick={() => setEnableEndTime(false)}
+                            role='switch'
                           >
                             - Ta bort slutdatum och tid
                           </button>
@@ -342,6 +354,7 @@ const ModalCreator = ({
                         <button
                           className='hover:text-green-500'
                           onClick={() => setEnableEndTime(true)}
+                          role='switch'
                         >
                           + Lägg till slutdatum och tid
                         </button>
@@ -361,6 +374,8 @@ const ModalCreator = ({
                 id='enableAddress'
                 onChange={() => setEnableAddress(!enableAddress)}
                 defaultChecked={address}
+                aria-checked={address}
+                role='switch'
               />
               <label htmlFor='enableAddress'>
                 Vill du lägga till en address?
@@ -383,11 +398,14 @@ const ModalCreator = ({
             className='px-2 py-4 border-2 rounded-lg w-full h-60 resize-none'
             placeholder='Vad mer behöver man veta?'
             ref={description}
+            aria-label='Beskrivning'
           />
         </div>
         <div className='sticky z-10 bottom-0 w-full bg-white-200 p-1'>
           {errorMessage ? (
-            <div className='text-red-500'>Error: {errorMessage}</div>
+            <div id='err1' className='text-red-500'>
+              Error: {errorMessage}
+            </div>
           ) : null}
           <button className='p-4 bg-chas-gradient-primary rounded-xl w-full hover:bg-chas-gradient-secondary text-white'>
             {edit ? `Uppdatera ${titleType}` : `Skapa ${titleType}`}

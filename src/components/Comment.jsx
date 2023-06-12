@@ -76,17 +76,24 @@ const Comment = ({ comment, comments, setComments, setNrOfComments }) => {
 
   return (
     <div
-      className={`flex ${comment.author_id === session.user.id && 'flex-row-reverse ml-auto'
-        } items-center px-2`}
+      className={`flex ${
+        comment.author_id === session.user.id && 'flex-row-reverse ml-auto'
+      } items-center px-2`}
     >
-      <Link href={`/${comment.author.userPath}`}>
+      <Link
+        href={`/${comment.author.userPath}`}
+        aria-label={`Länk till ${
+          comment.author.firstName + ' ' + comment.author.lastName
+        }s profil`}
+      >
         <Image
           src={comment.author.image}
           alt='author image'
           height={25}
           width={25}
-          className={`rounded-full ${comment.author_id === session.user.id ? 'ml-4' : 'mr-4'
-            }`}
+          className={`rounded-full ${
+            comment.author_id === session.user.id ? 'ml-4' : 'mr-4'
+          }`}
         />
       </Link>
       <div className='flex flex-col w-full'>
@@ -95,6 +102,9 @@ const Comment = ({ comment, comments, setComments, setNrOfComments }) => {
             <Link
               href={`/${comment.author.userPath}`}
               className=' text-sm font-semibold mr-4 border-b-2 border-gray-200 hover:border-b-2 hover:border-black'
+              aria-label={`Länk till ${
+                comment.author.firstName + ' ' + comment.author.lastName
+              }s profil`}
             >
               {comment.author.firstName + ' ' + comment.author.lastName}
             </Link>
@@ -119,6 +129,7 @@ const Comment = ({ comment, comments, setComments, setNrOfComments }) => {
                       <textarea
                         className='w-full h-20 rounded-lg p-2 resize-none mt-10 outline outline-1 outline-black'
                         ref={editText}
+                        aria-placeholder='Kommentars-text'
                       />
                     </div>
                   )}
@@ -143,6 +154,8 @@ const Comment = ({ comment, comments, setComments, setNrOfComments }) => {
           onClick={() => {
             setMenuVisible((value) => !value);
           }}
+          role='switch'
+          aria-label='Alternativ för kommentar'
         >
           <AiOutlineEllipsis className='hover:text-slate-900 text-2xl text-slate-600 rotate-90' />
         </button>

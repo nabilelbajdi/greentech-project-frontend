@@ -15,7 +15,7 @@ const GroupPage = (props) => {
     <div className='w-full'>
       <main className='flex'>
         <div className='lg:ml-28 bg-white rounded-xl overflow-hidden w-full'>
-          <div className='rounded-xl overflow-hidden'>
+          <section className='rounded-xl overflow-hidden'>
             <div className='w-full h-auto mt-4 m-auto rounded-xl overflow-hidden'>
               <Image
                 src='/group.jpg'
@@ -26,7 +26,7 @@ const GroupPage = (props) => {
                 className='h-full w-auto m-auto'
               />
             </div>
-            <div className='p-8 flex flex-col gap-6 border-b-2'>
+            <article className='p-8 flex flex-col gap-6 border-b-2'>
               <p>
                 Låt oss ta ansvar för att bevara våra skogar och vatten, skydda
                 våra hotade arter och förvalta våra naturresurser på ett
@@ -48,16 +48,16 @@ const GroupPage = (props) => {
                 title='Skapa ny grupp'
                 callback={() => setNewGroup(!newGroup)}
               />
-            </div>
-            <RecycleSection />
-          </div>
-          <div className='p-8 border-b-2'>
+            </article>
+          </section>
+          <RecycleSection />
+          <section className='p-8 border-b-2'>
             <PaginationPage
               length={props.groupsLength}
               title='Gå med i andra användares grupper'
               typeOfItem='group'
             />
-          </div>
+          </section>
         </div>
         <Widget />
       </main>

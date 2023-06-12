@@ -40,7 +40,12 @@ const PlacesAutocomplete = ({
   };
 
   return (
-    <Combobox onSelect={handleSelect}>
+    <Combobox
+      onSelect={handleSelect}
+      role='combobox'
+      aria-haspopup='listbox'
+      aria-autocomplete='list'
+    >
       <ComboboxInput
         value={value ? value : ''}
         onChange={(e) => setValue(e.target.value)}
@@ -49,13 +54,19 @@ const PlacesAutocomplete = ({
         placeholder={placeholder}
       />
       <ComboboxPopover className='z-50'>
-        <ComboboxList className='bg-white text-black p-2 z-20'>
+        <ComboboxList
+          className='bg-white text-black p-2 z-20'
+          role='listbox'
+          aria-labelledby='Address'
+        >
           {status === 'OK' &&
             data.map(({ place_id, description }) => (
               <ComboboxOption
                 key={place_id}
                 value={description}
                 className='border-b-2 hover:bg-slate-200 cursor-pointer'
+                role='option'
+                aria-selected
               />
             ))}
         </ComboboxList>

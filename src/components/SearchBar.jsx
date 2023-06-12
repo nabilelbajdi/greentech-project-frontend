@@ -66,6 +66,7 @@ const SearchBar = () => {
           value={input}
           onChange={(e) => setInput(e.target.value)}
           onKeyUp={(e) => e.key === 'Enter' && goToSearch()}
+          role='search'
         />
       </div>
       {input !== '' && showResults && showInput && (

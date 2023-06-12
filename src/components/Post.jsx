@@ -145,10 +145,15 @@ const Post = ({ post, posts, setPosts }) => {
   }
 
   return (
-    <div className='relative rounded-2xl bg-white p-4 pb-0 shadow-md'>
+    <article className='relative rounded-2xl bg-white p-4 pb-0 shadow-md'>
       <div className='flex items-center gap-4 w-full mb-2'>
         {pic && (
-          <Link href={`/${post.author.userPath}`}>
+          <Link
+            aria-label={`Länk till ${
+              post.author.firstName + ' ' + post.author.lastName
+            }s profil`}
+            href={`/${post.author.userPath}`}
+          >
             <Image
               className='aspect-square object-cover rounded-full'
               src={pic}
@@ -160,6 +165,9 @@ const Post = ({ post, posts, setPosts }) => {
         )}
         <div className='flex flex-col'>
           <Link
+            aria-label={`Länk till ${
+              post.author.firstName + ' ' + post.author.lastName
+            }s profil`}
             href={`/${post.author.userPath}`}
             className='border-b-2 border-white hover:border-b-2 hover:border-black'
           >
@@ -316,7 +324,7 @@ const Post = ({ post, posts, setPosts }) => {
           closeModal={closeModal}
         />
       )}
-    </div>
+    </article>
   );
 };
 

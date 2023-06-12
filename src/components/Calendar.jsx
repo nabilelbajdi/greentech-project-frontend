@@ -10,7 +10,11 @@ const Calendar = ({
   timeValue,
 }) => {
   return (
-    <div className='flex w-full'>
+    <div
+      className='flex w-full'
+      aria-placeholder='DD/MM/YYYY och hh/mm'
+      aria-label='Välj datum och tid'
+    >
       <DatePicker
         label={datumText}
         onChange={(date) => setSelectedDate(date)}

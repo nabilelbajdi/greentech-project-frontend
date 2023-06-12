@@ -5,7 +5,7 @@ import { useRouter } from 'next/navigation';
 const RecycleSection = () => {
   const router = useRouter();
   return (
-    <div className='flex py-6 px-8 border-b-2'>
+    <section className='flex py-6 px-8 border-b-2'>
       <Image
         src='/recycle-station.jpg'
         alt='plaståtervinning'
@@ -26,7 +26,7 @@ const RecycleSection = () => {
           />
         </div>
       </div>
-    </div>
+    </section>
   );
 };
 

@@ -8,7 +8,11 @@ const TimeStamp = ({ time }) => {
     setTimeStamp(timeAgo(time.toString()));
   }, []);
 
-  return <p className='text-xs'>{timeStamp}</p>;
+  return (
+    <p className='text-xs' aria-label='Skapad, tid och datum'>
+      {timeStamp}
+    </p>
+  );
 };
 
 export default TimeStamp;
