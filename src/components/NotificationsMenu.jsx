@@ -31,7 +31,6 @@ const NotificationsMenu = ({ setDropdown }) => {
 
         if (seen.notifications.length > 0) {
 
-            console.log(seen);
             socket.io.emit('notifications seen', seen);
 
         }
