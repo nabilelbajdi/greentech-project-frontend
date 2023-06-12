@@ -45,19 +45,13 @@ const likeHandler = async (req, res) => {
               }
             })
 
-            console.log('before targtePost');
-
             if (targetPost) {
-              console.log(targetPost)
+
               const oldNotification = await prisma.notification.findMany({
                 where: { targetPost_id: postId },
               })
-              console.log('after targtePost');
-              console.log(oldNotification)
+
               if (oldNotification.length > 0) {
-                console.log('old blip')
-
-
                 await prisma.notification.delete({
                   where: { id: oldNotification[0].id }
                 })
