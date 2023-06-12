@@ -25,6 +25,14 @@ const Notification = ({ note }) => {
             }
             break;
 
+        case 'like post':
+            callback = () => {
+
+                router.push(`/${note.userPath}`);
+
+            }
+            break;
+
     }
 
     let renderUnseen = '';

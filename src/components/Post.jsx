@@ -7,6 +7,7 @@ import { useSession } from 'next-auth/react';
 import Link from 'next/link';
 
 import ImageModal from './ImageModal';
+import socket from '@/socket';
 
 const Post = ({ post, posts, setPosts }) => {
   const [edit, setEdit] = useState(false);
@@ -109,6 +110,7 @@ const Post = ({ post, posts, setPosts }) => {
       setComments([...comments, newComment]);
       setReply(false);
       setNrOfComments((prev) => prev + 1);
+
     }
   };
 
@@ -124,8 +126,16 @@ const Post = ({ post, posts, setPosts }) => {
       //add error banner
     } else {
       const data = await response.json();
+
       setLikes(data.likes.length);
       setLikeStatus(data.likeStatus);
+      const notification = {
+
+        to: data.userPath
+
+      }
+
+      socket.io.emit('notification', notification);
     }
   };
 
