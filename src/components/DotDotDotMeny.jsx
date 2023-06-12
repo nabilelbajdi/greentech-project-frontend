@@ -22,7 +22,7 @@ const DotDotDotMeny = ({ menuContent, setMenuVisible, buttonRef, comment }) => {
     <ul
       ref={menuRef}
       className={`flex flex-col gap-0.5 absolute ${
-        comment ? ' -left-24 bottom-2' : '-bottom-20 right-0'
+        comment ? ' -left-36 bottom-2' : '-bottom-20 right-0'
       } text-gray-300 z-50 min-w-[150px] py-0.5 bg-slate-500 shadow shadow-slate-600/80 border border-slate-600/30 rounded`}
     >
       {menuContent.map((item, index) => {
