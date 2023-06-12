@@ -5,7 +5,6 @@ import { LocalizationProvider } from '@mui/x-date-pickers';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { QueryClient, QueryClientProvider } from 'react-query';
 import Head from 'next/head';
-import { usePathname } from 'next/navigation';
 
 const queryClient = new QueryClient();
 import { createContext, useEffect, useState } from 'react';
@@ -15,20 +14,15 @@ export default function App({
   Component,
   pageProps: { session, ...pageProps },
 }) {
-  let pathname = 'GreenCirle';
-  if (usePathname() !== '/') {
-    pathname += ` - ${usePathname().split('/')[1]}`;
-  }
-
   return (
     <Context>
       <SessionProvider session={session}>
         <QueryClientProvider client={queryClient}>
           <LocalizationProvider dateAdapter={AdapterDayjs}>
-            <Header />
             <Head>
-              <title>{pathname}</title>
+              <title>GreenCircle</title>
             </Head>
+            <Header />
             <Component {...pageProps} />
           </LocalizationProvider>
         </QueryClientProvider>
