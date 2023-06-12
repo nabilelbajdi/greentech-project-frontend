@@ -9,6 +9,7 @@ import Socket from './Socket';
 import Link from 'next/link';
 import UserMenu from './UserMenu';
 import SearchBar from './SearchBar';
+import { CalendarIcon, GlobeIcon, UserGroupIcon } from "@heroicons/react/outline";
 
 const Header = () => {
   const { data: session, status } = useSession();
@@ -32,22 +33,35 @@ const Header = () => {
     return (
       <>
         <Socket setDropdown={setDropdown} />
-        <div className='sticky flex-col top-0 z-50 items-center lg:px-5 h-min-24 border-none p-5 w-full bg-gradient-to-b from-[#3A4F6F] to-chas-secondary'>
+        <div className='sm:sticky shadow-md rounded-b-xl sm:shadow-none sm:rounded-none flex-col top-0 z-50 items-center lg:px-5 h-min-24 border-none p-5 w-full bg-gradient-to-b from-[#3A4F6F] to-chas-secondary'>
           <div>
-            <div className=' flex items-top lg:w-full justify-between pr-10 mb-3'>
-              <Link href='/'>
+            <div className=' flex items-top lg:w-full justify-between sm:pr-10 sm:mb-3'>
+              <Link href='/' className='hidden sm:inline-flex'>
                 <Image
                   src={'/logo.png'}
                   alt='logo'
-                  width={100}
-                  height={100}
+                  width={150}
+                  height={150}
                 />
               </Link>
-              <div>
-                <div className='flex pt-2 space-x-2'>
+
+              <div className=' mx-auto py-5 sm:py-0 sm:mx-0'>
+                <div className='flex pt-2 space-x-6 sm:space-x-2 items-center'>
                   <Messenger setDropdown={setDropdown} />
+                  <Link href='/groups'>
+                    <UserGroupIcon className='h-8 w-8 sm:hidden' />
+                  </Link>
+
                   <Notifications setDropdown={setDropdown} />
-                  <UserMenu />
+                  <UserMenu size={75} />
+                  <Link href='/events'>
+                    <CalendarIcon className='h-8 w-8 sm:hidden' />
+                  </Link>
+                  <Link href='/donations'>
+                    <GlobeIcon className='h-8 w-8 sm:hidden' />
+                  </Link>
+
+
                 </div>
               </div>
             </div>
@@ -75,8 +89,10 @@ const Header = () => {
                 </Link>
               </div>
             </div>
+            <div className='pt-2'>
+              <SearchBar />
+            </div>
 
-            <SearchBar />
           </div>
           {DropDownRender && <DropDownRender setDropdown={setDropdown} />}
         </div>

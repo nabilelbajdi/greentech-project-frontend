@@ -31,7 +31,7 @@ const Item = ({
             priority
             height={300}
             width={700}
-            className='h-full w-auto'
+            className='h-auto sm:h-full w-auto'
           />
         ) : (
           <Image
@@ -40,7 +40,7 @@ const Item = ({
             priority
             height={300}
             width={600}
-            className='h-full w-auto'
+            className='h-auto sm:h-full w-auto'
           />
         )}
       </div>

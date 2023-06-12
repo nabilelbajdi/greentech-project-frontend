@@ -14,6 +14,7 @@ body {
   .headerIcon{
     @apply w-6 h-6 text-white hover:text-gray-200
   }
+
   .menuIcon{
     @apply hidden sm:inline-flex p-2 h-10  cursor-pointer
     text-black

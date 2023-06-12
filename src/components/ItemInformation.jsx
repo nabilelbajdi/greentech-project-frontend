@@ -14,7 +14,7 @@ const ItemInformation = ({ item, btnTitle, itemType }) => {
       >
         <div>
           <div className='flex flex-col gap-2'>
-            <h2 className='text-xl font-semibold text-center'>
+            <h2 className='text-xl font-semibold sm:text-center'>
               {itemType === 'donation' ? 'Upphämtning' : 'Information'}
             </h2>
             <p>
