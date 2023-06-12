@@ -19,7 +19,7 @@ const DonationsPage = (props) => {
           <div className='rounded-xl overflow-hidden'>
             <div className='w-fit h-auto md:mt-4 m-auto rounded-xl overflow-hidden'>
               <Image
-                src='https://img.freepik.com/free-vector/people-carrying-donation-charity-related-icons_53876-43091.jpg?w=1800&t=st=1686152257~exp=1686152857~hmac=ef90dcd9ea3e4a4d2ff28d05223afb776986884b351a4f2c3022cab74f66a55a'
+                src='/donation.jpg'
                 alt='donationsbild'
                 priority
                 height={300}
@@ -43,7 +43,7 @@ const DonationsPage = (props) => {
             <div className='flex flex-col p-8 gap-4'>
               <p className='font-bold text-2xl'>Donera dina artiklar</p>
               <Image
-                src='https://img.freepik.com/free-vector/recycle-colorful-geometric-gradient-logo-vector_343694-1249.jpg?w=1380&t=st=1685987662~exp=1685988262~hmac=bc4bbdf8a593bb5cddf6cea365d5bfeb69e3f457a324e571be6dbef4a2487786'
+                src='/recycle.jpg'
                 alt='återvinningssymbol'
                 height={200}
                 width={200}

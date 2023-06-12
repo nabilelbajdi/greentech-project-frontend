@@ -7,7 +7,7 @@ const RecycleSection = () => {
   return (
     <div className='flex py-6 px-8 border-b-2'>
       <Image
-        src='https://img.freepik.com/free-vector/eco-zero-waste-sorting-composition-with-image-girl-dropping-plastic-bottles-into-separate-container-vector-illustration_1284-67714.jpg?size=626&ext=jpg&uid=R83022760&ga=GA1.2.1110063008.1686571545&semt=ais'
+        src='/recycle-station.jpg'
         alt='plaståtervinning'
         height={250}
         width={250}
