@@ -37,7 +37,7 @@ const Header = () => {
             <div className=' flex items-top lg:w-full justify-between pr-10 mb-3'>
               <Link href='/'>
                 <Image
-                  src='https://cdn-icons-png.flaticon.com/512/3281/3281613.png'
+                  src={'/logo.png'}
                   alt='logo'
                   width={100}
                   height={100}
