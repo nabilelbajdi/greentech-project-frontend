@@ -37,7 +37,7 @@ const Header = () => {
     return (
       <>
         <Socket setDropdown={setDropdown} />
-        <div className='sm:sticky shadow-md rounded-b-xl sm:shadow-none sm:rounded-none flex-col top-0 z-50 items-center lg:px-5 h-min-24 border-none p-5 w-full bg-gradient-to-b from-[#3A4F6F] to-chas-secondary'>
+        <header className='sm:sticky shadow-md rounded-b-xl sm:shadow-none sm:rounded-none flex-col top-0 z-50 items-center lg:px-5 h-min-24 border-none p-5 w-full bg-gradient-to-b from-[#3A4F6F] to-chas-secondary'>
           <div>
             <div className=' flex items-top lg:w-full justify-between sm:pr-10 sm:mb-3'>
               <Link href='/' className='hidden sm:inline-flex'>
@@ -69,7 +69,11 @@ const Header = () => {
               </div>
             </div>
           </div>
-          <div className='flex w-3/4'>
+          <nav
+            role='navigation'
+            aria-label='Sök innehåll på sidan'
+            className='flex w-3/4'
+          >
             <div className='flex flex-grow'>
               <div className=' flex space-x-3 w-4/5 justify-between px-5 sm:space-x-4'>
                 <Link href='/groups' className='menuIcon'>
@@ -95,9 +99,9 @@ const Header = () => {
             <div className='pt-2'>
               <SearchBar />
             </div>
-          </div>
+          </nav>
           {DropDownRender && <DropDownRender setDropdown={setDropdown} />}
-        </div>
+        </header>
       </>
     );
   }

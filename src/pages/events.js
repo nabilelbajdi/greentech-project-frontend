@@ -15,7 +15,7 @@ const EventsPage = (props) => {
     <div className='w-full'>
       <main className='flex'>
         <div className='lg:ml-28 bg-white rounded-xl overflow-hidden w-full'>
-          <div className='rounded-xl overflow-hidden'>
+          <section className='rounded-xl overflow-hidden'>
             <div className='w-fit mt-4 m-auto rounded-xl overflow-hidden'>
               <Image
                 src='/event.jpg'
@@ -25,7 +25,7 @@ const EventsPage = (props) => {
                 width={400}
               />
             </div>
-            <div className='p-8 flex flex-col gap-6 border-b-2'>
+            <article className='p-8 flex flex-col gap-6 border-b-2'>
               <p>
                 Låt oss ta ansvar för att bevara våra skogar och vatten, skydda
                 våra hotade arter och förvalta våra naturresurser på ett
@@ -47,16 +47,16 @@ const EventsPage = (props) => {
                 title='Skapa nytt event'
                 callback={() => setNewEvent(!newEvent)}
               />
-            </div>
-            <RecycleSection />
-          </div>
-          <div className='p-8 border-b-2'>
+            </article>
+          </section>
+          <RecycleSection />
+          <section className='p-8 border-b-2'>
             <PaginationPage
               length={props.eventsLength}
               title='Delta i andra användares event'
               typeOfItem='event'
             />
-          </div>
+          </section>
         </div>
         <Widget />
       </main>

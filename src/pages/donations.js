@@ -16,7 +16,7 @@ const DonationsPage = (props) => {
     <div className='w-full'>
       <main className='flex'>
         <div className='lg:ml-28 bg-white rounded-xl overflow-hidden w-full'>
-          <div className='rounded-xl overflow-hidden'>
+          <section className='rounded-xl overflow-hidden'>
             <div className='w-fit h-auto md:mt-4 m-auto rounded-xl overflow-hidden'>
               <Image
                 src='/donation.jpg'
@@ -27,7 +27,7 @@ const DonationsPage = (props) => {
                 className='w-full h-auto'
               />
             </div>
-            <div className='p-8 flex flex-col gap-6 border-b-2'>
+            <article className='p-8 flex flex-col gap-6 border-b-2'>
               <p>
                 Organisationer är en viktig drivkraft för att skapa positiv
                 förändring i samhället och för att skydda miljön.
@@ -37,9 +37,9 @@ const DonationsPage = (props) => {
                 inte längre behöver, kan vi tillsammans hjälpas åt att skapa en
                 mer hållbar värld.
               </p>
-            </div>
-          </div>
-          <div className='flex items-center justify-between'>
+            </article>
+          </section>
+          <section className='flex items-center justify-between'>
             <div className='flex flex-col p-8 gap-4'>
               <p className='font-bold text-2xl'>Donera dina artiklar</p>
               <Image
@@ -50,7 +50,7 @@ const DonationsPage = (props) => {
                 priority
               />
             </div>
-            <div className='flex flex-col gap-6 p-8'>
+            <article className='flex flex-col gap-6 p-8'>
               <p>
                 Genom att donera dina artiklar bidrar du till att hjälpa
                 människor i behov och minska miljöpåverkan.
@@ -65,16 +65,16 @@ const DonationsPage = (props) => {
                 title='Skapa ny donation'
                 callback={() => setNewDonation(!newDonation)}
               />
-            </div>
-          </div>
-          <div className='p-8 border-b-2'>
+            </article>
+          </section>
+          <section className='p-8 border-b-2'>
             <PaginationPage
               length={props.donationsLength}
               title='Se vad andra användare donerar bort just nu!'
               typeOfItem='donation'
             />
-          </div>
-          <div className='flex items-center justify-center p-8'>
+          </section>
+          <section className='flex items-center justify-center p-8'>
             <div className='flex flex-col items-center justify-center mt-6 gap-6 w-full'>
               <p className='font-bold text-2xl'>
                 Donera till andra organisationer
@@ -82,7 +82,7 @@ const DonationsPage = (props) => {
               <DonationOrganizationName org='wwf' />
               <DonationOrganizationName org='rodaKorset' />
             </div>
-          </div>
+          </section>
         </div>
         <Widget />
       </main>

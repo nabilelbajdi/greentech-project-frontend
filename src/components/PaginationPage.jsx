@@ -58,15 +58,17 @@ const PaginationPage = ({ length, title, typeOfItem }) => {
           <option value='Fordon'>Fordon</option>
         </select> */}
       </div>
-      <div className='grid md:grid-cols-3 grid-cols-2 gap-2 lg:grid-rows-2'>
+      <ul className='grid md:grid-cols-3 grid-cols-2 gap-2 lg:grid-rows-2'>
         {data &&
           data.map((i) => (
-            <Link href={`/${typeOfItem}s/${i.id}`} key={i.id}>
-              <ItemPreview item={i} type={typeOfItem} />
-              {/* {returnItem(i)} */}
-            </Link>
+            <li key={i.id}>
+              <Link href={`/${typeOfItem}s/${i.id}`}>
+                <ItemPreview item={i} type={typeOfItem} />
+                {/* {returnItem(i)} */}
+              </Link>
+            </li>
           ))}
-      </div>
+      </ul>
       <Pagination
         // count = how many items are fetched
         count={Math.ceil(length / 6)}
