@@ -47,6 +47,7 @@ const DonationsPage = (props) => {
                 alt='återvinningssymbol'
                 height={200}
                 width={200}
+                priority
               />
             </div>
             <div className='flex flex-col gap-6 p-8'>

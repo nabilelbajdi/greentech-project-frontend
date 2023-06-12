@@ -10,7 +10,7 @@ const RecycleSection = () => {
         src='/recycle-station.jpg'
         alt='plaståtervinning'
         height={250}
-        width={250}
+        width={300}
       />
 
       <div className='flex flex-col justify-between p-4'>

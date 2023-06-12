@@ -41,7 +41,13 @@ const Header = () => {
           <div>
             <div className=' flex items-top lg:w-full justify-between sm:pr-10 sm:mb-3'>
               <Link href='/' className='hidden sm:inline-flex'>
-                <Image src={'/logo.png'} alt='logo' width={150} height={150} />
+                <Image
+                  src={'/logo.png'}
+                  alt='logo'
+                  width={150}
+                  height={150}
+                  priority
+                />
               </Link>
 
               <div className=' mx-auto py-5 sm:py-0 sm:mx-0'>
