@@ -98,11 +98,11 @@ const Register = () => {
     }
 
     return (
-        <div className='flex justify-center w-full'>
-            <div className='flex justify-center w-full sm:w-4/5 sm:max-w-[400px] min-h-full bg-chas-secondary'>
+        <div className='flex justify-center w-full p-5'>
+            <div className='flex justify-center w-full sm:w-4/5 sm:max-w-[400px] min-h-full bg-[#2F6575] rounded'>
                 <div className="flex flex-col gap-8 p-8 w-full max-w-[400px] min-h-full justify-center items-center">
                     <div className='rounded-full p-3 bg-white text-5xl'><FiUser /></div>
-                    <form onSubmit={e => register(e)} className='flex flex-col gap-4 w-full'>
+                    <form onSubmit={e => register(e)} className='flex flex-col gap-3 w-full'>
                         <InputField change={() => { resetIncomplete(firstNameIncomplete, setFirstNameIncomplete) }} name='firstName' label='Förnamn *' elementRef={firstName} incomplete={firstNameIncomplete} />
                         <InputField change={() => { resetIncomplete(lastNameIncomplete, setLastNameIncomplete) }} name='lastName' label='Efternamn *' elementRef={lastName} incomplete={lastNameIncomplete} />
                         <InputField change={() => { resetIncomplete(countryIncomplete, setCountryIncomplete) }} name='country' label='Land *' type='select' elementRef={country} placeholder={'Vänligen välj'} options={countries} incomplete={countryIncomplete} />

@@ -38,7 +38,7 @@ const Notifications = ({ setDropdown }) => {
             })
         }}>
             <div className='relative'>
-                <BellIcon className='headerIcon' />
+                <BellIcon className='sm:headerIcon h-8 w-8 ' />
                 {renderUnseen && <Unseen unseen={unseenNotifications} />}
             </div>
 
