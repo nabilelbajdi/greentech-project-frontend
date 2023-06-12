@@ -5,6 +5,7 @@ import PaginationPage from '@/components/PaginationPage';
 import Widget from '@/components/Widget';
 import Image from 'next/image';
 import ModalCreator from '@/components/ModalCreator';
+import RecycleSection from '@/components/recycleSection';
 export const getServerSideProps = getGroupPageProps;
 
 const GroupPage = (props) => {
@@ -17,7 +18,7 @@ const GroupPage = (props) => {
           <div className='rounded-xl overflow-hidden'>
             <div className='w-full h-auto mt-4 m-auto rounded-xl overflow-hidden'>
               <Image
-                src='https://img.freepik.com/free-vector/portrait-young-employee-team_74855-7822.jpg?w=1800&t=st=1686152077~exp=1686152677~hmac=815ab13d835f4f1fba8559c9476a8e87b3d3f86411ca358740c81b4539120c57'
+                src='/group.jpg'
                 alt='gruppbild'
                 priority
                 height={400}
@@ -48,6 +49,7 @@ const GroupPage = (props) => {
                 callback={() => setNewGroup(!newGroup)}
               />
             </div>
+            <RecycleSection />
           </div>
           <div className='p-8 border-b-2'>
             <PaginationPage

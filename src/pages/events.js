@@ -5,6 +5,7 @@ import { useState } from 'react';
 import PaginationPage from '@/components/PaginationPage';
 import Widget from '@/components/Widget';
 import Image from 'next/image';
+import RecycleSection from '@/components/recycleSection';
 export const getServerSideProps = getEventPageProps;
 
 const EventsPage = (props) => {
@@ -17,7 +18,7 @@ const EventsPage = (props) => {
           <div className='rounded-xl overflow-hidden'>
             <div className='w-fit mt-4 m-auto rounded-xl overflow-hidden'>
               <Image
-                src='https://img.freepik.com/free-vector/time-management-calendar-method-appointment-planning-business-organizer-people-drawing-mark-work-schedule-cartoon-characters-colleagues-teamwork_335657-2096.jpg?w=1060&t=st=1686051710~exp=1686052310~hmac=64c2ffbabf3f7d82120fdc063ab738da367bf40e3a40859f456d0799c2514db8'
+                src='/event.jpg'
                 alt='eventbild'
                 priority
                 height={300}
@@ -47,6 +48,7 @@ const EventsPage = (props) => {
                 callback={() => setNewEvent(!newEvent)}
               />
             </div>
+            <RecycleSection />
           </div>
           <div className='p-8 border-b-2'>
             <PaginationPage

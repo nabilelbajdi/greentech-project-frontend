@@ -9,7 +9,11 @@ import Socket from './Socket';
 import Link from 'next/link';
 import UserMenu from './UserMenu';
 import SearchBar from './SearchBar';
-import { CalendarIcon, GlobeIcon, UserGroupIcon } from "@heroicons/react/outline";
+import {
+  CalendarIcon,
+  GlobeIcon,
+  UserGroupIcon,
+} from '@heroicons/react/outline';
 
 const Header = () => {
   const { data: session, status } = useSession();
@@ -37,12 +41,7 @@ const Header = () => {
           <div>
             <div className=' flex items-top lg:w-full justify-between sm:pr-10 sm:mb-3'>
               <Link href='/' className='hidden sm:inline-flex'>
-                <Image
-                  src={'/logo.png'}
-                  alt='logo'
-                  width={150}
-                  height={150}
-                />
+                <Image src={'/logo.png'} alt='logo' width={150} height={150} />
               </Link>
 
               <div className=' mx-auto py-5 sm:py-0 sm:mx-0'>
@@ -60,8 +59,6 @@ const Header = () => {
                   <Link href='/donations'>
                     <GlobeIcon className='h-8 w-8 sm:hidden' />
                   </Link>
-
-
                 </div>
               </div>
             </div>
@@ -92,7 +89,6 @@ const Header = () => {
             <div className='pt-2'>
               <SearchBar />
             </div>
-
           </div>
           {DropDownRender && <DropDownRender setDropdown={setDropdown} />}
         </div>

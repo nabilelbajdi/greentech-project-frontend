@@ -7,7 +7,7 @@ const ItemPreview = ({ item, type }) => {
   return (
     <div className='relative h-full flex flex-col items-center overflow-hidden rounded-xl shadow-md'>
       {item.category && (
-        <p className='absolute top-2 right-2 bg-chas-gradient-primary text-white p-2 rounded-xl'>
+        <p className='absolute top-4 right-2 bg-chas-gradient-primary text-white p-2 rounded-xl'>
           {item.category}
         </p>
       )}
@@ -18,6 +18,7 @@ const ItemPreview = ({ item, type }) => {
           height={200}
           width={300}
           priority
+          className='rounded-t-xl'
         />
       </div>
       <div className='flex flex-col gap-2 w-full p-2'>
