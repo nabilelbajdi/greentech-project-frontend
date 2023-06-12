@@ -61,7 +61,7 @@ const StatusBox = ({ posts, setPosts, itemId, itemType }) => {
       setErrorMessage();
       return await response.json();
     } else {
-      //console.log(await response.text());
+
       setErrorMessage(await response.text());
       return new Error();
     }

@@ -55,7 +55,9 @@ const Friend = ({ user, ownProfile }) => {
 
     dotDotDot.push({
       title: 'Ta bort vän',
-      callback: () => { deleteFriend(user.id, reloadPage) }
+      callback: () => {
+        deleteFriend(user.id, reloadPage)
+      }
     })
 
   }

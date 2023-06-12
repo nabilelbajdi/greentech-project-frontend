@@ -67,6 +67,7 @@ const getProfilePageProps = async (context) => {
           image: true,
           socketId: true,
           profilePicture: true,
+          id: true,
         },
       },
       friendRequests: {

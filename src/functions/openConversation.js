@@ -17,7 +17,6 @@ const openConversation = async (userPath, openConversations) => {
     if (checkExisting()) return;
 
     socket.io.emit('get conversation', { userPath });
-    console.log('blip open convo')
 
 }
 

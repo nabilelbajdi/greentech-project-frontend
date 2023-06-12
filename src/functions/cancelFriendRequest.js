@@ -10,7 +10,7 @@ const cancelFriendRequest = async (userId, callback) => {
 
     if (!response.ok) {
 
-        console.log(response);
+        console.log(response.status);
 
     } else {
 
