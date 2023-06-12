@@ -110,7 +110,6 @@ const Post = ({ post, posts, setPosts }) => {
       setComments([...comments, newComment]);
       setReply(false);
       setNrOfComments((prev) => prev + 1);
-
     }
   };
 
@@ -130,10 +129,8 @@ const Post = ({ post, posts, setPosts }) => {
       setLikes(data.likes.length);
       setLikeStatus(data.likeStatus);
       const notification = {
-
-        to: data.userPath
-
-      }
+        to: data.userPath,
+      };
 
       socket.io.emit('notification', notification);
     }
@@ -142,13 +139,9 @@ const Post = ({ post, posts, setPosts }) => {
   let pic;
 
   if (post.author.profilePicture) {
-
-    pic = post.author.profilePicture
-
+    pic = post.author.profilePicture;
   } else {
-
-    pic = post.author.image
-
+    pic = post.author.image;
   }
 
   return (

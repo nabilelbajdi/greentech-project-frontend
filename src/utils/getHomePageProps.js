@@ -5,7 +5,6 @@ import prisma from '../../server/db/prisma';
 // All props to the event pages goes here
 
 const getHomePageProps = async (context) => {
-
   const session = await getServerSession(context.req, context.res, authOptions);
 
   if (!session) {
@@ -16,8 +15,6 @@ const getHomePageProps = async (context) => {
       },
     };
   }
-
-
 
   if (!session.user.fullyRegistered) {
     return {
@@ -32,14 +29,30 @@ const getHomePageProps = async (context) => {
     orderBy: {
       created: 'desc',
     },
-    where: { event_id: null },
+    where: { event_id: null, group_id: null },
     include: {
       comments: {
         include: {
-          author: { select: { firstName: true, lastName: true, image: true, userPath: true, profilePicture: true } },
+          author: {
+            select: {
+              firstName: true,
+              lastName: true,
+              image: true,
+              userPath: true,
+              profilePicture: true,
+            },
+          },
         },
       },
-      author: { select: { firstName: true, lastName: true, image: true, userPath: true, profilePicture: true } },
+      author: {
+        select: {
+          firstName: true,
+          lastName: true,
+          image: true,
+          userPath: true,
+          profilePicture: true,
+        },
+      },
       likes: true,
       images: true,
     },
