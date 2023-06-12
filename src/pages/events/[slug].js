@@ -1,5 +1,6 @@
 import Event from '@/components/Event';
 import getEventSlugPageProps from '@/utils/getEventSlugPageProps';
+import FriendWidget from '@/components/FriendWidget';
 import Widget from '@/components/Widget';
 export const getServerSideProps = getEventSlugPageProps;
 

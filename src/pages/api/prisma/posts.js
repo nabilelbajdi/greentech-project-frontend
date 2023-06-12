@@ -48,7 +48,13 @@ const postHandler = async (req, res) => {
             include: {
               comments: true,
               author: {
-                select: { firstName: true, lastName: true, image: true },
+                select: {
+                  firstName: true,
+                  lastName: true,
+                  image: true,
+                  userPath: true,
+                  profilePicture: true,
+                },
               },
               likes: true,
               images: true,

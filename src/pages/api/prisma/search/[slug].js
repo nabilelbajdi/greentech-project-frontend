@@ -42,6 +42,7 @@ const searchQueryHandler = async (req, res) => {
                 lastName: true,
                 image: true,
                 userPath: true,
+                profilePicture: true,
               },
             });
 

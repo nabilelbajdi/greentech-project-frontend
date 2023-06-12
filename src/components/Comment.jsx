@@ -1,21 +1,17 @@
 import { useSession } from 'next-auth/react';
 import { useRef, useState } from 'react';
 import Image from 'next/image';
-import { PencilIcon } from '@heroicons/react/outline';
 import TimeStamp from './TimeStamp';
 import Link from 'next/link';
+import DotDotDotMeny from './DotDotDotMeny';
+import { AiOutlineEllipsis } from 'react-icons/ai';
 
-const Comment = ({
-  comment,
-  comments,
-  setComments,
-  setNrOfComments,
-  author,
-}) => {
+const Comment = ({ comment, comments, setComments, setNrOfComments }) => {
   const { data: session } = useSession();
   const [edit, setEdit] = useState(false);
   const [commentText, setCommentText] = useState(comment.text);
   const editText = useRef();
+  const [menuVisable, setMenuVisible] = useState(false);
 
   const deleteComment = async (commentId) => {
     const response = await fetch(`/api/prisma/comments/${commentId}`, {
@@ -73,6 +69,13 @@ const Comment = ({
     }
   };
 
+  const menuContent = [
+    { title: 'Redigera', callback: () => editComment(comment.id) },
+    { title: 'Ta bort', callback: () => deleteComment(comment.id) },
+  ];
+
+  console.log('comment: ', comment);
+
   return (
     <div
       className={`flex ${
@@ -100,34 +103,54 @@ const Comment = ({
               {comment.author.firstName + ' ' + comment.author.lastName}
             </Link>
             <div>
-              {comment.author_id === session.user.id &&
-                (edit ? (
-                  <div className='relative'>
-                    <button
-                      className='absolute bottom-4 right-4 text-slate-500'
-                      onClick={() => updateComment(comment.id)}
-                    >
-                      Save
-                    </button>
-                    <textarea
-                      className='w-full h-20 rounded-lg p-2 resize-none mt-10 outline outline-1 outline-black'
-                      ref={editText}
+              {comment.author_id === session.user.id && (
+                <>
+                  {menuVisable && (
+                    <DotDotDotMeny
+                      menuContent={menuContent}
+                      setMenuVisible={setMenuVisible}
+                      comment={true}
                     />
-                  </div>
-                ) : (
-                  <div className='flex gap-4'>
-                    <button onClick={() => editComment(comment.id)}>
-                      <PencilIcon className='h-4 w-4' />
-                    </button>
-                    <button onClick={() => deleteComment(comment.id)}>X</button>
-                  </div>
-                ))}
+                  )}
+                  {edit && (
+                    <div className='relative'>
+                      <button
+                        className='absolute bottom-4 right-4 text-slate-500'
+                        onClick={() => updateComment(comment.id)}
+                      >
+                        Save
+                      </button>
+                      <textarea
+                        className='w-full h-20 rounded-lg p-2 resize-none mt-10 outline outline-1 outline-black'
+                        ref={editText}
+                      />
+                    </div>
+                  )}
+                </>
+
+                // ) : (
+                //   <div className='flex gap-4'>
+                //     <button onClick={() => editComment(comment.id)}>
+                //       <PencilIcon className='h-4 w-4' />
+                //     </button>
+                //     <button onClick={() => deleteComment(comment.id)}>X</button>
+                //   </div>
+              )}
             </div>
           </div>
           {!edit && commentText}
           <TimeStamp time={comment.created} />
         </div>
       </div>
+      {comment.author_id === session.user.id && (
+        <button
+          onClick={() => {
+            setMenuVisible((value) => !value);
+          }}
+        >
+          <AiOutlineEllipsis className='hover:text-slate-900 text-2xl text-slate-600 rotate-90' />
+        </button>
+      )}
     </div>
   );
 };

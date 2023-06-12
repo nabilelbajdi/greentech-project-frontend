@@ -33,6 +33,8 @@ const groupHandler = async (req, res) => {
                   firstName: true,
                   lastName: true,
                   image: true,
+                  userPath: true,
+                  profilePicture: true,
                 },
               },
             },
