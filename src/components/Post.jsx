@@ -7,6 +7,7 @@ import { useSession } from 'next-auth/react';
 import Link from 'next/link';
 
 import ImageModal from './ImageModal';
+import socket from '@/socket';
 
 const Post = ({ post, posts, setPosts }) => {
   const [edit, setEdit] = useState(false);
@@ -109,6 +110,7 @@ const Post = ({ post, posts, setPosts }) => {
       setComments([...comments, newComment]);
       setReply(false);
       setNrOfComments((prev) => prev + 1);
+
     }
   };
 
@@ -124,19 +126,39 @@ const Post = ({ post, posts, setPosts }) => {
       //add error banner
     } else {
       const data = await response.json();
+
       setLikes(data.likes.length);
       setLikeStatus(data.likeStatus);
+      const notification = {
+
+        to: data.userPath
+
+      }
+
+      socket.io.emit('notification', notification);
     }
   };
+
+  let pic;
+
+  if (post.author.profilePicture) {
+
+    pic = post.author.profilePicture
+
+  } else {
+
+    pic = post.author.image
+
+  }
 
   return (
     <div className='relative rounded-2xl bg-white p-4 pb-0 shadow-md'>
       <div className='flex items-center gap-4 w-full mb-2'>
-        {post.author.image && (
+        {pic && (
           <Link href={`/${post.author.userPath}`}>
             <Image
-              className='rounded-full'
-              src={post.author.image}
+              className='aspect-square object-cover rounded-full'
+              src={pic}
               alt='author image'
               height={40}
               width={40}
