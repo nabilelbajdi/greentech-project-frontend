@@ -13,6 +13,7 @@ const nextConfig = {
       'wwwwwfse.cdn.triggerfish.cloud',
       'www.rodakorset.se',
       'i0.wp.com',
+      'www.freepik.com',
     ],
   },
   reactStrictMode: false,

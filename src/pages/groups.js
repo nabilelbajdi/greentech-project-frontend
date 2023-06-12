@@ -5,6 +5,7 @@ import PaginationPage from '@/components/PaginationPage';
 import Widget from '@/components/Widget';
 import Image from 'next/image';
 import ModalCreator from '@/components/ModalCreator';
+import RecycleSection from '@/components/recycleSection';
 export const getServerSideProps = getGroupPageProps;
 
 const GroupPage = (props) => {
@@ -48,6 +49,7 @@ const GroupPage = (props) => {
                 callback={() => setNewGroup(!newGroup)}
               />
             </div>
+            <RecycleSection />
           </div>
           <div className='p-8 border-b-2'>
             <PaginationPage
