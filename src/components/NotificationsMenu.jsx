@@ -54,7 +54,7 @@ const NotificationsMenu = ({ setDropdown }) => {
 
     return (
 
-        <div className="fixed z-50 right-0 bottom-0 h-3/4 w-96 rounded-t-xl overflow-hidden mx-1 border border-slate-600">
+        <div className="fixed z-50 right-0 bottom-0 w-screen h-screen sm:h-3/4 sm:w-96 sm:rounded-t-xl overflow-hidden sm:mx-1 border border-slate-600">
             <div className="grid grid-rows-[1.5rem_auto] w-full h-full px-2 py-2 bg-slate-500">
                 <div className="flex justify-between text-chas-primary text-sm">
                     Aviseringar

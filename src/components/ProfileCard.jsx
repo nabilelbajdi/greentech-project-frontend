@@ -22,6 +22,7 @@ const ProfileCard = ({ user }) => {
   const reloadPage = () => {
     router.reload(window.location.pathname);
   };
+  console.log(user);
 
   let friendRequestButton = [];
 
@@ -79,6 +80,10 @@ const ProfileCard = ({ user }) => {
     socket.io.emit('get conversation', { userPath });
   };
 
+  let imageClick = () => imageRef.current.click();
+
+  if (user.id !== session.user.id) imageClick = undefined
+
   return (
     <div className='flex flex-col items-center justify-center gap-4 mt-4'>
       <Image
@@ -86,14 +91,14 @@ const ProfileCard = ({ user }) => {
           tempImage
             ? URL.createObjectURL(tempImage)
             : user.profilePicture
-            ? user.profilePicture
-            : user.image
+              ? user.profilePicture
+              : user.image
         }
         alt='användarens profilbild'
         height={100}
         width={100}
         className='rounded-full cursor-pointer aspect-square object-cover hover:opacity-90'
-        onClick={() => imageRef.current.click()}
+        onClick={imageClick}
       />
       <input
         ref={imageRef}

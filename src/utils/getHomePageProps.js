@@ -50,6 +50,7 @@ const getHomePageProps = async (context) => {
           lastName: true,
           image: true,
           userPath: true,
+          profilePicture: true,
         },
       },
       likes: true,

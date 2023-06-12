@@ -41,6 +41,7 @@ const GalleryPage = (props) => {
                     onClick={() => {
                       setModalImage(imagesReversed.length - index - 1);
                     }}
+                    alt='Image in gallery'
                   />
                 );
               })}

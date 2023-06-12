@@ -46,7 +46,8 @@ const ImageModal = ({ images, idx, closeModal, reversed }) => {
           width={700}
           height={700}
           className='max-w-[75%] md:max-w-[80%] max-h-screen py-5 object-contain'
-        ></Image>
+          alt='Image in modal'
+        />
         <div className='relative flex items-center'>
           <div className='absolute inset-0' onClick={closeModal}></div>
           <button
