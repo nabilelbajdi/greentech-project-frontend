@@ -35,7 +35,7 @@ const Messenger = ({ setDropdown }) => {
                     }
                 })
             }}>
-                <div className='relative'>
+                <div className='hidden sm:inline-flex relative'>
                     <ChatAlt2Icon className='headerIcon' />
                     {renderUnseen && <Unseen unseen={unseenConvos} />}
                 </div>
