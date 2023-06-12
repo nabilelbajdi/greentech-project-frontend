@@ -22,6 +22,7 @@ const ProfileCard = ({ user }) => {
   const reloadPage = () => {
     router.reload(window.location.pathname);
   };
+  console.log(user);
 
   let friendRequestButton = [];
 
