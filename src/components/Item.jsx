@@ -23,7 +23,7 @@ const Item = ({
   const { data: session } = useSession();
   return (
     <div>
-      <div className='w-fit h-fit sm:h-[450px] rounded-xl overflow-hidden m-auto'>
+      <div className='w-fit h-[450px] rounded-xl overflow-hidden m-auto'>
         {item.image ? (
           <Image
             src={item.image.url}
