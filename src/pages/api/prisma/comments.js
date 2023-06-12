@@ -35,7 +35,13 @@ const commentHandler = async (req, res) => {
             },
             include: {
               author: {
-                select: { firstName: true, lastName: true, image: true },
+                select: {
+                  firstName: true,
+                  lastName: true,
+                  image: true,
+                  userPath: true,
+                  profilePicture: true,
+                },
               },
             },
           });

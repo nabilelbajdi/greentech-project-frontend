@@ -6,7 +6,7 @@
 //npx prisma db push, to update
 
 generator client {
-  provider = "prisma-client-js"
+  provider        = "prisma-client-js"
   previewFeatures = ["fullTextSearch", "fullTextIndex"]
 }
 
@@ -50,8 +50,8 @@ model User {
   id                         String           @id @default(cuid())
   socketId                   String?
   name                       String?
-  firstName                  String?          
-  lastName                   String?          
+  firstName                  String?
+  lastName                   String?
   country                    String?
   city                       String?
   dateOfBirth                DateTime?
@@ -60,7 +60,7 @@ model User {
   email                      String?          @unique
   emailVerified              DateTime?
   image                      String?
-  profilePicture             String?          
+  profilePicture             String?
   accounts                   Account[]
   sessions                   Session[]
   posts                      Post[]
@@ -69,7 +69,7 @@ model User {
   notificationsSent          Notification[]   @relation("notificationsSent")
   notificationsReceived      Notification[]   @relation("notificationsReceived")
   comments                   Comment[]
-  images                     Image[]          
+  images                     Image[]
   friends                    User[]           @relation("friends")
   friendsRelation            User[]           @relation("friends")
   friendRequests             User[]           @relation("friendRequests")
@@ -78,10 +78,10 @@ model User {
   friendRequestsSentRelation User[]           @relation("friendRequestsSent")
   liked_posts                Like[]
   eventsCreated              Event[]
-  attendingEvents            Event[]   @relation("event")
+  attendingEvents            Event[]          @relation("event")
   donations                  Donation[]
   groupsCreated              Group[]
-  attendingGroups            Group[]   @relation("group")
+  attendingGroups            Group[]          @relation("group")
 }
 
 model VerificationToken {
@@ -108,34 +108,38 @@ model PrivateMessage {
 }
 
 model Notification {
-  id      String    @id @default(cuid())
-  from    User?     @relation(name: "notificationsSent", fields: [from_id], references: [id])
-  to      User      @relation(name: "notificationsReceived", fields: [to_id], references: [id])
-  from_id String?
-  to_id   String
-  message String?
-  type    String?
-  seen    DateTime?
-  clicked Boolean   @default(false)
-  created DateTime  @default(now())
-  updated DateTime  @default(now()) @updatedAt
+  id            String    @id @default(cuid())
+  from          User?     @relation(name: "notificationsSent", fields: [from_id], references: [id])
+  to            User      @relation(name: "notificationsReceived", fields: [to_id], references: [id])
+  from_id       String?
+  to_id         String
+  targetPost    Post?     @relation(name: "notifications", fields: [targetPost_id], references: [id])
+  targetPost_id String?
+  message       String?
+  type          String?
+  seen          DateTime?
+  clicked       Boolean   @default(false)
+  created       DateTime  @default(now())
+  updated       DateTime  @default(now()) @updatedAt
 
+  @@index([targetPost_id])
   @@index([to_id])
   @@index([from_id])
 }
 
 model Post {
-  id        String    @id @default(cuid())
-  author    User?     @relation(fields: [author_id], references: [id], onDelete: Cascade)
-  author_id String?
-  text      String    @db.Text
-  comments  Comment[] @relation("comments")
-  images    Image[]
-  likes     Like[]
-  event     Event?    @relation(fields: [event_id], references: [id], onDelete: Cascade)
-  event_id  String?
-  group     Group?    @relation(fields: [group_id], references: [id], onDelete: Cascade)
-  group_id  String?
+  id            String         @id @default(cuid())
+  author        User?          @relation(fields: [author_id], references: [id], onDelete: Cascade)
+  author_id     String?
+  text          String         @db.Text
+  comments      Comment[]      @relation("comments")
+  images        Image[]
+  likes         Like[]
+  event         Event?         @relation(fields: [event_id], references: [id], onDelete: Cascade)
+  event_id      String?
+  group         Group?         @relation(fields: [group_id], references: [id], onDelete: Cascade)
+  group_id      String?
+  notifications Notification[] @relation("notifications")
 
   created DateTime @default(now())
   updated DateTime @default(now()) @updatedAt
@@ -163,21 +167,21 @@ model Comment {
 }
 
 model Image {
-  id           String     @id @default(cuid())
-  author       User?      @relation(fields: [author_id], references: [id], onDelete: Cascade)
-  author_id    String?
-  post         Post?      @relation(fields: [post_id], references: [id], onDelete: Cascade)
-  post_id      String?
-  event        Event?     @relation(fields: [event_id], references: [id], onDelete: Cascade)
-  event_id     String?    @unique
-  donation     Donation?  @relation(fields: [donation_id], references: [id], onDelete: Cascade)
-  donation_id  String?    @unique
-  group        Group?     @relation(fields: [group_id], references: [id], onDelete: Cascade)
-  group_id     String?    @unique
-  url          String     @unique
+  id          String    @id @default(cuid())
+  author      User?     @relation(fields: [author_id], references: [id], onDelete: Cascade)
+  author_id   String?
+  post        Post?     @relation(fields: [post_id], references: [id], onDelete: Cascade)
+  post_id     String?
+  event       Event?    @relation(fields: [event_id], references: [id], onDelete: Cascade)
+  event_id    String?   @unique
+  donation    Donation? @relation(fields: [donation_id], references: [id], onDelete: Cascade)
+  donation_id String?   @unique
+  group       Group?    @relation(fields: [group_id], references: [id], onDelete: Cascade)
+  group_id    String?   @unique
+  url         String    @unique
 
-  created      DateTime   @default(now())
-  updated      DateTime   @default(now()) @updatedAt
+  created DateTime @default(now())
+  updated DateTime @default(now()) @updatedAt
 
   @@index([author_id])
   @@index([post_id])
@@ -221,21 +225,21 @@ model Event {
 }
 
 model Donation {
-  id              String @id @default(cuid())
-  user            User?  @relation(fields: [user_id], references: [id], onDelete: Cascade)
-  user_id         String?
-  name            String?
-  description     String? @db.Text
-  category        String?
-  condition       String?
-  address         String?
-  lat             String?
-  lng             String?
-  start_time      String?
-  start_date      String?
-  end_date        String?
-  end_time        String?
-  images          Image[]
+  id          String  @id @default(cuid())
+  user        User?   @relation(fields: [user_id], references: [id], onDelete: Cascade)
+  user_id     String?
+  name        String?
+  description String? @db.Text
+  category    String?
+  condition   String?
+  address     String?
+  lat         String?
+  lng         String?
+  start_time  String?
+  start_date  String?
+  end_date    String?
+  end_time    String?
+  images      Image[]
 
   created DateTime @default(now())
   updated DateTime @default(now()) @updatedAt
@@ -244,19 +248,19 @@ model Donation {
 }
 
 model Group {
-  id            String @id @default(cuid())
-  admin         User?  @relation(fields: [admin_id], references: [id], onDelete: Cascade)
-  admin_id      String?
-  name          String?
-  image         Image?
-  description   String? @db.Text
-  attendings    User[] @relation("group")
-  posts         Post[]
-  start_date    String?
-  start_time    String?
-  address       String?
-  lat           String?
-  lng           String?
+  id          String  @id @default(cuid())
+  admin       User?   @relation(fields: [admin_id], references: [id], onDelete: Cascade)
+  admin_id    String?
+  name        String?
+  image       Image?
+  description String? @db.Text
+  attendings  User[]  @relation("group")
+  posts       Post[]
+  start_date  String?
+  start_time  String?
+  address     String?
+  lat         String?
+  lng         String?
 
   created DateTime @default(now())
   updated DateTime @default(now()) @updatedAt
