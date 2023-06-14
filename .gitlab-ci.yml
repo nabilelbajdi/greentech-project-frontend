@@ -14,9 +14,9 @@ build:
     - docker push $CI_REGISTRY_IMAGE:$CI_COMMIT_SHA
     - docker push $CI_REGISTRY_IMAGE:$CI_COMMIT_REF_SLUG
     - docker push $CI_REGISTRY_IMAGE:latest
-  rules: # Comment out to run pipeline
-    - exists: # Comment out to run pipeline
-      - $SKIP_BUILD # Comment out to run pipeline
+#  rules: # Comment out to run pipeline
+#    - exists: # Comment out to run pipeline
+#      - $SKIP_BUILD # Comment out to run pipeline
 
 
 lint:
